@@ -1,11 +1,57 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>DDDSample</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>MicroValid</title>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
-You've reached index!
+<noscript>
+    <h2>Sorry! Your browser doesn't support Javascript</h2>
+</noscript>
+<div class="upload-container">
+    <div class="upload-header">
+        <h2>MicroValid</h2>
+        <div class="hero-unit">
+            <p>
+                Welcome to the Validation Framework of Microservices resulted from decompositions of monoliths.
+            </p>
+        </div>
+    </div>
+    <div class="upload-content">
+        <div class="single-upload">
+            <h3>Upload System Model (good ol' decomposition)</h3>
+            <div class="row">
+                <form id="singleUploadForm" name="singleUploadForm">
+                    <div class="col-md-8">
+                        <input id="singleFileUploadInput" type="file" name="file"  required/>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-large btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div class="upload-response">
+                <div id="singleFileUploadError"></div>
+                <div id="singleFileUploadSuccess"></div>
+            </div>
+        </div>
+
+        <!--<div class="multiple-upload">-->
+        <!--<h3>Upload Multiple Files</h3>-->
+        <!--<form id="multipleUploadForm" name="multipleUploadForm">-->
+        <!--<input id="multipleFileUploadInput" type="file" name="files" class="file-input" multiple required />-->
+        <!--<button type="submit" class="primary submit-btn">Submit</button>-->
+        <!--</form>-->
+        <!--<div class="upload-response">-->
+        <!--<div id="multipleFileUploadError"></div>-->
+        <!--<div id="multipleFileUploadSuccess"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+<script src="/js/main.js"></script>
 </body>
 </html>

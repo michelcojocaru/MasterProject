@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 public class SpringBootStandaloneApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootStandaloneApplication.class, args);
+       SpringApplication.run(SpringBootStandaloneApplication.class, args);
     }
     @Bean
     public HelloService getHelloService(){

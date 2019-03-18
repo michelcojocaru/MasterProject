@@ -1,7 +1,8 @@
 package com.thesis.validator.model;
 
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.List;
 
-public class UseCaseResponsibility extends JSONObject {
+public class UseCaseResponsibility extends HashMap<String, List<String>> {
 
 }

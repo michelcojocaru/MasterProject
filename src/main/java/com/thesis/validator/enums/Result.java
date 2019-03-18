@@ -1,6 +1,6 @@
 package com.thesis.validator.enums;
 
-public enum GranularityMessage {
+public enum Result {
     passed,
     failed
 }

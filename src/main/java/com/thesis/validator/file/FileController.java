@@ -1,6 +1,7 @@
 package com.thesis.validator.file;
-import com.thesis.validator.enums.GranularityMessage;
+import com.thesis.validator.enums.Result;
 import com.thesis.validator.logic.Checker;
+import com.thesis.validator.model.SystemModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,38 +50,36 @@ public class FileController {
         return jsonContent;
     }
 
-    @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = fileStorageService.storeFile(file);
-        Boolean granularityPassed = false;
-        Boolean cohesionPassed = false;
-        Boolean couplingPassed = false;
+    //TODO rename methods into something like evaluateSystem
+    @PostMapping("/evaluateSystem")
+    public UploadFileResponse uploadFile(@RequestBody SystemModel model) {
+        //String fileName = fileStorageService.storeFile(model);
+        ArrayList<String> results = new ArrayList<>();
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileName)
-                .toUriString();
+//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/downloadFile/")
+//                .path(fileName)
+//                .toUriString();
 
-        JSONObject model = loadJSON(System.getProperty("user.dir") + uploadsDir.substring(1).concat("/") + fileName);
+        //JSONObject model = loadJSON(System.getProperty("user.dir") + uploadsDir.substring(1).concat("/") + fileName);
         try {
-            granularityPassed = Checker.calculateGranularity((JSONArray) model.get("services"));
-            cohesionPassed = Checker.calculateCohesion((JSONArray) model.get("relations"));
-            couplingPassed = Checker.calculateCoupling((JSONArray) model.get("relations"));
+            results.add(Checker.calculateGranularity(model.services) ? Result.passed.name() : Result.failed.name()); //(JSONArray) model.get("services")) ? Result.passed.name() : Result.failed.name()
+            results.add(Checker.calculateCoupling(model.services, model.relations) ? Result.passed.name() : Result.failed.name()); //(JSONArray) model.get("services"), (JSONArray) model.get("relations")) ? Result.passed.name() : Result.failed.name());
+            results.add(Checker.calculateCohesion(model.services, model.relations) ? Result.passed.name() : Result.failed.name()); //(JSONArray) model.get("services"), (JSONArray) model.get("relations")) ? Result.passed.name() : Result.failed.name());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize(), granularityPassed ? GranularityMessage.passed.name() : GranularityMessage.failed.name());
+        return new UploadFileResponse(/*fileName, fileDownloadUri, file.getContentType(), file.getSize(),*/ results);
     }
 
-    @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> uploadFile(file))
-                .collect(Collectors.toList());
-    }
+//    @PostMapping("/uploadMultipleFiles")
+//    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+//        return Arrays.asList(files)
+//                .stream()
+//                .map(file -> uploadFile(file))
+//                .collect(Collectors.toList());
+//    }
 
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {

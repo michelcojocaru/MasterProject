@@ -11,18 +11,6 @@ import java.util.List;
 
 public class Helper {
 
-//    public static ArrayList<String> convertJSONArrayToArrayList(List<String> jsonArray) throws JSONException {
-//        ArrayList<String> list = new ArrayList<String>();
-//        if (jsonArray != null) {
-//            int len = jsonArray.size();
-//            for (String aJsonArray : jsonArray) {
-//                list.add(aJsonArray);
-//            }
-//        }
-//
-//        return list;
-//    }
-
     private static double average(int[] array){
         double average = 0.0;
         for (int elem : array) {

@@ -1,59 +1,16 @@
 package com.thesis.validator.file;
 
-import java.util.ArrayList;
+import com.thesis.validator.enums.Result;
 
 public class UploadFileResponse {
-//    private String fileName;
-//    private String fileDownloadUri;
-//    private String fileType;
-//    private long size;
-    private ArrayList<String> results;
 
-    public UploadFileResponse(/*String fileName, String fileDownloadUri, String contentType, long size,*/ ArrayList<String> results) {
-//        this.fileName = fileName;
-//        this.fileDownloadUri = fileDownloadUri;
-//        this.fileType = contentType;
-//        this.size = size;
-        this.results = results;
+    public Result granularity;
+    public Result cohesion;
+    public Result coupling;
+
+    public UploadFileResponse(/*String fileName, String fileDownloadUri, String contentType, long size, ArrayList<String> results,String downloadResultURI,*/ Result granularity, Result cohesion, Result coupling ) {
+        this.granularity = granularity;
+        this.cohesion = cohesion;
+        this.coupling = coupling;
     }
-
-    public ArrayList<String> getResults() {
-        return results;
-    }
-
-    public void setResults(ArrayList<String> results) {
-        this.results = results;
-    }
-
-//    public String getFileName() {
-//        return fileName;
-//    }
-//
-//    public void setFileName(String fileName) {
-//        this.fileName = fileName;
-//    }
-//
-//    public String getFileDownloadUri() {
-//        return fileDownloadUri;
-//    }
-//
-//    public void setFileDownloadUri(String fileDownloadUri) {
-//        this.fileDownloadUri = fileDownloadUri;
-//    }
-//
-//    public String getFileType() {
-//        return fileType;
-//    }
-//
-//    public void setFileType(String fileType) {
-//        this.fileType = fileType;
-//    }
-//
-//    public long getSize() {
-//        return size;
-//    }
-//
-//    public void setSize(long size) {
-//        this.size = size;
-//    }
 }

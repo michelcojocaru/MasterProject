@@ -19,8 +19,8 @@ public class Checker {
     private static final double COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.15;
     private static final double COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.15;
 
-
-
+    // calculate the coefficient of variation between the lengths
+    // of nanoentity lists from each service
     public static Boolean calculateGranularity(List<Service> services) throws JSONException {
         final int N = services.size();
         int[] serviceScores = new int[N];
@@ -35,6 +35,8 @@ public class Checker {
         return coefficientOfVariation < GRANULARITY_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }
 
+    // calculate the coefficient of variation between the lengths
+    // of concepts sets for each service
     public static Boolean calculateCohesion(List<Service> services, List<Relation> relations) throws JSONException {
         final int N = services.size();
         int[] conceptScores = new int[N];
@@ -56,6 +58,8 @@ public class Checker {
         return Helper.getCoefficientOfVariation(N, conceptScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }
 
+    // calculate the coefficient of variation of the differences between
+    // inward and outward dependencies for each service
     public static Boolean calculateCoupling(List<Service> services, List<Relation> relations) throws JSONException {
         final int N = services.size();
         int[] couplingScores = new int[N];
@@ -73,7 +77,7 @@ public class Checker {
 
             couplingScores[i] = Math.abs(in - out);
         }
-
+        //TODO diferenta in modul normalizat la cea mai mare valoare (look for best practices)
         return Helper.getCoefficientOfVariation(N, couplingScores) < COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }
 

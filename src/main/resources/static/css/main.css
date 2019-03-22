@@ -129,3 +129,11 @@ input[type="file"] {
     overflow-x: hidden;
     word-break: break-all;
 }
+
+.hidden{
+    display:none;
+}
+
+.unhidden{
+    display:block;
+}

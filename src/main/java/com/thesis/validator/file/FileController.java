@@ -55,7 +55,7 @@ public class FileController {
                 cohesion = Checker.calculateCohesion(model.services, model.relations) ? Result.passed : Result.failed;
                 coupling = Checker.calculateCoupling(model.services, model.relations) ? Result.passed : Result.failed;
 
-            } catch (JSONException e) {
+            } catch (JSONException e) { 
                 e.printStackTrace();
             }
 

@@ -4,10 +4,7 @@ import com.thesis.validator.helpers.Helper;
 import com.thesis.validator.model.Dependency;
 import com.thesis.validator.model.Relation;
 import com.thesis.validator.model.Service;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,9 +18,9 @@ public class Checker {
 
     // calculate the coefficient of variation between the lengths
     // of nanoentity lists from each service
-    public static Boolean calculateGranularity(List<Service> services) throws JSONException {
+    public static Boolean calculateGranularity(List<Service> services) {
         final int N = services.size();
-        int[] serviceScores = new int[N];
+        double[] serviceScores = new double[N];
         double average;
         double standardDeviation;
         double coefficientOfVariation;
@@ -37,43 +34,47 @@ public class Checker {
 
     // calculate the coefficient of variation between the lengths
     // of concepts sets for each service
-    public static Boolean calculateCohesion(List<Service> services, List<Relation> relations) throws JSONException {
+    public static Boolean calculateCohesion(List<Service> services, List<Relation> relations) {
         final int N = services.size();
-        int[] conceptScores = new int[N];
+        double[] entityScores = new double[N];
         HashSet<String> entities;
+        int i = 0;
 
         if(Helper.checkForDuplicates(services)){
             return false;
         }
 
-        for (int i = 0; i < N; i++) {
-            entities = Helper.getDistinctEntities(services.get(i));
-            conceptScores[i] = entities.size();
+        for (Service service: services) {
+            entities = Helper.getDistinctEntities(service);
+            entityScores[i++] = entities.size();
         }
 
-        return Helper.getCoefficientOfVariation(N, conceptScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        return Helper.getCoefficientOfVariation(N, entityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }
 
     // calculate the coefficient of variation of the differences between
     // inward and outward dependencies for each service
     public static Boolean calculateCoupling(List<Service> services, List<Relation> relations) throws JSONException {
         final int N = services.size();
-        int[] couplingScores = new int[N];
+        double[] couplingScores = new double[N];
         ArrayList<Dependency> dependencies = new ArrayList<>(N);
+        int i = 0;
 
-        for (int i = 0; i < services.size(); i++) {
-            dependencies.add(new Dependency(services.get(i).name, 0, 0));
+        for (Service service: services) {
+            dependencies.add(new Dependency(service.name, 0, 0));
         }
 
         Helper.countDependencies(relations, dependencies);
 
-        for (int i = 0; i < dependencies.size(); i++) {
-            int in = dependencies.get(i).getInward();
-            int out = dependencies.get(i).getOutward();
+        for (Dependency dependency: dependencies) {
+            int in = dependency.getInwardCount();
+            int out = dependency.getOutwardCount();
 
-            couplingScores[i] = Math.abs(in - out);
+            couplingScores[i++] = Math.abs(in - out);
         }
-        //TODO diferenta in modul normalizat la cea mai mare valoare (look for best practices)
+
+        Helper.normalizeAtHighestValue(couplingScores);
+
         return Helper.getCoefficientOfVariation(N, couplingScores) < COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }
 

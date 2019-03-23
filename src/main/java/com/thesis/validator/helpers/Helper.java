@@ -14,9 +14,9 @@ import java.util.List;
 
 public class Helper {
 
-    private static double average(int[] array) {
+    private static double average(double[] array) {
         double average = 0.0;
-        for (int elem : array) {
+        for (double elem : array) {
             average += elem;
         }
         average /= array.length;
@@ -24,15 +24,15 @@ public class Helper {
         return average;
     }
 
-    public static double calculateStandardDeviation(int numArray[]) {
+    public static double calculateStandardDeviation(double[] array) {
         int sum = 0;
         double standardDeviation = 0.0;
-        int length = numArray.length;
-        for (int num : numArray) {
+        int length = array.length;
+        for (double num : array) {
             sum += num;
         }
         double mean = ((double) sum) / length;
-        for (int num : numArray) {
+        for (double num : array) {
             standardDeviation += Math.pow(num - mean, 2);
         }
 
@@ -43,21 +43,21 @@ public class Helper {
         return standardDeviation / average;
     }
 
-    public static double calculateAverage(List<Service> services, int[] serviceScores, int N) throws JSONException {
+    public static double calculateAverage(List<Service> services, double[] scores, int N) {
         double average = 0.0;
         for (int i = 0; i < services.size(); i++) {
             Service service = services.get(i);
-            serviceScores[i] = service.nanoentities.size();
+            scores[i] = service.nanoentities.size();
         }
-        for (int serviceScore : serviceScores) {
-            average += serviceScore;
+        for (double score : scores) {
+            average += score;
         }
         average /= N;
 
         return average;
     }
 
-    public static double getCoefficientOfVariation(int n, int[] scores) {
+    public static double getCoefficientOfVariation(int n, double[] scores) {
         double average;
         double standardDeviation;
         double coefficientOfVariation;
@@ -110,8 +110,8 @@ public class Helper {
             }
         }
 
-        for(Integer occurrence: entityOccurrences.values()){
-            if(occurrence > 1){
+        for (Integer occurrence : entityOccurrences.values()) {
+            if (occurrence > 1) {
                 return true;
             }
         }
@@ -128,5 +128,27 @@ public class Helper {
             }
         }
         return entities;
+    }
+
+    public static void normalizeAtHighestValue(double[] array) {
+        //double[] result = new double[array.length];
+        double max = getMaxValue(array);
+        for (int i = 0; i < array.length; i++) {
+            if(max > 0) {
+                array[i] /= max;
+            }
+        }
+
+        //return result;
+    }
+
+    private static double getMaxValue(double[] array) {
+        double max = array[0];
+        for(int i = 1; i < array.length;i++){
+            if(array[i] > max){
+                max = array[i];
+            }
+        }
+        return max;
     }
 }

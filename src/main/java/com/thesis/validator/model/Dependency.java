@@ -12,7 +12,7 @@ public class Dependency {
         this.outward = to;
     }
 
-    public int getInward() {
+    public int getInwardCount() {
         return inward;
     }
 
@@ -24,7 +24,7 @@ public class Dependency {
         this.inward++;
     }
 
-    public int getOutward() {
+    public int getOutwardCount() {
         return outward;
     }
 

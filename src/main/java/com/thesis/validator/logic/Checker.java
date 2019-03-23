@@ -40,21 +40,17 @@ public class Checker {
     public static Boolean calculateCohesion(List<Service> services, List<Relation> relations) throws JSONException {
         final int N = services.size();
         int[] conceptScores = new int[N];
-        HashSet<String> concepts;
+        HashSet<String> entities;
 
-        for (int i = 0; i < N; i++) {
-            concepts = new HashSet<>();
-            Service service = services.get(i);
-            for(String nanoentity: service.nanoentities){
-                String[] tokens = StringUtils.split(nanoentity,".");
-                if(tokens != null) {
-                    concepts.add(tokens[0]);
-                }
-            }
-            conceptScores[i] = concepts.size();
+        if(Helper.checkForDuplicates(services)){
+            return false;
         }
 
-        //TODO check for duplicates concepts between services ???
+        for (int i = 0; i < N; i++) {
+            entities = Helper.getDistinctEntities(services.get(i));
+            conceptScores[i] = entities.size();
+        }
+
         return Helper.getCoefficientOfVariation(N, conceptScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }
 

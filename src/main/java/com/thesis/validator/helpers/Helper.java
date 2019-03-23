@@ -5,13 +5,16 @@ import com.thesis.validator.model.Dependency;
 import com.thesis.validator.model.Relation;
 import com.thesis.validator.model.Service;
 import org.json.JSONException;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class Helper {
 
-    private static double average(int[] array){
+    private static double average(int[] array) {
         double average = 0.0;
         for (int elem : array) {
             average += elem;
@@ -25,19 +28,19 @@ public class Helper {
         int sum = 0;
         double standardDeviation = 0.0;
         int length = numArray.length;
-        for(int num : numArray) {
+        for (int num : numArray) {
             sum += num;
         }
-        double mean = ((double)sum)/length;
-        for(int num: numArray) {
+        double mean = ((double) sum) / length;
+        for (int num : numArray) {
             standardDeviation += Math.pow(num - mean, 2);
         }
 
-        return Math.sqrt(standardDeviation/length);
+        return Math.sqrt(standardDeviation / length);
     }
 
-    public static double calculateCoefficientOfVariation(double average, double standardDeviation){
-        return standardDeviation/average;
+    public static double calculateCoefficientOfVariation(double average, double standardDeviation) {
+        return standardDeviation / average;
     }
 
     public static double calculateAverage(List<Service> services, int[] serviceScores, int N) throws JSONException {
@@ -91,4 +94,39 @@ public class Helper {
         }
     }
 
+    public static Boolean checkForDuplicates(List<Service> services) {
+        HashSet<String> entitySet = new HashSet<>();
+        HashMap<String, Integer> entityOccurrences = new HashMap<>();
+
+        for (Service service : services) {
+            entitySet.clear();
+            entitySet = getDistinctEntities(service);
+            for (String entity : entitySet) {
+                if (!entityOccurrences.containsKey(entity)) {
+                    entityOccurrences.put(entity, 1);
+                } else {
+                    entityOccurrences.put(entity, entityOccurrences.get(entity) + 1);
+                }
+            }
+        }
+
+        for(Integer occurrence: entityOccurrences.values()){
+            if(occurrence > 1){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static HashSet<String> getDistinctEntities(Service service) {
+        HashSet<String> entities = new HashSet<>();
+        for (String nanoentity : service.nanoentities) {
+            String[] tokens = StringUtils.split(nanoentity, ".");
+            if (tokens != null) {
+                entities.add(tokens[0]);
+            }
+        }
+        return entities;
+    }
 }

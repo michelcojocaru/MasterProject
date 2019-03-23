@@ -52,7 +52,7 @@ public class Checker {
         }
 
         //TODO implement NLP strategy
-        NLP.calculateSemanticSimilarity("article", "booking");
+        double similarity = NLP.calculateSemanticSimilarity("article", "booking");
 
         return MathOperations.getCoefficientOfVariation(N, entityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }

@@ -100,6 +100,7 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.7.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/de.sciss/ws4j -->
         <dependency>
             <groupId>edu.cmu.lti</groupId>
             <artifactId>jawjaw</artifactId>
@@ -114,6 +115,17 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/ws4j-1.0.1.jar</systemPath>
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>de.sciss</groupId>-->
+        <!--<artifactId>ws4j</artifactId>-->
+        <!--<version>0.1.0</version>-->
+        <!--</dependency>-->
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/de.sciss/jawjaw &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>de.sciss</groupId>-->
+        <!--<artifactId>jawjaw</artifactId>-->
+        <!--<version>0.1.0</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
@@ -143,6 +155,20 @@
             <!--</dependency>-->
             <!--</dependencies>-->
             <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

@@ -43,7 +43,6 @@ public class FileController {
         return jsonContent;
     }
 
-    //TODO rename methods into something like evaluateSystem
     @PostMapping("/evaluateSystem")
     public UploadFileResponse uploadFile(@RequestBody SystemModel model) {
 
@@ -60,7 +59,7 @@ public class FileController {
             e.printStackTrace();
         }
 
-        return new UploadFileResponse(/*fileName, fileDownloadUri, file.getContentType(), file.getSize(),results*/  granularity, cohesion, coupling);
+        return new UploadFileResponse(granularity, cohesion, coupling);
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")

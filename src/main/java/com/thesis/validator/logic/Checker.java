@@ -1,6 +1,8 @@
 package com.thesis.validator.logic;
 
 import com.thesis.validator.helpers.Helper;
+import com.thesis.validator.helpers.MathOperations;
+import com.thesis.validator.helpers.NLP;
 import com.thesis.validator.model.Dependency;
 import com.thesis.validator.model.Relation;
 import com.thesis.validator.model.Service;
@@ -25,9 +27,9 @@ public class Checker {
         double standardDeviation;
         double coefficientOfVariation;
 
-        average = Helper.calculateAverage(services, serviceScores, N);
-        standardDeviation = Helper.calculateStandardDeviation(serviceScores);
-        coefficientOfVariation = Helper.calculateCoefficientOfVariation(average, standardDeviation);
+        average = MathOperations.calculateAverage(services, serviceScores, N);
+        standardDeviation = MathOperations.calculateStandardDeviation(serviceScores);
+        coefficientOfVariation = MathOperations.calculateCoefficientOfVariation(average, standardDeviation);
 
         return coefficientOfVariation < GRANULARITY_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }
@@ -49,7 +51,10 @@ public class Checker {
             entityScores[i++] = entities.size();
         }
 
-        return Helper.getCoefficientOfVariation(N, entityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        //TODO implement NLP strategy
+        NLP.calculateSemanticSimilarity("article", "booking");
+
+        return MathOperations.getCoefficientOfVariation(N, entityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }
 
     // calculate the coefficient of variation of the differences between
@@ -73,10 +78,8 @@ public class Checker {
             couplingScores[i++] = Math.abs(in - out);
         }
 
-        Helper.normalizeAtHighestValue(couplingScores);
+        MathOperations.normalizeAtHighestValue(couplingScores);
 
-        return Helper.getCoefficientOfVariation(N, couplingScores) < COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        return MathOperations.getCoefficientOfVariation(N, couplingScores) < COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }
-
-
 }

@@ -36,7 +36,7 @@ public class Checker {
 
     // calculate the coefficient of variation between the lengths
     // of concepts sets for each service
-    public static Boolean calculateCohesion(List<Service> services, List<Relation> relations) {
+    public static Boolean calculateCohesion(List<Service> services, List<Relation> relations) throws Exception {
         final int N = services.size();
         double[] entityScores = new double[N];
         HashSet<String> entities;
@@ -50,7 +50,6 @@ public class Checker {
             entities = Helper.getDistinctEntities(service);
             entityScores[i++] = entities.size();
         }
-
         //TODO implement NLP strategy
         double similarity = NLP.calculateSemanticSimilarity("article", "booking");
 

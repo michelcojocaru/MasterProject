@@ -45,21 +45,24 @@ public class FileController {
 
     @PostMapping("/evaluateSystem")
     public UploadFileResponse uploadFile(@RequestBody SystemModel model) {
-
-        Result granularity = null;
-        Result cohesion = null;
-        Result coupling = null;
-
         try {
-            granularity = Checker.calculateGranularity(model.services) ? Result.passed : Result.failed;
-            cohesion = Checker.calculateCohesion(model.services,  model.relations) ? Result.passed : Result.failed;
-            coupling = Checker.calculateCoupling(model.services,  model.relations) ? Result.passed : Result.failed;
+            Result granularity = null;
+            Result cohesion = null;
+            Result coupling = null;
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+            try {
+                granularity = Checker.calculateGranularity(model.services) ? Result.passed : Result.failed;
+                cohesion = Checker.calculateCohesion(model.services, model.relations) ? Result.passed : Result.failed;
+                coupling = Checker.calculateCoupling(model.services, model.relations) ? Result.passed : Result.failed;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return new UploadFileResponse(granularity, cohesion, coupling);
+        } catch (Exception e) {
+            return new UploadFileResponse(e.getMessage());
         }
-
-        return new UploadFileResponse(granularity, cohesion, coupling);
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")

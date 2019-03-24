@@ -100,8 +100,7 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.7.2</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/de.sciss/ws4j -->
+        <!-- local maven repos for ws4j & jawjaw-->
         <dependency>
             <groupId>com.thesis.validator</groupId>
             <artifactId>ws4j</artifactId>
@@ -112,17 +111,6 @@
             <artifactId>ws4j</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>de.sciss</groupId>-->
-        <!--<artifactId>ws4j</artifactId>-->
-        <!--<version>0.1.0</version>-->
-        <!--</dependency>-->
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/de.sciss/jawjaw &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>de.sciss</groupId>-->
-        <!--<artifactId>jawjaw</artifactId>-->
-        <!--<version>0.1.0</version>-->
-        <!--</dependency>-->
     </dependencies>
 
     <build>

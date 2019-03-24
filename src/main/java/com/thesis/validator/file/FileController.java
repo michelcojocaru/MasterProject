@@ -1,9 +1,8 @@
 package com.thesis.validator.file;
-import com.thesis.validator.enums.Result;
-import com.thesis.validator.helpers.NLP;
+
 import com.thesis.validator.logic.Checker;
+import com.thesis.validator.logic.System;
 import com.thesis.validator.model.SystemModel;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,22 +46,15 @@ public class FileController {
     @PostMapping("/evaluateSystem")
     public UploadFileResponse uploadFile(@RequestBody SystemModel model) {
         try {
-            Result granularity = null;
-            Result cohesion = null;
-            Result coupling = null;
 
-            try {
-                granularity = Checker.calculateGranularity(model.services) ? Result.passed : Result.failed;
-                cohesion = Checker.calculateCohesion(model.services, model.relations) ? Result.passed : Result.failed;
-                coupling = Checker.calculateCoupling(model.services, model.relations) ? Result.passed : Result.failed;
+            System system = new System(model.services, model.relations);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            Checker checker = new Checker();
+            checker.getFirstTest().runAssessment(system);
 
-            double similarity = NLP.calculateSemanticSimilarity("article", "booking");
+            //TODO find a generic way of sending the results (for extensibility)
+            return new UploadFileResponse(system.getResults().get(0), system.getResults().get(1), system.getResults().get(2));
 
-            return new UploadFileResponse(String.valueOf(similarity));//UploadFileResponse(granularity, cohesion, coupling);
         } catch (Exception e) {
             return new UploadFileResponse(e.toString());
         }

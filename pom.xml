@@ -100,54 +100,48 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.7.2</version>
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>edu.cmu.lti</groupId>-->
+        <!--<artifactId>jawjaw</artifactId>-->
+        <!--<version>1.0.0</version>-->
+        <!--<scope>system</scope>-->
+        <!--<systemPath>${basedir}/lib/jawjaw-1.0.2.jar</systemPath>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>edu.cmu.lti</groupId>-->
+        <!--<artifactId>ws4j</artifactId>-->
+        <!--<version>1.0.0</version>-->
+        <!--<scope>system</scope>-->
+        <!--<systemPath>${basedir}/lib/ws4j-1.0.1.jar</systemPath>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>edu.cmu.lti</groupId>
-            <artifactId>jawjaw</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/jawjaw-1.0.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>edu.cmu.lti</groupId>
+            <groupId>com.thesis.validator</groupId>
             <artifactId>ws4j</artifactId>
             <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/ws4j-1.0.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.thesis.validator</groupId>
+            <artifactId>ws4j</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!--<plugin>-->
-            <!--<groupId>org.asciidoctor</groupId>-->
-            <!--<artifactId>asciidoctor-maven-plugin</artifactId>-->
-            <!--<version>1.5.3</version>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>generate-docs</id>-->
-            <!--<phase>prepare-package</phase>-->
-            <!--<goals>-->
-            <!--<goal>process-asciidoc</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-            <!--<backend>html</backend>-->
-            <!--<doctype>book</doctype>-->
-            <!--</configuration>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--<dependencies>-->
-            <!--<dependency>-->
-            <!--<groupId>org.springframework.restdocs</groupId>-->
-            <!--<artifactId>spring-restdocs-asciidoctor</artifactId>-->
-            <!--<version>${spring-restdocs.version}</version>-->
-            <!--</dependency>-->
-            <!--</dependencies>-->
-            <!--</plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <!--other repositories if any-->
+        <repository>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${project.basedir}/lib</url>
+        </repository>
+    </repositories>
 
 </project>

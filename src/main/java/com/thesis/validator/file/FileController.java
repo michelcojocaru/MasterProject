@@ -1,5 +1,6 @@
 package com.thesis.validator.file;
 import com.thesis.validator.enums.Result;
+import com.thesis.validator.helpers.NLP;
 import com.thesis.validator.logic.Checker;
 import com.thesis.validator.model.SystemModel;
 import org.json.JSONException;
@@ -59,7 +60,9 @@ public class FileController {
                 e.printStackTrace();
             }
 
-            return new UploadFileResponse(granularity, cohesion, coupling);
+            double similarity = NLP.calculateSemanticSimilarity("article", "booking");
+
+            return new UploadFileResponse(String.valueOf(similarity));//UploadFileResponse(granularity, cohesion, coupling);
         } catch (Exception e) {
             return new UploadFileResponse(e.toString());
         }

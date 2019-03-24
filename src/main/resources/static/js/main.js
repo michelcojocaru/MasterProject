@@ -20,7 +20,8 @@ function uploadSingleFile(file) {
                 //"<p>DownloadUrl : <a href='" + response.fileDownloadUri + "' target='_blank'>" + response.fileDownloadUri + "</a></p>" +
                 "<p>Granularity check : " + response.granularity + "</p>" +
                 "<p>Coupling check : " + response.coupling + "</p>" +
-                "<p>Cohesion check : " + response.cohesion +"</p>";
+                "<p>Cohesion check : " + response.cohesion + "</p>" +
+                "<p>Error message: " + response.errorMessage + "</p>";
             singleFileUploadSuccess.style.display = "block";
         } else {
             singleFileUploadSuccess.style.display = "none";

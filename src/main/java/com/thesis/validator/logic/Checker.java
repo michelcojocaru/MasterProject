@@ -2,7 +2,6 @@ package com.thesis.validator.logic;
 
 import com.thesis.validator.helpers.Helper;
 import com.thesis.validator.helpers.MathOperations;
-import com.thesis.validator.helpers.NLP;
 import com.thesis.validator.model.Dependency;
 import com.thesis.validator.model.Relation;
 import com.thesis.validator.model.Service;
@@ -50,8 +49,9 @@ public class Checker {
             entities = Helper.getDistinctEntities(service);
             entityScores[i++] = entities.size();
         }
+
         //TODO implement NLP strategy
-        double similarity = NLP.calculateSemanticSimilarity("article", "booking");
+        //double similarity = NLP.calculateSemanticSimilarity("article", "booking");
 
         return MathOperations.getCoefficientOfVariation(N, entityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
     }

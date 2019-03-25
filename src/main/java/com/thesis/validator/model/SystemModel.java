@@ -10,6 +10,6 @@ public class SystemModel {
     public List<Service> services;
     @JsonProperty("relations")
     public List<Relation> relations;
-    //@JsonProperty("useCaseResponsibility")
-    //public UseCaseResponsibility useCaseResponsibility;
+    @JsonProperty("useCaseResponsibility")
+    public UseCaseResponsibility useCaseResponsibility;
 }

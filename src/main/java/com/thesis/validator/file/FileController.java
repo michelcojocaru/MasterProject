@@ -47,7 +47,7 @@ public class FileController {
     public UploadFileResponse uploadFile(@RequestBody SystemModel model) {
         try {
 
-            System system = new System(model.services, model.relations);
+            System system = new System(model.services, model.relations, model.useCaseResponsibility);
 
             Checker checker = new Checker();
             checker.getFirstTest().runAssessment(system);

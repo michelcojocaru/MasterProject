@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>MicroValid</title>
     <link rel="stylesheet" href="/css/main.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 <noscript>
@@ -25,11 +26,20 @@
             <h3>Upload System Model (good ol' decomposition)</h3>
             <div class="row">
                 <form id="singleUploadForm" name="singleUploadForm">
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <input id="singleFileUploadInput" type="file" name="file" required/>
                     </div>
-                    <div class="col-md-4">
-                        <button type="submit" onclick="unhide('export')" class="btn btn-large btn-success">Submit</button>
+                    <div class="col-md-3">
+                        <button id="submit" type="submit" class="btn btn-large btn-success">Submit</button>
+                        <!--onclick="unhide('export')"-->
+                    </div>
+                </form>
+                <form id="downloadResult" name="downloadResult">
+                    <div class="col-md-3">
+                        <button id="export" type="submit" class="btn btn-large btn-warning" value="hidden">Export
+                            results
+                        </button>
+                        <!--bottomLinks one hidden-->
                     </div>
                 </form>
             </div>
@@ -37,14 +47,10 @@
                 <div id="singleFileUploadError"></div>
                 <div id="singleFileUploadSuccess"></div>
             </div>
-            <form id="downloadResult" name="downloadResult">
-                <div class="col-md-4">
-                    <button id="export"  type="submit" class="btn btn-large btn-warning hidden" value="hidden">Export results</button>
-                </div>
-            </form>
+
         </div>
     </div>
 </div>
-<script src="/js/main.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

@@ -4,7 +4,10 @@ var singleUploadForm = document.querySelector('#singleUploadForm');
 var singleFileUploadError = document.querySelector('#singleFileUploadError');
 var singleFileUploadSuccess = document.querySelector('#singleFileUploadSuccess');
 var downloadResult = document.querySelector('#downloadResult');
+var exportButton = document.querySelector('#export');
 var result;
+
+exportButton.style.display = 'none';
 
 function uploadSingleFile(file) {
 
@@ -43,6 +46,9 @@ singleUploadForm.addEventListener('submit', function(event){
     var reader = new FileReader();
     reader.onload = onReaderLoad;
 
+    exportButton.style.display = 'block';
+    exportButton.classList.add('bottomLinks');
+
     var files = singleFileUploadInput.files;
     if(files.length === 0) {
         singleFileUploadError.innerHTML = "Please select a file";
@@ -66,13 +72,4 @@ function downloadResultAsJson(exportObj, exportName){
     document.body.appendChild(downloadAnchorNode); // required for firefox
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
-}
-
-function unhide(divID){
-    var item = document.getElementById(divID);
-    if (item) {
-        if(item.className === 'btn btn-large btn-warning hidden'){
-            item.className = 'btn btn-large btn-warning unhidden' ;
-        }
-    }
 }

@@ -2,7 +2,9 @@ package com.thesis.validator.file;
 
 import com.thesis.validator.enums.Result;
 
-public class UploadFileResponse {
+import java.util.List;
+
+public class Response {
 
     public Result granularity;
     public Result cohesion;
@@ -10,13 +12,19 @@ public class UploadFileResponse {
 
     public String errorMessage;
 
-    public UploadFileResponse(Result granularity, Result cohesion, Result coupling) {
+    public List<Result> results;
+
+    public Response(List<Result> results) {
+        this.results = results;
+    }
+
+    public Response(Result granularity, Result cohesion, Result coupling) {
         this.granularity = granularity;
         this.cohesion = cohesion;
         this.coupling = coupling;
     }
 
-    public UploadFileResponse(String error) {
+    public Response(String error) {
         this.errorMessage = error;
     }
 }

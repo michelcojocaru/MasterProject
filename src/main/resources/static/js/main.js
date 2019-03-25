@@ -16,20 +16,38 @@ function uploadSingleFile(file) {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
         var response = JSON.parse(xhr.responseText);
-        result = response;
-        if(xhr.status === 200) {
-            singleFileUploadError.style.display = "none";
-            singleFileUploadSuccess.innerHTML = "<p>System Model Interpreted Successfully.</p>" +
-                "<p>Granularity check : " + response.granularity + "</p>" +
-                "<p>Coupling check : " + response.coupling + "</p>" +
-                "<p>Cohesion check : " + response.cohesion + "</p>";
-            if (response.errorMessage) {
-                singleFileUploadSuccess.innerHTML += "<p>Error message: " + response.errorMessage + "</p>";
+        if (response.results !== null) {
+            result = response.results;
+            console.log(result);
+            if (xhr.status === 200) {
+                singleFileUploadError.style.display = "none";
+                singleFileUploadSuccess.innerHTML = "<p>success</p>";
+                response.results.forEach(function (elem) {
+                    singleFileUploadSuccess.innerHTML += "<p>" + elem + "</p>";
+                });
+                if (response.errorMessage) {
+                    singleFileUploadSuccess.innerHTML += "<p>Error message: " + response.errorMessage + "</p>";
+                }
+                singleFileUploadSuccess.style.display = "block";
+            } else {
+                singleFileUploadSuccess.style.display = "none";
+                singleFileUploadError.innerHTML = (response && response.message) || "Some Error Occurred";
             }
-            singleFileUploadSuccess.style.display = "block";
         } else {
-            singleFileUploadSuccess.style.display = "none";
-            singleFileUploadError.innerHTML = (response && response.message) || "Some Error Occurred";
+            if (xhr.status === 200) {
+                singleFileUploadError.style.display = "none";
+                singleFileUploadSuccess.innerHTML = "<p>System Model Interpreted Successfully.</p>" +
+                    "<p>Granularity check : " + response.granularity + "</p>" +
+                    "<p>Coupling check : " + response.coupling + "</p>" +
+                    "<p>Cohesion check : " + response.cohesion + "</p>";
+                if (response.errorMessage) {
+                    singleFileUploadSuccess.innerHTML += "<p>Error message: " + response.errorMessage + "</p>";
+                }
+                singleFileUploadSuccess.style.display = "block";
+            } else {
+                singleFileUploadSuccess.style.display = "none";
+                singleFileUploadError.innerHTML = (response && response.message) || "Some Error Occurred";
+            }
         }
     };
 

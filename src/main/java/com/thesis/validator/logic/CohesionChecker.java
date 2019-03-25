@@ -4,6 +4,7 @@ package com.thesis.validator.logic;
 import com.thesis.validator.enums.Result;
 import com.thesis.validator.helpers.Helper;
 import com.thesis.validator.helpers.MathOperations;
+import com.thesis.validator.helpers.NLP;
 import com.thesis.validator.model.Relation;
 import com.thesis.validator.model.Service;
 import com.thesis.validator.model.UseCaseResponsibility;
@@ -24,9 +25,12 @@ public class CohesionChecker implements CheckerChain {
         double[] relationScores = new double[relations.size()];
         double[] useCaseResponsibilityScores = new double[N];
         HashSet<String> entities;
-        boolean servicesTest;
-        boolean relationsTest;
-        boolean userResponsibilityTest;
+        boolean servicesCompositionTest;
+        boolean similarityTest;
+        boolean relationsCompositionTest;
+        //boolean relationsSimilarityTest;
+        boolean userResponsibilityCompositionTest;
+        //boolean userResponsibilitySimilarityTest;
         int i = 0;
 
         // Test services property
@@ -38,7 +42,7 @@ public class CohesionChecker implements CheckerChain {
             entities = Helper.getDistinctEntities(service);
             entityScores[i++] = entities.size();
         }
-        servicesTest = MathOperations.getCoefficientOfVariation(N, entityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        servicesCompositionTest = MathOperations.getCoefficientOfVariation(N, entityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
 
         // Test relations property
         if (Helper.checkForDuplicates(relations)) {
@@ -49,7 +53,7 @@ public class CohesionChecker implements CheckerChain {
             entities = Helper.getDistinctEntities(relation);
             relationScores[i++] = entities.size();
         }
-        relationsTest = MathOperations.getCoefficientOfVariation(N, relationScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        relationsCompositionTest = MathOperations.getCoefficientOfVariation(N, relationScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
 
         // Test useCaseResponsibility property
         if (Helper.checkForDuplicates(useCaseResponsibilities)) {
@@ -60,12 +64,12 @@ public class CohesionChecker implements CheckerChain {
             useCaseResponsibilityScores[i++] = useCase.size();
         }
 
-        userResponsibilityTest = MathOperations.getCoefficientOfVariation(N, useCaseResponsibilityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        userResponsibilityCompositionTest = MathOperations.getCoefficientOfVariation(N, useCaseResponsibilityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
 
-        //TODO implement NLP strategy
-        //double similarity = NLP.calculateSemanticSimilarity("article", "booking");
+        // Test semantic similarity between entities of each service
+        similarityTest = NLP.checkSemanticSimilarity(services);
 
-        return (servicesTest && relationsTest && userResponsibilityTest) ? Result.passed : Result.failed;
+        return (servicesCompositionTest && relationsCompositionTest && userResponsibilityCompositionTest && similarityTest) ? Result.passed : Result.failed;
     }
 
     @Override

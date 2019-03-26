@@ -1,8 +1,8 @@
 package com.thesis.validator.helpers;
 
-import com.thesis.validator.model.Service;
+import com.thesis.validator.enums.Averages;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class MathOperations {
 
@@ -35,7 +35,21 @@ public class MathOperations {
         return average;
     }
 
-    public static double calculateStandardDeviation(double[] array) {
+    private static double median(double[] array) {
+        double median;
+
+        Arrays.sort(array);
+        int len = array.length;
+        if (len % 2 == 0) {
+            median = (array[len / 2] + array[(len / 2) - 1]) / 2;
+        } else {
+            median = array[array.length / 2];
+        }
+
+        return median;
+    }
+
+    private static double calculateStandardDeviation(double[] array) {
         int sum = 0;
         double standardDeviation = 0.0;
         int length = array.length;
@@ -51,38 +65,35 @@ public class MathOperations {
         return Math.sqrt(standardDeviation / length);
     }
 
-    public static double calculateCoefficientOfVariation(double average, double standardDeviation) {
+    private static double calculateCoefficientOfVariation(double average, double standardDeviation) {
         return standardDeviation / average;
     }
 
-    public static double calculateAverage(List<Service> services, double[] scores, int N) {
-        double average = 0.0;
-
-        for (int i = 0; i < services.size(); i++) {
-            Service service = services.get(i);
-            scores[i] = service.nanoentities.size();
-        }
-        for (double score : scores) {
-            average += score;
-        }
-        average /= N;
-
-        return average;
-    }
-
-    public static double getCoefficientOfVariation(int n, double[] scores) {
+    public static double getCoefficientOfVariation(int n, double[] scores, Averages type) {
         double average;
+        double median;
         double standardDeviation;
-        double coefficientOfVariation;
-
-        if (n > 0) {
-            average = average(scores);
-        } else {
-            average = 1;
-        }
+        double coefficientOfVariation = 0.0;
 
         standardDeviation = calculateStandardDeviation(scores);
-        coefficientOfVariation = calculateCoefficientOfVariation(average, standardDeviation);
+
+
+        if (type == Averages.MEDIAN) {
+            if (n > 0) {
+                median = median(scores);
+            } else {
+                median = 1;
+            }
+            coefficientOfVariation = calculateCoefficientOfVariation(median, standardDeviation);
+
+        } else if (type == Averages.MEAN) {
+            if (n > 0) {
+                average = average(scores);
+            } else {
+                average = 1;
+            }
+            coefficientOfVariation = calculateCoefficientOfVariation(average, standardDeviation);
+        }
 
         return coefficientOfVariation;
     }

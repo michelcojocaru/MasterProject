@@ -1,10 +1,12 @@
 package com.thesis.validator.logic;
 
 
+import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Result;
-import com.thesis.validator.helpers.Helper;
 import com.thesis.validator.helpers.MathOperations;
-import com.thesis.validator.helpers.NLP;
+import com.thesis.validator.helpers.NLPOperations;
+import com.thesis.validator.helpers.Operations;
+import com.thesis.validator.model.CrystalGlobe;
 import com.thesis.validator.model.Relation;
 import com.thesis.validator.model.Service;
 import com.thesis.validator.model.UseCaseResponsibility;
@@ -34,29 +36,29 @@ public class CohesionChecker implements CheckerChain {
         int i = 0;
 
         // Test services property
-        if (Helper.checkForDuplicates(services)) {
+        if (Operations.checkForDuplicates(services)) {
             return Result.failed;
         }
 
         for (Service service : services) {
-            entities = Helper.getDistinctEntities(service);
+            entities = Operations.getDistinctEntities(service);
             entityScores[i++] = entities.size();
         }
-        servicesCompositionTest = MathOperations.getCoefficientOfVariation(N, entityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        servicesCompositionTest = MathOperations.getCoefficientOfVariation(N, entityScores, Averages.MEAN) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
 
         // Test relations property
-        if (Helper.checkForDuplicates(relations)) {
+        if (Operations.checkForDuplicates(relations)) {
             return Result.failed;
         }
         i = 0;
         for (Relation relation : relations) {
-            entities = Helper.getDistinctEntities(relation);
+            entities = Operations.getDistinctEntities(relation);
             relationScores[i++] = entities.size();
         }
-        relationsCompositionTest = MathOperations.getCoefficientOfVariation(N, relationScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        relationsCompositionTest = MathOperations.getCoefficientOfVariation(N, relationScores, Averages.MEAN) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
 
         // Test useCaseResponsibility property
-        if (Helper.checkForDuplicates(useCaseResponsibilities)) {
+        if (Operations.checkForDuplicates(useCaseResponsibilities)) {
             return Result.failed;
         }
         i = 0;
@@ -64,10 +66,10 @@ public class CohesionChecker implements CheckerChain {
             useCaseResponsibilityScores[i++] = useCase.size();
         }
 
-        userResponsibilityCompositionTest = MathOperations.getCoefficientOfVariation(N, useCaseResponsibilityScores) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        userResponsibilityCompositionTest = MathOperations.getCoefficientOfVariation(N, useCaseResponsibilityScores, Averages.MEAN) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
 
         // Test semantic similarity between entities of each service
-        similarityTest = NLP.checkSemanticSimilarity(services);
+        similarityTest = NLPOperations.checkSemanticSimilarity(services);
 
         return (servicesCompositionTest && relationsCompositionTest && userResponsibilityCompositionTest && similarityTest) ? Result.passed : Result.failed;
     }
@@ -78,11 +80,11 @@ public class CohesionChecker implements CheckerChain {
     }
 
     @Override
-    public void runAssessment(System system) {
-        system.CheckAttribute(this.getClass().getSimpleName(), calculateCohesion(system.getServices(), system.getRelations(), system.getUseCaseResponsibilities()));
+    public void runAssessment(CrystalGlobe crystalGlobe) {
+        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), calculateCohesion(crystalGlobe.getServices(), crystalGlobe.getRelations(), crystalGlobe.getUseCaseResponsibilities()));
 
         if (this.chain != null) {
-            this.chain.runAssessment(system);
+            this.chain.runAssessment(crystalGlobe);
         }
     }
 }

@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-public class Helper {
+public class Operations {
 
     public static void countDependencies(List<Relation> relations, ArrayList<Dependency> dependencies) {
 

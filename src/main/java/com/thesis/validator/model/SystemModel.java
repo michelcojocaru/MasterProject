@@ -1,6 +1,7 @@
 package com.thesis.validator.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.thesis.validator.enums.Averages;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public class SystemModel {
     public List<Relation> relations;
     @JsonProperty("useCaseResponsibility")
     public UseCaseResponsibility useCaseResponsibility;
+    @JsonProperty("averageType")
+    public Averages averageType;
 }

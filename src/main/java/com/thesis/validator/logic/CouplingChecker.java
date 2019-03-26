@@ -1,8 +1,10 @@
 package com.thesis.validator.logic;
 
+import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Result;
-import com.thesis.validator.helpers.Helper;
 import com.thesis.validator.helpers.MathOperations;
+import com.thesis.validator.helpers.Operations;
+import com.thesis.validator.model.CrystalGlobe;
 import com.thesis.validator.model.Dependency;
 import com.thesis.validator.model.Relation;
 import com.thesis.validator.model.Service;
@@ -27,7 +29,7 @@ public class CouplingChecker implements CheckerChain {
             dependencies.add(new Dependency(service.name, 0, 0));
         }
 
-        Helper.countDependencies(relations, dependencies);
+        Operations.countDependencies(relations, dependencies);
 
         for (Dependency dependency : dependencies) {
             int in = dependency.getInwardCount();
@@ -38,7 +40,7 @@ public class CouplingChecker implements CheckerChain {
 
         MathOperations.normalizeAtHighestValue(couplingScores);
 
-        return MathOperations.getCoefficientOfVariation(N, couplingScores) < COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD ? Result.passed : Result.failed;
+        return MathOperations.getCoefficientOfVariation(N, couplingScores, Averages.MEAN) < COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD ? Result.passed : Result.failed;
     }
 
     @Override
@@ -47,11 +49,11 @@ public class CouplingChecker implements CheckerChain {
     }
 
     @Override
-    public void runAssessment(System system) {
-        system.CheckAttribute(this.getClass().getSimpleName(), calculateCoupling(system.getServices(), system.getRelations()));
+    public void runAssessment(CrystalGlobe crystalGlobe) {
+        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), calculateCoupling(crystalGlobe.getServices(), crystalGlobe.getRelations()));
 
         if (this.chain != null) {
-            this.chain.runAssessment(system);
+            this.chain.runAssessment(crystalGlobe);
         }
     }
 }

@@ -1,26 +1,26 @@
-package com.thesis.validator.logic;
+package com.thesis.validator.model;
 
+import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Result;
-import com.thesis.validator.model.Relation;
-import com.thesis.validator.model.Service;
-import com.thesis.validator.model.UseCaseResponsibility;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class System {
+public class CrystalGlobe {
 
     private HashMap<String, Result> results;
     private List<Service> services;
     private List<Relation> relations;
     private UseCaseResponsibility useCaseResponsibilities;
+    private Averages averageType;
 
 
-    public System(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities) {
+    public CrystalGlobe(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities, Averages averageType) {
         this.results = new HashMap<>();
         this.services = services;
         this.relations = relations;
         this.useCaseResponsibilities = useCaseResponsibilities;
+        this.averageType = averageType;
     }
 
     public List<Service> getServices() {
@@ -41,5 +41,9 @@ public class System {
 
     public HashMap<String, Result> getResults() {
         return this.results;
+    }
+
+    public Averages getTypeOfAverage() {
+        return this.averageType;
     }
 }

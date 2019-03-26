@@ -10,7 +10,7 @@ import edu.cmu.lti.ws4j.util.WS4JConfiguration;
 import java.util.HashSet;
 import java.util.List;
 
-public class NLP {
+public class NLPOperations {
 
     private static final double SIMILARITY_COEFFICIENT_THRESHOLD = 0.2;
     private static ILexicalDatabase db = new NictWordNet();
@@ -23,14 +23,14 @@ public class NLP {
         WS4JConfiguration.getInstance().setMFS(true);
         for (RelatednessCalculator rc : rcs) {
             return rc.calcRelatednessOfWords(word1, word2);
-            //System.out.println(rc.getClass().getName() + "\t" + s);
+            //CrystalGlobe.out.println(rc.getClass().getName() + "\t" + s);
         }
         return 0.0;
     }
 
     public static Boolean checkSemanticSimilarity(List<Service> services) {
         for (Service service : services) {
-            HashSet<String> distinctEntities = Helper.getDistinctEntities(service);
+            HashSet<String> distinctEntities = Operations.getDistinctEntities(service);
             if (distinctEntities.size() > 1) {
                 String[] entities = new String[distinctEntities.size()];
                 distinctEntities.toArray(entities);

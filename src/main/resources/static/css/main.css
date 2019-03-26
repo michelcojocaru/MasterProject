@@ -178,7 +178,21 @@ form {
     }
 }
 
-.bottomLinks {
+.fadein {
+    -webkit-animation: fadeIn ease-in 1;
+    -moz-animation: fadeIn ease-in 1;
+    animation: fadeIn ease-in 1;
+
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+
+    -webkit-animation-duration: 3s;
+    -moz-animation-duration: 3s;
+    animation-duration: 3s;
+}
+
+.export-fadein {
     -webkit-animation: fadeIn ease-in 1;
     -moz-animation: fadeIn ease-in 1;
     animation: fadeIn ease-in 1;
@@ -198,10 +212,7 @@ form {
 
 .input-box {
     overflow: auto;
-    height: 350px;
-    width: 150px;
-    outline: 1px solid #ccc;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .string {
@@ -227,8 +238,8 @@ form {
 pre {
     outline: 1px solid #ccc;
     padding: 5px;
-    margin: 5px;
+    margin-top: 15px;
     overflow: auto;
-    height: 350px;
+    height: 450px;
     width: 150px;
 }

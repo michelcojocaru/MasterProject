@@ -1,7 +1,7 @@
 package com.thesis.validator.file;
 
 import com.thesis.validator.logic.Checker;
-import com.thesis.validator.logic.System;
+import com.thesis.validator.model.CrystalGlobe;
 import com.thesis.validator.model.SystemModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,13 +31,12 @@ public class FileController {
     public Response uploadFile(@RequestBody SystemModel model) {
         try {
 
-            System system = new System(model.services, model.relations, model.useCaseResponsibility);
+            CrystalGlobe crystalGlobe = new CrystalGlobe(model.services, model.relations, model.useCaseResponsibility, model.averageType);
 
             Checker checker = new Checker();
-            checker.getFirstTest().runAssessment(system);
+            checker.getFirstTest().runAssessment(crystalGlobe);
 
-            //TODO add name of test in response (maybe as key in dict?)
-            return new Response(system.getResults());
+            return new Response(crystalGlobe.getResults());
 
         } catch (Exception e) {
             return new Response(e.toString());

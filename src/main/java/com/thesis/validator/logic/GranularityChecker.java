@@ -34,7 +34,7 @@ public class GranularityChecker implements CheckerChain {
 
     @Override
     public void runAssessment(System system) {
-        system.CheckAttribute(calculateGranularity(system.getServices()));
+        system.CheckAttribute(this.getClass().getSimpleName(), calculateGranularity(system.getServices()));
 
         if (this.chain != null) {
             this.chain.runAssessment(system);

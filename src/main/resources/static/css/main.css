@@ -195,3 +195,40 @@ form {
 .one {
     -webkit-animation-delay: 1s;
 }
+
+.input-box {
+    overflow: auto;
+    height: 350px;
+    width: 150px;
+    outline: 1px solid #ccc;
+    margin-top: 5px;
+}
+
+.string {
+    color: green;
+}
+
+.number {
+    color: red;
+}
+
+.boolean {
+    color: blue;
+}
+
+.null {
+    color: magenta;
+}
+
+.key {
+    color: darkorange;
+}
+
+pre {
+    outline: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+    overflow: auto;
+    height: 350px;
+    width: 150px;
+}

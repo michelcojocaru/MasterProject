@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 </head>
 <body>
 <noscript>
@@ -26,16 +27,15 @@
             <h3>Upload System Model (good ol' decomposition)</h3>
             <div class="row">
                 <form id="singleUploadForm" name="singleUploadForm">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <input id="singleFileUploadInput" type="file" name="file" required/>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <button id="submit" type="submit" class="btn btn-large btn-success">Submit</button>
-                        <!--onclick="unhide('export')"-->
                     </div>
                 </form>
                 <form id="downloadResult" name="downloadResult">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <button id="export" type="submit" class="btn btn-large btn-warning" value="hidden">Export
                             results
                         </button>
@@ -45,15 +45,10 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
-                        <p></p>
-                        <p>System interpretation: </p>
-                        <p>Granularity check:</p>
-                        <p>Cohesion check:</p>
-                        <p>Coupling check:</p>
-                        <p>New Attribute check:</p>
-                    </div>
-                    <div class="col-md-6" style="text-align: center">
+                    <pre id="inputData" class="col-md-4 input-box prettyprint">
+
+                    </pre>
+                    <div class="col-md-4" style="text-align: left">
                         <p></p>
                         <div class="upload-response">
                             <div id="singleFileUploadError"></div>

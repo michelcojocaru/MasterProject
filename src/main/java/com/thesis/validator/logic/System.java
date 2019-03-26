@@ -5,19 +5,19 @@ import com.thesis.validator.model.Relation;
 import com.thesis.validator.model.Service;
 import com.thesis.validator.model.UseCaseResponsibility;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class System {
 
-    private List<Result> results;
+    private HashMap<String, Result> results;
     private List<Service> services;
     private List<Relation> relations;
     private UseCaseResponsibility useCaseResponsibilities;
 
 
     public System(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities) {
-        this.results = new ArrayList<>();
+        this.results = new HashMap<>();
         this.services = services;
         this.relations = relations;
         this.useCaseResponsibilities = useCaseResponsibilities;
@@ -35,11 +35,11 @@ public class System {
         return useCaseResponsibilities;
     }
 
-    public void CheckAttribute(Result result) {
-        this.results.add(result);
+    public void CheckAttribute(String testName, Result result) {
+        this.results.put(testName, result);
     }
 
-    public List<Result> getResults() {
+    public HashMap<String, Result> getResults() {
         return this.results;
     }
 }

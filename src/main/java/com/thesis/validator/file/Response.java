@@ -2,26 +2,15 @@ package com.thesis.validator.file;
 
 import com.thesis.validator.enums.Result;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class Response {
 
-    public Result granularity;
-    public Result cohesion;
-    public Result coupling;
-
     public String errorMessage;
+    public HashMap<String, Result> results;
 
-    public List<Result> results;
-
-    public Response(List<Result> results) {
+    public Response(HashMap<String, Result> results) {
         this.results = results;
-    }
-
-    public Response(Result granularity, Result cohesion, Result coupling) {
-        this.granularity = granularity;
-        this.cohesion = cohesion;
-        this.coupling = coupling;
     }
 
     public Response(String error) {

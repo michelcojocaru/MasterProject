@@ -3,7 +3,6 @@ package com.thesis.validator.file;
 import com.thesis.validator.logic.Checker;
 import com.thesis.validator.logic.System;
 import com.thesis.validator.model.SystemModel;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @RestController
 public class FileController {
@@ -31,20 +27,8 @@ public class FileController {
     @Value("${file.upload-dir}")
     private String uploadsDir;
 
-    private JSONObject loadJSON(String path){
-        JSONObject jsonContent = null;
-        try {
-            String content = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-            jsonContent = new JSONObject(content);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return jsonContent;
-    }
-
     @PostMapping("/evaluateSystem")
-    public UploadFileResponse uploadFile(@RequestBody SystemModel model) {
+    public Response uploadFile(@RequestBody SystemModel model) {
         try {
 
             System system = new System(model.services, model.relations, model.useCaseResponsibility);
@@ -52,11 +36,11 @@ public class FileController {
             Checker checker = new Checker();
             checker.getFirstTest().runAssessment(system);
 
-            //TODO find a generic way of sending the results (for extensibility)
-            return new UploadFileResponse(system.getResults().get(0), system.getResults().get(1), system.getResults().get(2));
+            //TODO add name of test in response (maybe as key in dict?)
+            return new Response(system.getResults());
 
         } catch (Exception e) {
-            return new UploadFileResponse(e.toString());
+            return new Response(e.toString());
         }
     }
 

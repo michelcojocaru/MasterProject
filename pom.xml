@@ -108,7 +108,7 @@
         </dependency>
         <dependency>
             <groupId>com.thesis.validator</groupId>
-            <artifactId>ws4j</artifactId>
+            <artifactId>jawjaw</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

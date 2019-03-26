@@ -48,7 +48,7 @@ public class CouplingChecker implements CheckerChain {
 
     @Override
     public void runAssessment(System system) {
-        system.CheckAttribute(calculateCoupling(system.getServices(), system.getRelations()));
+        system.CheckAttribute(this.getClass().getSimpleName(), calculateCoupling(system.getServices(), system.getRelations()));
 
         if (this.chain != null) {
             this.chain.runAssessment(system);

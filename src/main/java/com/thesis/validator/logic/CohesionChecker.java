@@ -79,7 +79,7 @@ public class CohesionChecker implements CheckerChain {
 
     @Override
     public void runAssessment(System system) {
-        system.CheckAttribute(calculateCohesion(system.getServices(), system.getRelations(), system.getUseCaseResponsibilities()));
+        system.CheckAttribute(this.getClass().getSimpleName(), calculateCohesion(system.getServices(), system.getRelations(), system.getUseCaseResponsibilities()));
 
         if (this.chain != null) {
             this.chain.runAssessment(system);

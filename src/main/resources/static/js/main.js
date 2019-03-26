@@ -1,6 +1,7 @@
 'use strict';
 
 var singleUploadForm = document.querySelector('#singleUploadForm');
+var averageType = document.querySelector('#averageType');
 var singleFileUploadError = document.querySelector('#singleFileUploadError');
 var singleFileUploadSuccess = document.querySelector('#singleFileUploadSuccess');
 var downloadResult = document.querySelector('#downloadResult');
@@ -26,7 +27,12 @@ function uploadSingleFile(file) {
                 singleFileUploadSuccess.innerHTML = "<p>System interpretation: success</p>";
                 for (var key in result) {
                     if (result.hasOwnProperty(key)) {
-                        singleFileUploadSuccess.innerHTML += "<p>" + key + ": " + result[key] + "</p>";
+                        // var blanks = "";
+                        // for(var i = 0; i < 25 - key.length; i++) {
+                        //     blanks += "&nbsp;";
+                        // }
+                        // console.log(blanks.length);
+                        singleFileUploadSuccess.innerHTML += "<p>" + key /*+ blanks*/ + ": " + result[key] + "</p>";
                     }
                 }
                 if (response.errorMessage) {
@@ -53,6 +59,14 @@ function uploadSingleFile(file) {
             }
         }
     };
+    debugger;
+
+    var checkedValue = $("#averageType").is(":checked");//document.querySelector('#averageType:checked').value;
+    if (checkedValue) {
+        file['averageType'] = "MEDIAN";
+    } else {
+        file['averageType'] = "MEAN";
+    }
 
     xhr.send(JSON.stringify(file));
 }

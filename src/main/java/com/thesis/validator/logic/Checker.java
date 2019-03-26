@@ -7,7 +7,7 @@ public class Checker {
             new GranularityChecker(),
             new CohesionChecker(),
             new CouplingChecker(),
-            //register new System
+            //register your new Checker
             new NewAttributeChecker(),
     };
 

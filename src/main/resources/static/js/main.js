@@ -1,6 +1,7 @@
 'use strict';
 
 var singleUploadForm = document.querySelector('#singleUploadForm');
+var singleFileUploadInput = document.querySelector('#singleFileUploadInput');
 var averageType = document.querySelector('#averageType');
 var singleFileUploadError = document.querySelector('#singleFileUploadError');
 var singleFileUploadSuccess = document.querySelector('#singleFileUploadSuccess');
@@ -22,8 +23,9 @@ function uploadSingleFile(file) {
             result = response.results;
             if (xhr.status === 200) {
                 exportButton.style.display = 'block';
-                exportButton.classList.add('bottomLinks');
+                exportButton.classList.add('export-fadein');
                 singleFileUploadError.style.display = "none";
+                //TODO move in its function when the input is detected
                 singleFileUploadSuccess.innerHTML = "<p>System interpretation: success</p>";
                 for (var key in result) {
                     if (result.hasOwnProperty(key)) {
@@ -32,7 +34,7 @@ function uploadSingleFile(file) {
                         //     blanks += "&nbsp;";
                         // }
                         // console.log(blanks.length);
-                        singleFileUploadSuccess.innerHTML += "<p>" + key /*+ blanks*/ + ": " + result[key] + "</p>";
+                        singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key /*+ blanks*/ + ": " + result[key] + "</p>";
                     }
                 }
                 if (response.errorMessage) {
@@ -46,7 +48,7 @@ function uploadSingleFile(file) {
         } else {
             if (xhr.status === 200) {
                 exportButton.style.display = 'block';
-                exportButton.classList.add('bottomLinks');
+                exportButton.classList.add('export-fadein');
                 singleFileUploadError.style.display = "none";
                 singleFileUploadSuccess.innerHTML = "<p>System interpretation: failed</p>";
                 if (response.errorMessage) {
@@ -59,9 +61,8 @@ function uploadSingleFile(file) {
             }
         }
     };
-    debugger;
 
-    var checkedValue = $("#averageType").is(":checked");//document.querySelector('#averageType:checked').value;
+    var checkedValue = $("#averageType").is(":checked");
     if (checkedValue) {
         file['averageType'] = "MEDIAN";
     } else {
@@ -71,22 +72,28 @@ function uploadSingleFile(file) {
     xhr.send(JSON.stringify(file));
 }
 
-// $('#singleUploadForm').change( function(event) {
-//     alert("Input detected!");
-//     event.preventDefault();
-//     var singleFileUploadInput = document.querySelector('#singleFileUploadInput');
-//     var reader = new FileReader();
-//     reader.onload = onInputDetected;
-// });
-//
-// function onInputDetected(event){
-//     inputBox.style.display = 'block';
-//     output(syntaxHighlight(JSON.stringify(JSON.parse(event.target.result), null, 4)));
-// }
+function inputDetected(event) {
+    inputBox.style.display = 'block';
+    output(syntaxHighlight(JSON.stringify(JSON.parse(event.target.result), null, 2)));
+    document.getElementById('singleFileUploadInput').addEventListener('change', inputDetected, false);
+}
+
+singleFileUploadInput.onchange = function onInputDetected(event) {
+    event.preventDefault();
+    var singleFileUploadInput = document.querySelector('#singleFileUploadInput');
+    var reader = new FileReader();
+    reader.onload = inputDetected;
+
+    var files = singleFileUploadInput.files;
+    if (files.length === 0) {
+        singleFileUploadError.innerHTML = "Please select a file";
+        singleFileUploadError.style.display = "block";
+    }
+
+    reader.readAsText(files[0]);
+};
 
 function onReaderLoad(event){
-    inputBox.style.display = 'block';
-    output(syntaxHighlight(JSON.stringify(JSON.parse(event.target.result), null, 4)));
     uploadSingleFile(JSON.parse(event.target.result));
 }
 

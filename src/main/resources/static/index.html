@@ -28,9 +28,9 @@
         <div class="single-upload">
             <h3>Upload System Model (good ol' decomposition)</h3>
             <div class="row">
-                <form id="singleUploadForm" name="singleUploadForm">
+                <form id="singleUploadForm" name="singleUploadForm" class="form-control-file">
                     <div class="col-md-4">
-                        <input id="singleFileUploadInput" type="file" name="file" required/>
+                        <input class="form-control-file" id="singleFileUploadInput" type="file" name="file" required/>
                     </div>
                     <div class="col-md-2 check-box">
                         <label>
@@ -39,12 +39,12 @@
                         </label>
                     </div>
                     <div class="col-md-2">
-                        <button id="submit" type="submit" class="btn btn-large btn-success">Submit</button>
+                        <button id="submit" type="submit" class="btn btn-success">Submit</button>
                     </div>
                 </form>
                 <form id="downloadResult" name="downloadResult">
                     <div class="col-md-2">
-                        <button id="export" type="submit" class="btn btn-large btn-warning" value="hidden">Export
+                        <button id="export" type="submit" class="btn btn-warning" value="hidden">Export
                             results
                         </button>
                     </div>
@@ -52,7 +52,7 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <pre id="inputData" class="col-md-4 input-box prettyprint">
+                    <pre id="inputData" class="col-md-5 prettyprint input-box">
 
                     </pre>
                     <div class="col-md-4" style="text-align: left">

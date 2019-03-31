@@ -1,12 +1,14 @@
 package com.thesis.validator.logic;
 
 import com.thesis.validator.enums.Averages;
-import com.thesis.validator.enums.Result;
+import com.thesis.validator.enums.Tests;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
 import com.thesis.validator.model.CrystalGlobe;
 import com.thesis.validator.model.Service;
 
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class GranularityChecker implements CheckerChain {
 
     // calculate the coefficient of variation between the lengths
     // of nanoentity lists from each service
-    private static Result calculateGranularity(List<Service> services, Averages averageType) {
+    private static HashMap<String,Double> calculateGranularity(List<Service> services, Averages averageType) {
         final int N = services.size();
         double[] serviceScores = new double[N];
         HashSet<String> entities;
@@ -30,7 +32,11 @@ public class GranularityChecker implements CheckerChain {
 
         MathOperations.normalize(serviceScores);
 
-        return MathOperations.getCoefficientOfVariation(serviceScores, averageType) < GRANULARITY_COEFFICIENT_OF_VARIATION_THRESHOLD ? Result.passed : Result.failed;
+        double result = Math.abs(MathOperations.getCoefficientOfVariation(serviceScores, averageType) - 1) * 10.0;
+        HashMap<String, Double> resultScores = new HashMap<>();
+        resultScores.put(Tests.NANOENTITIES_COMPOSITION_TEST.name(), Double.parseDouble(new DecimalFormat(".#").format(result)));
+
+        return resultScores;
     }
 
     @Override

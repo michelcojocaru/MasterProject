@@ -7,10 +7,8 @@ import com.thesis.validator.model.Service;
 import com.thesis.validator.model.UseCaseResponsibility;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Operations {
 
@@ -104,5 +102,27 @@ public class Operations {
         }
 
         return entities;
+    }
+
+//TODO try to generify method
+//    public static <T> T[] ListToArray(List<T> t){
+//        @SuppressWarnings("unchecked")
+//        T[] array = (T[]) new Object[t.size()];
+//        for(int i = 0; i < t.size(); i++){
+//            array[i] = t.get(i);
+//        }
+//        return array;
+//    }
+
+    public static double[] ListToArray(List<Double> t){
+        double[] result = new double[t.size()];
+        for(int i = 0; i < t.size(); i++){
+            result[i] = t.get(i);
+        }
+        return result;
+    }
+
+    public static <T> List<T> ArrayToList(T[] t){
+       return new ArrayList<>(Arrays.asList(t));
     }
 }

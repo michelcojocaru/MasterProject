@@ -29,11 +29,6 @@ function uploadSingleFile(file) {
                 singleFileUploadSuccess.innerHTML = "<p>System interpretation: success</p>";
                 for (var key in result) {
                     if (result.hasOwnProperty(key)) {
-                        // var blanks = "";
-                        // for(var i = 0; i < 25 - key.length; i++) {
-                        //     blanks += "&nbsp;";
-                        // }
-                        // console.log(blanks.length);
                         singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key /*+ blanks*/ + ": " + result[key] + "</p>";
                     }
                 }

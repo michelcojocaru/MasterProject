@@ -35,7 +35,7 @@ public class MathOperations {
         return average;
     }
 
-    private static double median(double[] array) {
+    public static double median(double[] array) {
         double median;
 
         Arrays.sort(array);

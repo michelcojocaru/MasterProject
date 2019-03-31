@@ -2,6 +2,7 @@ package com.thesis.validator.logic;
 
 import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Result;
+import com.thesis.validator.enums.Tests;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
 import com.thesis.validator.model.CrystalGlobe;
@@ -9,7 +10,9 @@ import com.thesis.validator.model.Dependency;
 import com.thesis.validator.model.Relation;
 import com.thesis.validator.model.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CouplingChecker implements CheckerChain {
@@ -19,7 +22,7 @@ public class CouplingChecker implements CheckerChain {
 
     // calculate the coefficient of variation of the differences between
     // inward and outward dependencies for each service
-    private static Result calculateCoupling(List<Service> services, List<Relation> relations, Averages averageType) {
+    private static HashMap<String,Double> calculateCoupling(List<Service> services, List<Relation> relations, Averages averageType) {
         final int N = services.size();
         double[] couplingScores = new double[N];
         ArrayList<Dependency> dependencies = new ArrayList<>(N);
@@ -40,7 +43,11 @@ public class CouplingChecker implements CheckerChain {
 
         MathOperations.normalize(couplingScores);
 
-        return MathOperations.getCoefficientOfVariation(couplingScores, averageType) < COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD ? Result.passed : Result.failed;
+        double result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
+        HashMap<String,Double> resultScores = new HashMap<>();
+        resultScores.put(Tests.COUPLING_COMPOSITION_TEST.name() ,Double.parseDouble(new DecimalFormat(".#").format(result)));
+
+        return resultScores;
     }
 
     @Override

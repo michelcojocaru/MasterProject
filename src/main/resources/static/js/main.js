@@ -18,14 +18,29 @@ function drawResults(result) {
     var j = 0;
 
     for (var attribute in result) {
+
         if (result.hasOwnProperty(attribute)) {
+            //add ids to elements of interest
             resultSelector.innerHTML += "<div class='row card' id='" + attribute +"Card'>" +
                                             "<div class='col-sm-8' id='" + attribute +"Tests'>" +
                                                 "<h4>#" + (++i + " " + attribute) + "</h4>" +
                                             "</div>" +
                                             "<div class='col-sm-4' id='" + attribute +"Overall'>" +
                                                 "<div class='row' id='" + attribute +"Donut'>" +
-                                                    "donut chart" +
+                                                    // "<div class=\"box\">" +
+                                                    // "  <div class='progress' id='progress'>" +
+                                                    // "    <div class='inner' id='" + attribute +"Mark'>" +
+                                                    // "    </div>" +
+                                                    // "  </div>" +
+                                                    // "</div>" +
+                "<div class='c100' id='" + attribute + "Gauge'>" +
+                "<span id='" + attribute + "SpanMark'>" +
+                "</span>" +
+                "<div class='slice'>" +
+                "<div class='bar'></div>" +
+                "<div class='fill'></div>" +
+                "</div>" +
+                "</div>" +
                                                 "</div>" +
                                                 "<div class='row' id='" + attribute +"Message'>" +
                                                     "cause of problem" +
@@ -34,22 +49,36 @@ function drawResults(result) {
                                             "</div>" +
                                         "</div>";
 
+            //build table for inner tests
             var tests = document.querySelector('#' + attribute + 'Tests');
             tests.innerHTML += "<table class='table table-sm'><thead><tr><th scope='col'>Mark</th><th scope='col'>Test Name</th></tr></thead><tbody id='"+ attribute +"TBody'>";
             var tbody = document.querySelector('#' + attribute + 'TBody');
             tbody.innerHTML = "";
+            var average = 0.0;
+            var count = 0;
             for(var test in result[attribute]) {
                 if (result[attribute].hasOwnProperty(test)) {
+                    count++;
+                    average += result[attribute][test];
                     tbody.innerHTML += "<tr>" +
                                             "<td style='text-align: center'>" + result[attribute][test] + "</td>" +
                                             "<td>" + test + "</td>" +
                                         "</tr>";
                 }
             }
+            average /= count;
             tests.innerHTML += "</tbody></table>";
+
+            var gauge = document.getElementById(attribute + 'Gauge');
+            gauge.className += (" p" + (average * 10));
+
+            var span = document.getElementById(attribute + 'SpanMark');
+            span.innerText += average;
 
         }
     }
+
+
 
 
     singleFileUploadSuccess.innerHTML = "<p>System interpretation: success</p>";

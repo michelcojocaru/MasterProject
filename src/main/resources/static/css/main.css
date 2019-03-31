@@ -253,3 +253,26 @@ pre {
     height: 400px;
     width: 150px;
 }
+
+.box {
+    display: inline-block;
+}
+
+.progress {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress > .inner {
+    position: absolute;
+    color: red;
+}
+
+.progress > svg {
+    height: 100%;
+    display: block;
+}

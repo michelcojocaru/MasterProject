@@ -8,16 +8,69 @@ var singleFileUploadSuccess = document.querySelector('#singleFileUploadSuccess')
 var downloadResult = document.querySelector('#downloadResult');
 var exportButton = document.querySelector('#export');
 var inputBox = document.querySelector('#inputData');
+var resultSelector = document.querySelector('#result');
 var result;
 
 exportButton.style.display = 'none';
+
+function drawResults(result) {
+    var i = 0;
+    var j = 0;
+
+    for (var attribute in result) {
+        if (result.hasOwnProperty(attribute)) {
+            resultSelector.innerHTML += "<div class='row card' id='" + attribute +"Card'>" +
+                                            "<div class='col-sm-8' id='" + attribute +"Tests'>" +
+                                                "<h4>#" + (++i + " " + attribute) + "</h4>" +
+                                            "</div>" +
+                                            "<div class='col-sm-4' id='" + attribute +"Overall'>" +
+                                                "<div class='row' id='" + attribute +"Donut'>" +
+                                                    "donut chart" +
+                                                "</div>" +
+                                                "<div class='row' id='" + attribute +"Message'>" +
+                                                    "cause of problem" +
+                                                "</div>" +
+
+                                            "</div>" +
+                                        "</div>";
+
+            var tests = document.querySelector('#' + attribute + 'Tests');
+            tests.innerHTML += "<table class='table table-sm'><thead><tr><th scope='col'>Mark</th><th scope='col'>Test Name</th></tr></thead><tbody id='"+ attribute +"TBody'>";
+            var tbody = document.querySelector('#' + attribute + 'TBody');
+            tbody.innerHTML = "";
+            for(var test in result[attribute]) {
+                if (result[attribute].hasOwnProperty(test)) {
+                    tbody.innerHTML += "<tr>" +
+                                            "<td style='text-align: center'>" + result[attribute][test] + "</td>" +
+                                            "<td>" + test + "</td>" +
+                                        "</tr>";
+                }
+            }
+            tests.innerHTML += "</tbody></table>";
+
+        }
+    }
+
+
+    singleFileUploadSuccess.innerHTML = "<p>System interpretation: success</p>";
+    for (var key in result) {
+        if (result.hasOwnProperty(key)) {
+            singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key /*+ blanks*/ + ": " + result[key] + "</p>";
+            for (var key2 in result[key]) {
+                if (result[key].hasOwnProperty(key2)) {
+                    singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key2 /*+ blanks*/ + ": " + result[key][key2] + "</p>";
+                }
+            }
+        }
+    }
+}
 
 function uploadSingleFile(file) {
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/evaluateSystem");
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function() {
+    xhr.onload = function () {
         var response = JSON.parse(xhr.responseText);
         if (response.results !== null) {
             result = response.results;
@@ -25,13 +78,9 @@ function uploadSingleFile(file) {
                 exportButton.style.display = 'block';
                 exportButton.classList.add('export-fadein');
                 singleFileUploadError.style.display = "none";
-                //TODO move in its function when the input is detected
-                singleFileUploadSuccess.innerHTML = "<p>System interpretation: success</p>";
-                for (var key in result) {
-                    if (result.hasOwnProperty(key)) {
-                        singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key /*+ blanks*/ + ": " + result[key] + "</p>";
-                    }
-                }
+
+                drawResults(result);
+
                 if (response.errorMessage) {
                     singleFileUploadSuccess.innerHTML += "<p>Error message: " + response.errorMessage + "</p>";
                 }
@@ -88,18 +137,18 @@ singleFileUploadInput.onchange = function onInputDetected(event) {
     reader.readAsText(files[0]);
 };
 
-function onReaderLoad(event){
+function onReaderLoad(event) {
     uploadSingleFile(JSON.parse(event.target.result));
 }
 
-singleUploadForm.addEventListener('submit', function(event){
+singleUploadForm.addEventListener('submit', function (event) {
     event.preventDefault();
     var singleFileUploadInput = document.querySelector('#singleFileUploadInput');
     var reader = new FileReader();
     reader.onload = onReaderLoad;
 
     var files = singleFileUploadInput.files;
-    if(files.length === 0) {
+    if (files.length === 0) {
         singleFileUploadError.innerHTML = "Please select a file";
         singleFileUploadError.style.display = "block";
     }
@@ -109,16 +158,16 @@ singleUploadForm.addEventListener('submit', function(event){
 
 }, true);
 
-downloadResult.addEventListener('submit', function(event){
+downloadResult.addEventListener('submit', function (event) {
     event.preventDefault();
-    downloadResultAsJson(result,"results");
+    downloadResultAsJson(result, "results");
 
 }, true);
 
-function downloadResultAsJson(exportObj, exportName){
+function downloadResultAsJson(exportObj, exportName) {
     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
     var downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("href", dataStr);
     downloadAnchorNode.setAttribute("download", exportName + ".json");
     document.body.appendChild(downloadAnchorNode); // required for firefox
     downloadAnchorNode.click();

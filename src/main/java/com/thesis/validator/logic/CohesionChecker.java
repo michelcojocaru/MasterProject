@@ -21,7 +21,7 @@ public class CohesionChecker implements CheckerChain {
 
     // calculate the coefficient of variation between the lengths
     // of concepts sets for each service
-    private static Result calculateCohesion(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities) {
+    private static Result calculateCohesion(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities, Averages averageType) {
         final int N = services.size();
         double[] entityScores = new double[N];
         double[] relationScores = new double[relations.size()];
@@ -44,7 +44,7 @@ public class CohesionChecker implements CheckerChain {
             entities = Operations.getDistinctEntities(service);
             entityScores[i++] = entities.size();
         }
-        servicesCompositionTest = MathOperations.getCoefficientOfVariation(N, entityScores, Averages.MEAN) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        servicesCompositionTest = MathOperations.getCoefficientOfVariation(entityScores, averageType) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
 
         // Test relations property
         if (Operations.checkForDuplicates(relations)) {
@@ -55,7 +55,7 @@ public class CohesionChecker implements CheckerChain {
             entities = Operations.getDistinctEntities(relation);
             relationScores[i++] = entities.size();
         }
-        relationsCompositionTest = MathOperations.getCoefficientOfVariation(N, relationScores, Averages.MEAN) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        relationsCompositionTest = MathOperations.getCoefficientOfVariation(relationScores, averageType) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
 
         // Test useCaseResponsibility property
         if (Operations.checkForDuplicates(useCaseResponsibilities)) {
@@ -66,7 +66,7 @@ public class CohesionChecker implements CheckerChain {
             useCaseResponsibilityScores[i++] = useCase.size();
         }
 
-        userResponsibilityCompositionTest = MathOperations.getCoefficientOfVariation(N, useCaseResponsibilityScores, Averages.MEAN) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
+        userResponsibilityCompositionTest = MathOperations.getCoefficientOfVariation(useCaseResponsibilityScores, averageType) < COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD;
 
         // Test semantic similarity between entities of each service
         similarityTest = NLPOperations.checkSemanticSimilarity(services);
@@ -81,7 +81,8 @@ public class CohesionChecker implements CheckerChain {
 
     @Override
     public void runAssessment(CrystalGlobe crystalGlobe) {
-        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), calculateCohesion(crystalGlobe.getServices(), crystalGlobe.getRelations(), crystalGlobe.getUseCaseResponsibilities()));
+        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), calculateCohesion(crystalGlobe.getServices(), crystalGlobe.getRelations(),
+                crystalGlobe.getUseCaseResponsibilities(), crystalGlobe.getTypeOfAverage()));
 
         if (this.chain != null) {
             this.chain.runAssessment(crystalGlobe);

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GranularityChecker implements CheckerChain {
 
-    private static final double GRANULARITY_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.4;
+    private static final double GRANULARITY_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.5;
     private CheckerChain chain;
 
     // calculate the coefficient of variation between the lengths
@@ -27,7 +27,10 @@ public class GranularityChecker implements CheckerChain {
             entities = Operations.getDistinctEntities(service);
             serviceScores[i++] = entities.size();
         }
-        return MathOperations.getCoefficientOfVariation(N, serviceScores, averageType) < GRANULARITY_COEFFICIENT_OF_VARIATION_THRESHOLD ? Result.passed : Result.failed;
+
+        MathOperations.normalize(serviceScores);
+
+        return MathOperations.getCoefficientOfVariation(serviceScores, averageType) < GRANULARITY_COEFFICIENT_OF_VARIATION_THRESHOLD ? Result.passed : Result.failed;
     }
 
     @Override

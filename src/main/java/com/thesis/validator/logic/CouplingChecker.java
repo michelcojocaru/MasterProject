@@ -19,7 +19,7 @@ public class CouplingChecker implements CheckerChain {
 
     // calculate the coefficient of variation of the differences between
     // inward and outward dependencies for each service
-    private static Result calculateCoupling(List<Service> services, List<Relation> relations) {
+    private static Result calculateCoupling(List<Service> services, List<Relation> relations, Averages averageType) {
         final int N = services.size();
         double[] couplingScores = new double[N];
         ArrayList<Dependency> dependencies = new ArrayList<>(N);
@@ -38,9 +38,9 @@ public class CouplingChecker implements CheckerChain {
             couplingScores[i++] = Math.abs(in - out);
         }
 
-        MathOperations.normalizeAtHighestValue(couplingScores);
+        MathOperations.normalize(couplingScores);
 
-        return MathOperations.getCoefficientOfVariation(N, couplingScores, Averages.MEAN) < COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD ? Result.passed : Result.failed;
+        return MathOperations.getCoefficientOfVariation(couplingScores, averageType) < COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD ? Result.passed : Result.failed;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class CouplingChecker implements CheckerChain {
 
     @Override
     public void runAssessment(CrystalGlobe crystalGlobe) {
-        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), calculateCoupling(crystalGlobe.getServices(), crystalGlobe.getRelations()));
+        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), calculateCoupling(crystalGlobe.getServices(), crystalGlobe.getRelations(), crystalGlobe.getTypeOfAverage()));
 
         if (this.chain != null) {
             this.chain.runAssessment(crystalGlobe);

@@ -22,25 +22,19 @@ function drawResults(result) {
         if (result.hasOwnProperty(attribute)) {
             //add ids to elements of interest
             resultSelector.innerHTML += "<div class='row card' id='" + attribute +"Card'>" +
-                                            "<div class='col-sm-8' id='" + attribute +"Tests'>" +
+                                            "<div class='col-sm-9' id='" + attribute +"Tests'>" +
                                                 "<h4>#" + (++i + " " + attribute) + "</h4>" +
                                             "</div>" +
-                                            "<div class='col-sm-4' id='" + attribute +"Overall'>" +
+                                            "<div class='col-sm-3' id='" + attribute +"Overall'>" +
                                                 "<div class='row' id='" + attribute +"Donut'>" +
-                                                    // "<div class=\"box\">" +
-                                                    // "  <div class='progress' id='progress'>" +
-                                                    // "    <div class='inner' id='" + attribute +"Mark'>" +
-                                                    // "    </div>" +
-                                                    // "  </div>" +
-                                                    // "</div>" +
-                "<div class='c100' id='" + attribute + "Gauge'>" +
-                "<span id='" + attribute + "SpanMark'>" +
-                "</span>" +
-                "<div class='slice'>" +
-                "<div class='bar'></div>" +
-                "<div class='fill'></div>" +
-                "</div>" +
-                "</div>" +
+                                                    "<div class='c100 center-gauge' id='" + attribute + "Gauge'>" +
+                                                        "<span id='" + attribute + "SpanMark'>" +
+                                                        "</span>" +
+                                                        "<div class='slice'>" +
+                                                        "<div class='bar' id='" + attribute + "Bar'></div>" +
+                                                        "<div class='fill' id='" + attribute + "Fill'></div>" +
+                                                        "</div>" +
+                                                    "</div>" +
                                                 "</div>" +
                                                 "<div class='row' id='" + attribute +"Message'>" +
                                                     "cause of problem" +
@@ -51,7 +45,7 @@ function drawResults(result) {
 
             //build table for inner tests
             var tests = document.querySelector('#' + attribute + 'Tests');
-            tests.innerHTML += "<table class='table table-sm'><thead><tr><th scope='col'>Mark</th><th scope='col'>Test Name</th></tr></thead><tbody id='"+ attribute +"TBody'>";
+            tests.innerHTML += "<table class='table table-striped table-sm'><thead><tr><th scope='col'>Mark</th><th scope='col'>Test Name</th></tr></thead><tbody id='"+ attribute +"TBody'>";
             var tbody = document.querySelector('#' + attribute + 'TBody');
             tbody.innerHTML = "";
             var average = 0.0;
@@ -75,23 +69,36 @@ function drawResults(result) {
             var span = document.getElementById(attribute + 'SpanMark');
             span.innerText += average;
 
-        }
-    }
-
-
-
-
-    singleFileUploadSuccess.innerHTML = "<p>System interpretation: success</p>";
-    for (var key in result) {
-        if (result.hasOwnProperty(key)) {
-            singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key /*+ blanks*/ + ": " + result[key] + "</p>";
-            for (var key2 in result[key]) {
-                if (result[key].hasOwnProperty(key2)) {
-                    singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key2 /*+ blanks*/ + ": " + result[key][key2] + "</p>";
-                }
+            var bar = document.getElementById(attribute + 'Bar');
+            var fill = document.getElementById(attribute + 'Fill');
+            if(average > 0 && average < 5){ // red
+                bar.classList.add("red-failed");
+                fill.classList.add("red-failed");
+            }else if(average >= 5 && average < 7.5){ // yellow
+                bar.classList.add("yellow-passed");
+                fill.classList.add("yellow-passed");
+            }else if(average >= 7.5 && average <= 10){ // green
+                bar.classList.add("green-success");
+                fill.classList.add("green-success");
             }
+
         }
     }
+
+
+
+
+    // singleFileUploadSuccess.innerHTML = "<p>System interpretation: success</p>";
+    // for (var key in result) {
+    //     if (result.hasOwnProperty(key)) {
+    //         singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key /*+ blanks*/ + ": " + result[key] + "</p>";
+    //         for (var key2 in result[key]) {
+    //             if (result[key].hasOwnProperty(key2)) {
+    //                 singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key2 /*+ blanks*/ + ": " + result[key][key2] + "</p>";
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 function uploadSingleFile(file) {
@@ -106,31 +113,31 @@ function uploadSingleFile(file) {
             if (xhr.status === 200) {
                 exportButton.style.display = 'block';
                 exportButton.classList.add('export-fadein');
-                singleFileUploadError.style.display = "none";
+                //singleFileUploadError.style.display = "none";
 
                 drawResults(result);
 
                 if (response.errorMessage) {
-                    singleFileUploadSuccess.innerHTML += "<p>Error message: " + response.errorMessage + "</p>";
+                    //singleFileUploadSuccess.innerHTML += "<p>Error message: " + response.errorMessage + "</p>";
                 }
-                singleFileUploadSuccess.style.display = "block";
+                //singleFileUploadSuccess.style.display = "block";
             } else {
-                singleFileUploadSuccess.style.display = "none";
-                singleFileUploadError.innerHTML = (response && response.message) || "Some Error Occurred";
+                //singleFileUploadSuccess.style.display = "none";
+                //singleFileUploadError.innerHTML = (response && response.message) || "Some Error Occurred";
             }
         } else {
             if (xhr.status === 200) {
                 exportButton.style.display = 'block';
                 exportButton.classList.add('export-fadein');
-                singleFileUploadError.style.display = "none";
-                singleFileUploadSuccess.innerHTML = "<p>System interpretation: failed</p>";
+                //singleFileUploadError.style.display = "none";
+                //singleFileUploadSuccess.innerHTML = "<p>System interpretation: failed</p>";
                 if (response.errorMessage) {
-                    singleFileUploadSuccess.innerHTML += "<p>Error message: " + response.errorMessage + "</p>";
+                    //singleFileUploadSuccess.innerHTML += "<p>Error message: " + response.errorMessage + "</p>";
                 }
-                singleFileUploadSuccess.style.display = "block";
+                //singleFileUploadSuccess.style.display = "block";
             } else {
-                singleFileUploadSuccess.style.display = "none";
-                singleFileUploadError.innerHTML = (response && response.message) || "Some Error Occurred";
+                //singleFileUploadSuccess.style.display = "none";
+                //singleFileUploadError.innerHTML = (response && response.message) || "Some Error Occurred";
             }
         }
     };
@@ -225,3 +232,54 @@ function syntaxHighlight(json) {
         return '<span class="' + cls + '">' + match + '</span>';//<br>
     });
 }
+
+// Stepper stuff
+
+var curOpen;
+
+$(document).ready(function() {
+    curOpen = $('.step')[0];
+
+    $('.next-btn').on('click', function() {
+        var cur = $(this).closest('.step');
+        var next = $(cur).next();
+        $(cur).addClass('minimized');
+        setTimeout(function() {
+            $(next).removeClass('minimized');
+            curOpen = $(next);
+        }, 400);
+    });
+
+    $('.close-btn').on('click', function() {
+        var cur = $(this).closest('.step');
+        $(cur).addClass('minimized');
+        curOpen = null;
+    });
+
+    $('.step .step-content').on('click' ,function(e) {
+        e.stopPropagation();
+    });
+
+    $('.step').on('click', function() {
+        if (!$(this).hasClass("minimized")) {
+            curOpen = null;
+            $(this).addClass('minimized');
+        }
+        else {
+            var next = $(this);
+            if (curOpen === null) {
+                curOpen = next;
+                $(curOpen).removeClass('minimized');
+            }
+            else {
+                $(curOpen).addClass('minimized');
+                setTimeout(function() {
+                    $(next).removeClass('minimized');
+                    curOpen = $(next);
+                }, 300);
+            }
+        }
+    });
+})
+
+// End stepper stuff

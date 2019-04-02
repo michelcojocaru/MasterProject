@@ -45,6 +45,12 @@ public class NLPOperations {
             }
         }
 
-        return Math.abs(MathOperations.median(Operations.ListToArray(similarities)) - 1) * 10;
+        double median = MathOperations.median(Operations.ListToArray(similarities));
+
+        if (median == 0.0) {
+            median = MathOperations.average(Operations.ListToArray(similarities));
+        }
+
+        return Math.abs(median - 1) * 10;
     }
 }

@@ -16,7 +16,7 @@ exportButton.style.display = 'none';
 function drawResults(result) {
     var i = 0;
     var j = 0;
-
+    console.log(result);
     resultSelector.innerHTML = "";
 
     for (var attribute in result) {
@@ -65,6 +65,7 @@ function drawResults(result) {
                 }
             }
             average /= count;
+            average = Math.round(average * 10) / 10;
             tests.innerHTML += "</tbody></table>";
 
             var gauge = document.getElementById(attribute + 'Gauge');
@@ -331,7 +332,7 @@ $(document).ready(function() {
     });
 
 
-})
+});
 
 // End stepper stuff
 

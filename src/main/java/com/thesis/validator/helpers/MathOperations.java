@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class MathOperations {
 
-    public static void normalizeAtHighestValue(double[] array) {
+    public static void normalize(double[] array) {
         double max = getMaxValue(array);
         for (int i = 0; i < array.length; i++) {
             if (max > 0) {
@@ -35,7 +35,7 @@ public class MathOperations {
         return average;
     }
 
-    private static double median(double[] array) {
+    public static double median(double[] array) {
         double median;
 
         Arrays.sort(array);
@@ -69,7 +69,8 @@ public class MathOperations {
         return standardDeviation / average;
     }
 
-    public static double getCoefficientOfVariation(int n, double[] scores, Averages type) {
+    public static double getCoefficientOfVariation(double[] scores, Averages type) {
+        int n = scores.length;
         double average;
         double median;
         double standardDeviation;

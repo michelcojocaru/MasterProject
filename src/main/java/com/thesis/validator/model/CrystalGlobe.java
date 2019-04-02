@@ -1,14 +1,12 @@
 package com.thesis.validator.model;
-
 import com.thesis.validator.enums.Averages;
-import com.thesis.validator.enums.Result;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class CrystalGlobe {
 
-    private HashMap<String, Result> results;
+    private HashMap<String, HashMap<String, Double>> results;
     private List<Service> services;
     private List<Relation> relations;
     private UseCaseResponsibility useCaseResponsibilities;
@@ -35,11 +33,11 @@ public class CrystalGlobe {
         return useCaseResponsibilities;
     }
 
-    public void CheckAttribute(String testName, Result result) {
+    public void CheckAttribute(String testName, HashMap<String,Double> result) {
         this.results.put(testName, result);
     }
 
-    public HashMap<String, Result> getResults() {
+    public HashMap<String, HashMap<String,Double>> getResults() {
         return this.results;
     }
 

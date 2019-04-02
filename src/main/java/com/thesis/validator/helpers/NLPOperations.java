@@ -7,6 +7,7 @@ import edu.cmu.lti.ws4j.RelatednessCalculator;
 import edu.cmu.lti.ws4j.impl.WuPalmer;
 import edu.cmu.lti.ws4j.util.WS4JConfiguration;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -28,7 +29,9 @@ public class NLPOperations {
         return 0.0;
     }
 
-    public static Boolean checkSemanticSimilarity(List<Service> services) {
+    public static double checkSemanticSimilarity(List<Service> services) {
+        ArrayList<Double> similarities = new ArrayList<>();
+
         for (Service service : services) {
             HashSet<String> distinctEntities = Operations.getDistinctEntities(service);
             if (distinctEntities.size() > 1) {
@@ -36,13 +39,12 @@ public class NLPOperations {
                 distinctEntities.toArray(entities);
                 for (int i = 0; i < entities.length; i++) {
                     for (int j = i + 1; j < entities.length; j++) {
-                        if (calculateSemanticSimilarity(entities[i], entities[j]) < SIMILARITY_COEFFICIENT_THRESHOLD) {
-                            return false;
-                        }
+                        similarities.add(calculateSemanticSimilarity(entities[i], entities[j]));
                     }
                 }
             }
         }
-        return true;
+
+        return Math.abs(MathOperations.median(Operations.ListToArray(similarities)) - 1) * 10;
     }
 }

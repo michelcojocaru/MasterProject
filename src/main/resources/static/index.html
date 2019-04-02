@@ -18,7 +18,7 @@
 </noscript>
 <div class="upload-container">
     <div class="container-fluid">
-        <div class="col-sm-8" id="input">
+        <div class="col-sm-7" id="input">
             <div class="upload-header">
                 <h2>MicroValid</h2>
                 <div class="hero-unit">
@@ -29,26 +29,27 @@
                 </div>
             </div>
             <div class="upload-content" id="upload-content">
-                <div class="container-fluid">
-                    <div class="col-sm-6">
+                <div class="container-custom">
+                    <div class="col-sm-6" style="padding-left: 0px;">
                         <pre id="inputData" class="prettyprint input-box">
 
                         </pre>
                     </div>
                     <div class="col-sm-6">
-                            <div class="steps">
+                        <div class="steps">
+                            <form id="singleUploadForm" name="singleUploadForm" class="form-control-file">
                                 <div class="step">
                                     <div class="step-header">
                                         <div class="header">Import System Specifications</div>
                                         <div class="subheader">Upload a file describing your system in JSON format</div>
                                     </div>
                                     <div class="step-content one">
-                                        <form id="singleUploadForm" name="singleUploadForm" class="form-control-file">
-                                        <button class="next-btn">Next</button>
+
+                                        <!--<button class="next-btn">Next</button>-->
                                         <input class="form-control-file" id="singleFileUploadInput" type="file"
                                                name="file"
                                                required/>
-                                        </form>
+
                                     </div>
                                 </div>
                                 <div class="step minimized">
@@ -58,7 +59,7 @@
                                         </div>
                                     </div>
                                     <div class="step-content two">
-                                        <button class="next-btn">Next</button>
+                                        <!--<button class="next-btn">Next</button>-->
                                         <div class="check-box">
                                             <label>
                                                 <input id="averageType" type="checkbox" data-toggle="toggle"
@@ -76,30 +77,33 @@
                                     </div>
                                     <div class="step-content three">
 
-                                        <button id="submit" type="submit" class="btn btn-success">Submit</button>
+                                        <button id="send" type="submit" class="btn btn-success">Submit</button>
+
                                     </div>
                                 </div>
-
+                            </form>
+                            <form id="downloadResult" name="downloadResult">
                                 <div class="step minimized">
                                     <div class="step-header">
                                         <div class="header">Export</div>
                                         <div class="subheader">Download the results in JSON format</div>
                                     </div>
                                     <div class="step-content four">
-                                        <form id="downloadResult" name="downloadResult">
-                                            <button id="export" type="submit" class="btn btn-warning"
-                                                    value="hidden">Export results</button>
-                                        </form>
-                                        <button class="close-btn">Export</button>
+
+                                        <button id="export" type="submit" class="btn btn-warning">Export results
+                                        </button>
+
+                                        <!--<button class="">Export</button>-->
                                     </div>
                                 </div>
-                            </div>
+                            </form>
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-4" id="result">
+        <div class="col-sm-5" id="result">
 
         </div>
     </div>

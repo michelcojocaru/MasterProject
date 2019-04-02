@@ -17,30 +17,34 @@ function drawResults(result) {
     var i = 0;
     var j = 0;
 
+    resultSelector.innerHTML = "";
+
     for (var attribute in result) {
 
         if (result.hasOwnProperty(attribute)) {
             //add ids to elements of interest
             resultSelector.innerHTML += "<div class='row card' id='" + attribute +"Card'>" +
-                                            "<div class='col-sm-9' id='" + attribute +"Tests'>" +
-                                                "<h4>#" + (++i + " " + attribute) + "</h4>" +
-                                            "</div>" +
-                                            "<div class='col-sm-3' id='" + attribute +"Overall'>" +
-                                                "<div class='row' id='" + attribute +"Donut'>" +
-                                                    "<div class='c100 center-gauge' id='" + attribute + "Gauge'>" +
-                                                        "<span id='" + attribute + "SpanMark'>" +
-                                                        "</span>" +
-                                                        "<div class='slice'>" +
-                                                        "<div class='bar' id='" + attribute + "Bar'></div>" +
-                                                        "<div class='fill' id='" + attribute + "Fill'></div>" +
+                                            // "<div class='container' id='" + attribute +"Container'>" +
+                                                "<div class='col-sm-9' id='" + attribute +"Tests'>" +
+                                                    "<h4>#" + (++i + " " + attribute) + "</h4>" +
+                                                "</div>" +
+                                                "<div class='col-sm-3' id='" + attribute +"Overall'>" +
+                                                    "<div class='row' id='" + attribute +"Donut'>" +
+                                                        "<div class='c100 center-gauge' id='" + attribute + "Gauge'>" +
+                                                            "<span id='" + attribute + "SpanMark'>" +
+                                                            "</span>" +
+                                                            "<div class='slice'>" +
+                                                            "<div class='bar' id='" + attribute + "Bar'></div>" +
+                                                            "<div class='fill' id='" + attribute + "Fill'></div>" +
+                                                            "</div>" +
                                                         "</div>" +
                                                     "</div>" +
-                                                "</div>" +
-                                                "<div class='row' id='" + attribute +"Message'>" +
-                                                    "cause of problem" +
-                                                "</div>" +
+                                                    "<div class='row' id='" + attribute +"Message'>" +
+                                                        "cause of problem" +
+                                                    "</div>" +
 
-                                            "</div>" +
+                                                "</div>" +
+                                            //"</div>" +
                                         "</div>";
 
             //build table for inner tests
@@ -84,8 +88,6 @@ function drawResults(result) {
 
         }
     }
-
-
 
 
     // singleFileUploadSuccess.innerHTML = "<p>System interpretation: success</p>";
@@ -280,6 +282,58 @@ $(document).ready(function() {
             }
         }
     });
+
+    // language=JQuery-CSS
+    $('input[type="file"]').change(function(){
+        var cur = $(this).closest('.step');
+        var next = $(cur).next();
+        //$(cur).addClass('minimized');
+        setTimeout(function() {
+            $(next).removeClass('minimized');
+            curOpen = $(next);
+        }, 400);
+    });
+
+    $('input[type="checkbox"]').change(function(){
+        var cur = $(this).closest('.step');
+        var next = $(cur).next();
+        //$(cur).addClass('minimized');
+        setTimeout(function() {
+            $(next).removeClass('minimized');
+            curOpen = $(next);
+        }, 400);
+    });
+
+    //$('button[type="submit"]').click(function(){
+    $('#send').click(function(){
+        console.log("SUBMIT");
+        var cur = $(this).closest('.step');
+        var next = $(cur).next();
+        //$(cur).addClass('minimized');
+        setTimeout(function() {
+            $(next).removeClass('minimized');
+            curOpen = $(next);
+        }, 400);
+    });
+
+    $('#export').click(function(){
+        console.log("EXPORT");
+        //var cur = $(this).closest('.step');
+        //$(cur).addClass('minimized');
+        curOpen = null;
+        // var cur = $(this).closest('.step');
+        // var next = $(cur).next();
+        // //$(cur).addClass('minimized');
+        // setTimeout(function() {
+        //     $(next).removeClass('minimized');
+        //     curOpen = $(next);
+        // }, 400);
+    });
+
+
 })
 
 // End stepper stuff
+
+
+

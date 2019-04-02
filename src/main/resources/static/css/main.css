@@ -101,10 +101,10 @@ input[type="file"] {
 
 .card {
     border-radius: 10px;
-    min-height: 200px;
+    min-height: 100px;
     box-shadow: 3px 3px 11px rgba(0, 0, 0, 0.27);
     position: relative;
-    padding: 10px;
+    padding: 5px;
     background-color: #fff;
     margin-top: 10px;
     border: solid #cccccc;
@@ -113,15 +113,16 @@ input[type="file"] {
 }
 
 .upload-container {
-    /*margin-left: auto;*/
-    /*margin-right: auto;*/
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 10px;
-    margin-right: 60px !important;
-    margin-left: 60px !important;
+    /*margin-right: 60px !important;*/
+    /*margin-left: 60px !important;*/
     background-color: #fff;
     box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
     margin-top: 60px;
     min-height: 600px;
+    width: 90%;
     position: relative;
     padding: 20px;
 }
@@ -228,6 +229,8 @@ form {
 .input-box {
     overflow: auto;
     margin-top: 10px;
+    box-shadow: 3px 3px 11px rgba(0, 0, 0, 0.27);
+    border-radius: 10px;
 }
 
 .string {
@@ -295,8 +298,10 @@ pre {
 }
 
 .center-gauge {
+    /*margin-top: 10px;*/
+    /*margin-left: 10px !important;*/
     margin-top: 10px !important;
-    margin-left: 10px !important;
+    margin-right: 10px !important;
 }
 
 
@@ -321,12 +326,16 @@ body {
 }
 
 .steps {
-    width: 500px;
-    box-shadow: 0px 10px 15px -5px rgba(0, 0, 0, 0.3);
+
+    /*width: 500px;*/
+    /*box-shadow: 0px 10px 15px -5px rgba(0, 0, 0, 0.3);*/
+    box-shadow: 3px 3px 11px rgba(0, 0, 0, 0.27);
     background-color: #FFF;
     padding: 24px 0;
     position: relative;
+    border-radius: 10px;
     margin: auto;
+    margin-top: 10px;
 }
 
 .steps::before {
@@ -413,25 +422,33 @@ body {
 }
 
 .step-content.one {
-    height: 33px;
+    height: 35px;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0.0);
     border-radius: 4px;
     margin-top: 10px;
 }
 
 .step-content.two {
-    height: 33px;
+    height: 35px;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0.0);
     border-radius: 4px;
     margin-top: 10px;
 }
 
 .step-content.three {
-    height: 33px;
+    height: 36px;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0.0);
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.step-content.four {
+    height: 36px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.0);
     border-radius: 4px;
     margin-top: 10px;
 }
@@ -488,3 +505,9 @@ body {
 }
 
 /* End stuff for stepper*/
+.container-custom {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}

@@ -2,7 +2,6 @@ package com.thesis.validator.logic;
 
 
 import com.thesis.validator.enums.Averages;
-import com.thesis.validator.enums.Result;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.NLPOperations;
@@ -13,7 +12,6 @@ import com.thesis.validator.model.Service;
 import com.thesis.validator.model.UseCaseResponsibility;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -72,7 +70,7 @@ public class CohesionChecker implements CheckerChain {
                 useCaseResponsibilityScores[i++] = useCase.size();
             }
             result = Math.abs(MathOperations.getCoefficientOfVariation(useCaseResponsibilityScores, averageType) - 1) * 10.0;
-            resultScores.put(Tests.USECASERESPONSIBILITIES_COMPOSITION_TEST.name(),Double.parseDouble(new DecimalFormat(".#").format(result)));
+            resultScores.put(Tests.RESPONSIBILITIES_COMPOSITION_TEST.name(),Double.parseDouble(new DecimalFormat(".#").format(result)));
         }
         // Test semantic similarity between entities of each service
         result = NLPOperations.checkSemanticSimilarity(services);

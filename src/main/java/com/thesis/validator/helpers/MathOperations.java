@@ -25,7 +25,7 @@ public class MathOperations {
         return max;
     }
 
-    private static double average(double[] array) {
+    public static double average(double[] array) {
         double average = 0.0;
         for (double elem : array) {
             average += elem;

@@ -2,6 +2,7 @@ package com.thesis.validator.logic;
 
 
 import com.thesis.validator.enums.Averages;
+import com.thesis.validator.enums.SimilarityAlgos;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.NLPOperations;
@@ -23,7 +24,7 @@ public class CohesionChecker implements CheckerChain {
 
     // calculate the coefficient of variation between the lengths
     // of concepts sets for each service
-    private static HashMap<String,Double> calculateCohesion(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities, Averages averageType) {
+    private static HashMap<String,Double> calculateCohesion(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities, Averages averageType, List<SimilarityAlgos> algorithms) {
         final int N = services.size();
         double[] entityScores = new double[N];
         double[] relationScores = new double[relations.size()];
@@ -73,9 +74,10 @@ public class CohesionChecker implements CheckerChain {
             resultScores.put(Tests.RESPONSIBILITIES_COMPOSITION_TEST.name(),Double.parseDouble(new DecimalFormat(".#").format(result)));
         }
         // Test semantic similarity between entities of each service
-        result = NLPOperations.checkSemanticSimilarity(services);
-        resultScores.put(Tests.SEMANTIC_SIMILARITY_TEST.name(),Double.parseDouble(new DecimalFormat(".#").format(result)));
-
+        for(SimilarityAlgos algorithm:algorithms) {
+            result = NLPOperations.checkSemanticSimilarity(services, algorithm);
+            resultScores.put(algorithm.name(), Double.parseDouble(new DecimalFormat(".#").format(result)));
+        }
         return resultScores;
     }
 
@@ -87,7 +89,7 @@ public class CohesionChecker implements CheckerChain {
     @Override
     public void runAssessment(CrystalGlobe crystalGlobe) {
         crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), calculateCohesion(crystalGlobe.getServices(), crystalGlobe.getRelations(),
-                crystalGlobe.getUseCaseResponsibilities(), crystalGlobe.getTypeOfAverage()));
+                crystalGlobe.getUseCaseResponsibilities(), crystalGlobe.getTypeOfAverage(), crystalGlobe.getSimilarityAlgorithm()));
 
         if (this.chain != null) {
             this.chain.runAssessment(crystalGlobe);

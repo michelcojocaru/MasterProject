@@ -29,7 +29,7 @@ function drawResults(result) {
                                                     "<h4>#" + (++i + " " + attribute) + "</h4>" +
                                                 "</div>" +
                                                 "<div class='col-sm-3' id='" + attribute +"Overall'>" +
-                                                    "<div class='row' id='" + attribute +"Donut'>" +
+                                                    "<div class='d-flex flex-row-reverse' id='" + attribute +"Donut'>" +
                                                         "<div class='c100 center-gauge' id='" + attribute + "Gauge'>" +
                                                             "<span id='" + attribute + "SpanMark'>" +
                                                             "</span>" +
@@ -145,14 +145,70 @@ function uploadSingleFile(file) {
         }
     };
 
-    var checkedValue = $("#averageType").is(":checked");
-    if (checkedValue) {
+    file = getCheckBoxes(file);
+
+    xhr.send(JSON.stringify(file));
+}
+
+function removeElem(array, elem){
+    var index = array.indexOf(elem);
+    if (index > -1) {
+        array.splice(index, 1);
+    }
+    return array;
+}
+
+function getCheckBoxes(file){
+    var averageType = $("#averageType").is(":checked");
+    if (averageType) {
         file['averageType'] = "MEDIAN";
     } else {
         file['averageType'] = "MEAN";
     }
 
-    xhr.send(JSON.stringify(file));
+    file['similaritiesAlgorithms'] = [];
+
+    var hirstStOnge = $("#hirstStOnge").is(":checked");
+    if (hirstStOnge) {
+        file['similaritiesAlgorithms'].push("HIRST_ST_ONGE");
+    }
+
+    var leacockChodorow = $("#leacockChodorow").is(":checked");
+    if (leacockChodorow) {
+        file['similaritiesAlgorithms'].push("LEACOCK_CHODOROW");
+    }
+
+    var resnik = $("#resnik").is(":checked");
+    if (resnik) {
+        file['similaritiesAlgorithms'].push("RESNIK");
+    }
+
+    var jiangConrath = $("#jiangConrath").is(":checked");
+    if (jiangConrath) {
+        file['similaritiesAlgorithms'].push("JIANG_CONRATH");
+    }
+
+    var lin = $("#lin").is(":checked");
+    if (lin) {
+        file['similaritiesAlgorithms'].push("LIN");
+    }
+
+    var path = $("#path").is(":checked");
+    if (path) {
+        file['similaritiesAlgorithms'].push("PATH");
+    }
+
+    var lesk = $("#lesk").is(":checked");
+    if (lesk) {
+        file['similaritiesAlgorithms'].push("LESK");
+    }
+
+    var wuPalmer = $("#wuPalmer").is(":checked");
+    if (wuPalmer) {
+        file['similaritiesAlgorithms'].push("WU_PALMER");
+    }
+
+    return file;
 }
 
 function inputDetected(event) {
@@ -241,17 +297,8 @@ function syntaxHighlight(json) {
 var curOpen;
 
 $(document).ready(function() {
+    var algorithmChosen = false;
     curOpen = $('.step')[0];
-
-    $('.next-btn').on('click', function() {
-        var cur = $(this).closest('.step');
-        var next = $(cur).next();
-        $(cur).addClass('minimized');
-        setTimeout(function() {
-            $(next).removeClass('minimized');
-            curOpen = $(next);
-        }, 400);
-    });
 
     $('.close-btn').on('click', function() {
         var cur = $(this).closest('.step');
@@ -295,44 +342,141 @@ $(document).ready(function() {
         }, 400);
     });
 
-    $('input[type="checkbox"]').change(function(){
+
+    $('#algorithmType').change(function () {
         var cur = $(this).closest('.step');
         var next = $(cur).next();
         //$(cur).addClass('minimized');
-        setTimeout(function() {
+        setTimeout(function () {
             $(next).removeClass('minimized');
             curOpen = $(next);
         }, 400);
     });
 
-    //$('button[type="submit"]').click(function(){
+    $('#hirstStOnge').change(function () {
+        if(!algorithmChosen) {
+            algorithmChosen = true;
+            var cur = $(this).closest('.step');
+            var next = $(cur).next();
+            //$(cur).addClass('minimized');
+            setTimeout(function () {
+                $(next).removeClass('minimized');
+                curOpen = $(next);
+            }, 400);
+        }
+    });
+
+    $('#leacockChodorow').change(function () {
+        if(!algorithmChosen) {
+            algorithmChosen = true;
+            var cur = $(this).closest('.step');
+            var next = $(cur).next();
+            //$(cur).addClass('minimized');
+            setTimeout(function () {
+                $(next).removeClass('minimized');
+                curOpen = $(next);
+            }, 400);
+        }
+    });
+
+    $('#resnik').change(function () {
+        if(!algorithmChosen) {
+            algorithmChosen = true;
+            var cur = $(this).closest('.step');
+            var next = $(cur).next();
+            //$(cur).addClass('minimized');
+            setTimeout(function () {
+                $(next).removeClass('minimized');
+                curOpen = $(next);
+            }, 400);
+        }
+    });
+
+    $('#jiangConrath').change(function () {
+        if(!algorithmChosen) {
+            algorithmChosen = true;
+            var cur = $(this).closest('.step');
+            var next = $(cur).next();
+            //$(cur).addClass('minimized');
+            setTimeout(function () {
+                $(next).removeClass('minimized');
+                curOpen = $(next);
+            }, 400);
+        }
+    });
+
+    $('#lin').change(function () {
+        if(!algorithmChosen) {
+            algorithmChosen = true;
+            var cur = $(this).closest('.step');
+            var next = $(cur).next();
+            //$(cur).addClass('minimized');
+            setTimeout(function () {
+                $(next).removeClass('minimized');
+                curOpen = $(next);
+            }, 400);
+        }
+    });
+
+    $('#path').change(function () {
+        if(!algorithmChosen) {
+            algorithmChosen = true;
+            var cur = $(this).closest('.step');
+            var next = $(cur).next();
+            //$(cur).addClass('minimized');
+            setTimeout(function () {
+                $(next).removeClass('minimized');
+                curOpen = $(next);
+            }, 400);
+        }
+    });
+
+    $('#lesk').change(function () {
+        if(!algorithmChosen) {
+            algorithmChosen = true;
+            var cur = $(this).closest('.step');
+            var next = $(cur).next();
+            //$(cur).addClass('minimized');
+            setTimeout(function () {
+                $(next).removeClass('minimized');
+                curOpen = $(next);
+            }, 400);
+        }
+    });
+
+    $('#wuPalmer').change(function () {
+        if(!algorithmChosen) {
+            algorithmChosen = true;
+            var cur = $(this).closest('.step');
+            var next = $(cur).next();
+            //$(cur).addClass('minimized');
+            setTimeout(function () {
+                $(next).removeClass('minimized');
+                curOpen = $(next);
+            }, 400);
+        }
+    });
+
+
     $('#send').click(function(){
         console.log("SUBMIT");
-        var cur = $(this).closest('.step');
-        var next = $(cur).next();
-        //$(cur).addClass('minimized');
+        var next = $('#exportStep');
         setTimeout(function() {
-            $(next).removeClass('minimized');
-            curOpen = $(next);
+            next.removeClass('minimized');
+            curOpen = next;
         }, 400);
     });
 
     $('#export').click(function(){
-        console.log("EXPORT");
-        //var cur = $(this).closest('.step');
-        //$(cur).addClass('minimized');
         curOpen = null;
-        // var cur = $(this).closest('.step');
-        // var next = $(cur).next();
-        // //$(cur).addClass('minimized');
-        // setTimeout(function() {
-        //     $(next).removeClass('minimized');
-        //     curOpen = $(next);
-        // }, 400);
     });
 
+    $("#similarity").click(function(){
+        $("#algorithms").toggle(400);
+    });
 
 });
+
 
 // End stepper stuff
 

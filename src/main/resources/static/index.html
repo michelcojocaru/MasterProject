@@ -62,7 +62,7 @@
                                         <!--<button class="next-btn">Next</button>-->
                                         <div class="check-box">
                                             <label>
-                                                <input id="averageType" type="checkbox" data-toggle="toggle"
+                                                <input id="algorithmType" type="checkbox" data-toggle="toggle"
                                                        data-on="Median"
                                                        data-off="Mean" checked/>
                                             </label>
@@ -72,28 +72,97 @@
 
                                 <div class="step minimized">
                                     <div class="step-header">
-                                        <div class="header">Analise</div>
-                                        <div class="subheader">Send your selection to be processed</div>
+                                        <div class="header">Similarity Algorithm</div>
+                                        <div class="subheader">Choose the similarity algorithm from a broad range
+                                        </div>
                                     </div>
                                     <div class="step-content three">
+                                        <div class="check-box">
+                                            <label>
+                                                <input id="similarity" type="checkbox" data-toggle="toggle"
+                                                       data-on="On"
+                                                       data-off="Off"/> Semantic Analysis
+                                            </label>
+                                        </div>
+                                        <div id="algorithms" hidden>
+                                            <div class="check-box">
+                                                <label>
+                                                    <input id="hirstStOnge" type="checkbox" data-toggle="toggle"
+                                                           data-on="On"
+                                                           data-off="Off"/> Hirst & St'Onge
+                                                </label>
+                                            </div>
+                                            <div class="check-box">
+                                                <label>
+                                                    <input id="leacockChodorow" type="checkbox" data-toggle="toggle"
+                                                           data-on="On"
+                                                           data-off="Off"/> Leacock & Chodorow
+                                                </label>
+                                            </div>
+                                            <div class="check-box">
+                                                <label>
+                                                    <input id="resnik" type="checkbox" data-toggle="toggle"
+                                                           data-on="On"
+                                                           data-off="Off"/> Resnik
+                                                </label>
+                                            </div>
+                                            <div class="check-box">
+                                                <label>
+                                                    <input id="jiangConrath" type="checkbox" data-toggle="toggle"
+                                                           data-on="On"
+                                                           data-off="Off"/> Jiang & Conrath
+                                                </label>
+                                            </div>
+                                            <div class="check-box">
+                                                <label>
+                                                    <input id="lin" type="checkbox" data-toggle="toggle"
+                                                           data-on="On"
+                                                           data-off="Off"/> Lin
+                                                </label>
+                                            </div>
+                                            <div class="check-box">
+                                                <label>
+                                                    <input id="path" type="checkbox" data-toggle="toggle"
+                                                           data-on="On"
+                                                           data-off="Off"/> Path
+                                                </label>
+                                            </div>
+                                            <div class="check-box">
+                                                <label>
+                                                    <input id="lesk" type="checkbox" data-toggle="toggle"
+                                                           data-on="On"
+                                                           data-off="Off"/> Lesk
+                                                </label>
+                                            </div>
+                                            <div class="check-box">
+                                                <label>
+                                                    <input id="wuPalmer" type="checkbox" data-toggle="toggle"
+                                                           data-on="On"
+                                                           data-off="Off"/> Wu Palmer
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <div class="step minimized">
+                                    <div class="step-header">
+                                        <div class="header">Analyse</div>
+                                        <div class="subheader">Send your selection to be processed</div>
+                                    </div>
+                                    <div class="step-content four">
                                         <button id="send" type="submit" class="btn btn-success">Submit</button>
-
                                     </div>
                                 </div>
                             </form>
                             <form id="downloadResult" name="downloadResult">
-                                <div class="step minimized">
+                                <div id="exportStep" class="step minimized">
                                     <div class="step-header">
                                         <div class="header">Export</div>
                                         <div class="subheader">Download the results in JSON format</div>
                                     </div>
                                     <div class="step-content four">
-
-                                        <button id="export" type="submit" class="btn btn-warning">Export results
-                                        </button>
-
-                                        <!--<button class="">Export</button>-->
+                                        <button id="export" type="submit" class="btn btn-warning">Export results</button>
                                     </div>
                                 </div>
                             </form>

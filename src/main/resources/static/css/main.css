@@ -311,7 +311,7 @@ pre {
     /*margin-top: 10px;*/
     /*margin-left: 10px !important;*/
     margin-top: 10px !important;
-    margin-right: 10px !important;
+    /*margin-right: 10px !important;*/
 }
 
 
@@ -448,7 +448,7 @@ body {
 }
 
 .step-content.three {
-    height: 36px;
+    /*height: 100px;*/
     width: 100%;
     background-color: rgba(0, 0, 0, 0.0);
     border-radius: 4px;

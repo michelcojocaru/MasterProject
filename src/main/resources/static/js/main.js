@@ -10,13 +10,15 @@ var exportButton = document.querySelector('#export');
 var inputBox = document.querySelector('#inputData');
 var resultSelector = document.querySelector('#result');
 var result;
+var globalResult;
 
 exportButton.style.display = 'none';
 
 function drawResults(result) {
     var i = 0;
     var j = 0;
-    console.log(result);
+    globalResult = result;
+    //console.log(result);
     resultSelector.innerHTML = "";
 
     for (var attribute in result) {
@@ -40,7 +42,7 @@ function drawResults(result) {
                                                         "</div>" +
                                                     "</div>" +
                                                     "<div class='row'>"+
-                                                        "<div class='card'>" +
+                                                        "<div class='card' id='" + attribute + "CauseCard'>" +
                                                         "  <div class='card-body'>" +
                                                         "    <h5 class='card-title'>Cause</h5>" +
                                                        // "    <h6 class=\"card-subtitle mb-2 text-muted\">Card subtitle</h6>\n" +
@@ -49,7 +51,7 @@ function drawResults(result) {
                                                         "</div>" +
                                                     "</div>" +
                                                     "<div class='row'>"+
-                                                        "<div class='card'>" +
+                                                        "<div class='card' id='" + attribute + "TreatmentCard'>" +
                                                         "  <div class='card-body'>" +
                                                         "    <h5 class='card-title'>Recommendation</h5>" +
                                                         // "    <h6 class=\"card-subtitle mb-2 text-muted\">Card subtitle</h6>\n" +
@@ -57,19 +59,13 @@ function drawResults(result) {
                                                         "  </div>" +
                                                         "</div>" +
                                                     "</div>" +
-                                                    // "<span>Cause: </span>" +
-                                                    // "<div class='row info' id='" + attribute +"Cause'>" +
-                                                    // "</div>" +
-                                                    // "<span>Recommendation: </span>" +
-                                                    // "<div class='row info' id='" + attribute +"Treatment'>" +
-                                                    // "</div>" +
                                                 "</div>" +
                                             //"</div>" +
                                         "</div>";
 
             //build table for inner tests
             var tests = document.querySelector('#' + attribute + 'Tests');
-            tests.innerHTML += "<table class='table table-striped table-sm'><thead><tr><th scope='col'>Mark</th><th scope='col'>Test Name</th></tr></thead><tbody id='"+ attribute +"TBody'>";
+            tests.innerHTML += "<table id='" + attribute +"Table' class='table table-striped table-sm'><thead><tr class='clickable'><th scope='col'>Mark</th><th scope='col'>Test Name</th></tr></thead><tbody id='"+ attribute +"TBody'>";
             var tbody = document.querySelector('#' + attribute + 'TBody');
             var cause = document.querySelector('#' + attribute + 'Cause');
             var treatment = document.querySelector('#' + attribute + 'Treatment');
@@ -82,12 +78,11 @@ function drawResults(result) {
                 if (result[attribute].hasOwnProperty(test)) {
                     count++;
                     average += result[attribute][test]['score'];
-                    tbody.innerHTML += "<tr>" +
-                                            "<td style='text-align: center'>" + result[attribute][test]['score'] + "</td>" +
-                                            "<td>" + test + "</td>" +
+                    tbody.innerHTML += "<tr id='" + attribute + "TestRow' class='clickable' style='cursor:pointer'>" +
+                                            "<td class='clickable' style='text-align: center'>" + result[attribute][test]['score'] + "</td>" +
+                                            "<td class='clickable'>" + test + "</td>" +
                                         "</tr>";
-                    cause.innerHTML = result[attribute][test]['cause'];
-                    treatment.innerHTML = result[attribute][test]['treatment'];
+
                 }
             }
             average /= count;
@@ -112,7 +107,61 @@ function drawResults(result) {
                 bar.classList.add("green-success");
                 fill.classList.add("green-success");
             }
+        }
+    }
+    bindSelectableRows();
+}
 
+function bindSelectableRows(){
+    for (var attributeIndex in globalResult) {
+        if (globalResult.hasOwnProperty(attributeIndex)) {
+            var causeCard = document.querySelector('#' + attributeIndex + 'CauseCard');
+            var causeText = document.querySelector('#' + attributeIndex + 'Cause');
+            var treatmentCard = document.querySelector('#' + attributeIndex + 'TreatmentCard');
+            var treatmentText = document.querySelector('#' + attributeIndex + 'Treatment');
+
+            for(var testIndex in globalResult[attributeIndex]) {
+                if (globalResult[attributeIndex].hasOwnProperty(testIndex)) {
+                    (function(testIndex, attributeIndex, causeCard, treatmentCard, causeText, treatmentText) {
+
+                        $("tr.clickable").click(function() {
+                            $(this).addClass('info').siblings().removeClass('info');
+                            var selectedTest = $(this).children("td").map(function() {
+                                return $(this).text();
+                            }).get();
+
+                            if(testIndex === selectedTest[1]) {
+                                causeText.innerHTML = globalResult[attributeIndex][testIndex]['cause'];
+                                treatmentText.innerHTML = globalResult[attributeIndex][testIndex]['treatment'];
+
+                                //TODO check mark and colour the cause & treatment box accordingly
+                                if (selectedTest[0] < 5) {
+                                    causeCard.classList.add("danger");
+                                    causeCard.classList.remove("warning");
+                                    causeCard.classList.remove("success");
+                                    treatmentCard.classList.add("danger");
+                                    treatmentCard.classList.remove("warning");
+                                    treatmentCard.classList.remove("success");
+                                } else if (selectedTest[0] >= 5 && selectedTest[0] < 7.5) {
+                                    causeCard.classList.add("warning");
+                                    causeCard.classList.remove("danger");
+                                    causeCard.classList.remove("success");
+                                    treatmentCard.classList.add("warning");
+                                    treatmentCard.classList.remove("danger");
+                                    treatmentCard.classList.remove("success");
+                                } else if (selectedTest[0] >= 7.5 && selectedTest[0] <= 10) {
+                                    causeCard.classList.add("success");
+                                    causeCard.classList.remove("warning");
+                                    causeCard.classList.remove("danger");
+                                    treatmentCard.classList.add("success");
+                                    treatmentCard.classList.remove("warning");
+                                    treatmentCard.classList.remove("danger");
+                                }
+                            }
+                        });
+                    })(testIndex, attributeIndex, causeCard, treatmentCard, causeText, treatmentText);
+                }
+            }
         }
     }
 }
@@ -160,14 +209,6 @@ function uploadSingleFile(file) {
     file = getCheckBoxes(file);
 
     xhr.send(JSON.stringify(file));
-}
-
-function removeElem(array, elem){
-    var index = array.indexOf(elem);
-    if (index > -1) {
-        array.splice(index, 1);
-    }
-    return array;
 }
 
 function getCheckBoxes(file){
@@ -469,9 +510,8 @@ $(document).ready(function() {
         }
     });
 
-
     $('#send').click(function(){
-        console.log("SUBMIT");
+        //console.log("SUBMIT");
         var next = $('#exportStep');
         setTimeout(function() {
             next.removeClass('minimized');
@@ -491,6 +531,7 @@ $(document).ready(function() {
 
 
 // End stepper stuff
+
 
 
 

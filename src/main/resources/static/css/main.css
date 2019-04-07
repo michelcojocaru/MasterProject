@@ -329,7 +329,6 @@ pre {
     margin-right: 10px;
 }
 
-
 /* stuff for stepper */
 
 :root {
@@ -540,7 +539,7 @@ body {
 
 /* Cause & Treatment info box */
 
-.info, .success, .warning, .error {
+.info, .success, .warning, .danger {
     border: 1px solid #cccccc;
     margin: 5px 5px;
     padding: 7px 5px;
@@ -553,17 +552,17 @@ body {
 }
 
 .success {
-    color: #4f8a10;
+    color: black;
     background-color: #dff2bf;
 }
 
 .warning {
-    color: #9f6000;
+    color: black;
     background-color: #FEEFB3;
 }
 
-.error {
-    color: #D8000C;
+.danger {
+    color: black;
     background-color: #FFBABA;
 }
 

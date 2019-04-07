@@ -2,10 +2,7 @@ package com.thesis.validator.logic;
 
 import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Tests;
-import com.thesis.validator.model.CrystalGlobe;
-import com.thesis.validator.model.Relation;
-import com.thesis.validator.model.Service;
-import com.thesis.validator.model.UseCaseResponsibility;
+import com.thesis.validator.model.*;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -16,13 +13,25 @@ public class NewAttributeChecker implements CheckerChain {
     private static final double NEW_ATTRIBUTE_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.0;
     private CheckerChain chain;
 
-    private static HashMap<String,Double> calculateNewAttribute(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibility, Averages averageType) {
-        HashMap<String,Double> resultScores = new HashMap<>();
+    private static HashMap<String, TestResult> calculateNewAttribute(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibility, Averages averageType) {
+        HashMap<String,TestResult> resultScores = new HashMap<>();
+        TestResult testResult = null;
+        double result = 0.0;
+
         /** Write here
          * the implementation
          * of your quality attribute
          * assessment */
-        resultScores.put(Tests.NEWATTRIBUTE_TEST.name(), Double.parseDouble(new DecimalFormat(".#").format(0.0)));
+
+        testResult = new TestResult(Tests.NEWATTRIBUTE_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        CheckerChain.PopulateCauseAndTreatment(testResult,
+                "Low Cause related info",
+                "Low Treatment related info",
+                " Mid Cause related info",
+                "Mid Treatment related info",
+                "High Cause related info",
+                "High Treatment related info");
+        resultScores.put(testResult.getTestName().name(),testResult);
         return resultScores;
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CrystalGlobe {
 
-    private HashMap<String, HashMap<String, Double>> results;
+    private HashMap<String, HashMap<String, TestResult>> results;
     private List<Service> services;
     private List<Relation> relations;
     private UseCaseResponsibility useCaseResponsibilities;
@@ -36,11 +36,11 @@ public class CrystalGlobe {
         return useCaseResponsibilities;
     }
 
-    public void CheckAttribute(String testName, HashMap<String,Double> result) {
+    public void CheckAttribute(String testName, HashMap<String,TestResult> result) {
         this.results.put(testName, result);
     }
 
-    public HashMap<String, HashMap<String,Double>> getResults() {
+    public HashMap<String, HashMap<String,TestResult>> getResults() {
         return this.results;
     }
 

@@ -1,7 +1,5 @@
 package com.thesis.validator.enums;
 
-import org.omg.CORBA.Principal;
-
 public enum Tests {
     NANOENTITIES_COMPOSITION_TEST,
     COUPLING_COMPOSITION_TEST,

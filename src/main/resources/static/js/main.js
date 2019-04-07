@@ -29,7 +29,7 @@ function drawResults(result) {
                                                     "<h4>#" + (++i + " " + attribute) + "</h4>" +
                                                 "</div>" +
                                                 "<div class='col-sm-3' id='" + attribute +"Overall'>" +
-                                                    "<div class='d-flex flex-row-reverse' id='" + attribute +"Donut'>" +
+                                                    "<div class='row' id='" + attribute +"Donut'>" +
                                                         "<div class='c100 center-gauge' id='" + attribute + "Gauge'>" +
                                                             "<span id='" + attribute + "SpanMark'>" +
                                                             "</span>" +
@@ -39,10 +39,30 @@ function drawResults(result) {
                                                             "</div>" +
                                                         "</div>" +
                                                     "</div>" +
-                                                    "<div class='row' id='" + attribute +"Message'>" +
-                                                        "cause of problem" +
+                                                    "<div class='row'>"+
+                                                        "<div class='card'>" +
+                                                        "  <div class='card-body'>" +
+                                                        "    <h5 class='card-title'>Cause</h5>" +
+                                                       // "    <h6 class=\"card-subtitle mb-2 text-muted\">Card subtitle</h6>\n" +
+                                                        "    <p class='card-text' id='" + attribute + "Cause'></p>" +
+                                                        "  </div>" +
+                                                        "</div>" +
                                                     "</div>" +
-
+                                                    "<div class='row'>"+
+                                                        "<div class='card'>" +
+                                                        "  <div class='card-body'>" +
+                                                        "    <h5 class='card-title'>Recommendation</h5>" +
+                                                        // "    <h6 class=\"card-subtitle mb-2 text-muted\">Card subtitle</h6>\n" +
+                                                        "    <p class='card-text' id='" + attribute + "Treatment'></p>" +
+                                                        "  </div>" +
+                                                        "</div>" +
+                                                    "</div>" +
+                                                    // "<span>Cause: </span>" +
+                                                    // "<div class='row info' id='" + attribute +"Cause'>" +
+                                                    // "</div>" +
+                                                    // "<span>Recommendation: </span>" +
+                                                    // "<div class='row info' id='" + attribute +"Treatment'>" +
+                                                    // "</div>" +
                                                 "</div>" +
                                             //"</div>" +
                                         "</div>";
@@ -51,17 +71,23 @@ function drawResults(result) {
             var tests = document.querySelector('#' + attribute + 'Tests');
             tests.innerHTML += "<table class='table table-striped table-sm'><thead><tr><th scope='col'>Mark</th><th scope='col'>Test Name</th></tr></thead><tbody id='"+ attribute +"TBody'>";
             var tbody = document.querySelector('#' + attribute + 'TBody');
+            var cause = document.querySelector('#' + attribute + 'Cause');
+            var treatment = document.querySelector('#' + attribute + 'Treatment');
             tbody.innerHTML = "";
+            cause.innerHTML = "";
+            treatment.innerHTML = "";
             var average = 0.0;
             var count = 0;
             for(var test in result[attribute]) {
                 if (result[attribute].hasOwnProperty(test)) {
                     count++;
-                    average += result[attribute][test];
+                    average += result[attribute][test]['score'];
                     tbody.innerHTML += "<tr>" +
-                                            "<td style='text-align: center'>" + result[attribute][test] + "</td>" +
+                                            "<td style='text-align: center'>" + result[attribute][test]['score'] + "</td>" +
                                             "<td>" + test + "</td>" +
                                         "</tr>";
+                    cause.innerHTML = result[attribute][test]['cause'];
+                    treatment.innerHTML = result[attribute][test]['treatment'];
                 }
             }
             average /= count;
@@ -89,19 +115,6 @@ function drawResults(result) {
 
         }
     }
-
-
-    // singleFileUploadSuccess.innerHTML = "<p>System interpretation: success</p>";
-    // for (var key in result) {
-    //     if (result.hasOwnProperty(key)) {
-    //         singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key /*+ blanks*/ + ": " + result[key] + "</p>";
-    //         for (var key2 in result[key]) {
-    //             if (result[key].hasOwnProperty(key2)) {
-    //                 singleFileUploadSuccess.innerHTML += "<p class='fadein'>" + key2 /*+ blanks*/ + ": " + result[key][key2] + "</p>";
-    //             }
-    //         }
-    //     }
-    // }
 }
 
 function uploadSingleFile(file) {
@@ -117,7 +130,6 @@ function uploadSingleFile(file) {
                 exportButton.style.display = 'block';
                 exportButton.classList.add('export-fadein');
                 //singleFileUploadError.style.display = "none";
-
                 drawResults(result);
 
                 if (response.errorMessage) {

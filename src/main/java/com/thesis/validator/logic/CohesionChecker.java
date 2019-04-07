@@ -7,10 +7,7 @@ import com.thesis.validator.enums.Tests;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.NLPOperations;
 import com.thesis.validator.helpers.Operations;
-import com.thesis.validator.model.CrystalGlobe;
-import com.thesis.validator.model.Relation;
-import com.thesis.validator.model.Service;
-import com.thesis.validator.model.UseCaseResponsibility;
+import com.thesis.validator.model.*;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -24,13 +21,14 @@ public class CohesionChecker implements CheckerChain {
 
     // calculate the coefficient of variation between the lengths
     // of concepts sets for each service
-    private static HashMap<String,Double> calculateCohesion(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities, Averages averageType, List<SimilarityAlgos> algorithms) {
+    private static HashMap<String,TestResult> calculateCohesion(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities, Averages averageType, List<SimilarityAlgos> algorithms) {
         final int N = services.size();
         double[] entityScores = new double[N];
         double[] relationScores = new double[relations.size()];
         double[] useCaseResponsibilityScores = new double[N];
         HashSet<String> entities;
-        HashMap<String,Double> resultScores = new HashMap<>();
+        HashMap<String, TestResult> resultScores = new HashMap<>();
+        TestResult resultObject;
         int i = 0;
         double result = 0.0;
 
@@ -45,7 +43,15 @@ public class CohesionChecker implements CheckerChain {
             entityScores[i++] = entities.size();
         }
         result = Math.abs(MathOperations.getCoefficientOfVariation(entityScores, averageType) - 1) * 10.0;
-        resultScores.put(Tests.ENTITIES_COMPOSITION_TEST.name(),Double.parseDouble(new DecimalFormat(".#").format(result)));
+        TestResult testResult = new TestResult(Tests.ENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        CheckerChain.PopulateCauseAndTreatment(testResult,
+                "We detected an abnormally high variation in inward vs outward dependencies count per microservice!",
+                "We recommend revising the dependencies of the system.",
+                "We detected an medium variation in inward vs outward dependencies count per microservice!",
+                "We recommend revising the use of Bounded Contexts in the design process.",
+                "We detected optimal dependencies between the microservices",
+                "No need.");
+        resultScores.put(Tests.ENTITIES_COMPOSITION_TEST.name(),testResult);
 
         // Test relations property
         if (Operations.checkForDuplicates(relations)) {
@@ -58,7 +64,15 @@ public class CohesionChecker implements CheckerChain {
             relationScores[i++] = entities.size();
         }
         result = Math.abs(MathOperations.getCoefficientOfVariation(relationScores, averageType) - 1) * 10.0;
-        resultScores.put(Tests.RELATIONS_COMPOSITION_TEST.name(),Double.parseDouble(new DecimalFormat(".#").format(result)));
+        testResult = new TestResult(Tests.RELATIONS_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        CheckerChain.PopulateCauseAndTreatment(testResult,
+                "Low Cause related info",
+                "Low Treatment related info",
+                " Mid Cause related info",
+                "Mid Treatment related info",
+                "High Cause related info",
+                "High Treatment related info");
+        resultScores.put(testResult.getTestName().name(),testResult);
 
         // Test useCaseResponsibility property if it exists!
         if(useCaseResponsibilities != null && useCaseResponsibilities.size() != 0) {
@@ -71,15 +85,34 @@ public class CohesionChecker implements CheckerChain {
                 useCaseResponsibilityScores[i++] = useCase.size();
             }
             result = Math.abs(MathOperations.getCoefficientOfVariation(useCaseResponsibilityScores, averageType) - 1) * 10.0;
-            resultScores.put(Tests.RESPONSIBILITIES_COMPOSITION_TEST.name(),Double.parseDouble(new DecimalFormat(".#").format(result)));
+            testResult = new TestResult(Tests.RESPONSIBILITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+            CheckerChain.PopulateCauseAndTreatment(testResult,
+                    "Low Cause related info",
+                    "Low Treatment related info",
+                    " Mid Cause related info",
+                    "Mid Treatment related info",
+                    "High Cause related info",
+                    "High Treatment related info");
+            resultScores.put(testResult.getTestName().name(),testResult);
         }
-        // Test semantic similarity between entities of each service
+        // Test semantic similarity between entities of each service using multiple algorithms
         for(SimilarityAlgos algorithm:algorithms) {
             result = NLPOperations.checkSemanticSimilarity(services, algorithm);
-            resultScores.put(algorithm.name(), Double.parseDouble(new DecimalFormat(".#").format(result)));
+
+            testResult = new TestResult(Tests.SEMANTIC_SIMILARITY_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+            CheckerChain.PopulateCauseAndTreatment(testResult,
+                    "Low Cause related info",
+                    "Low Treatment related info",
+                    " Mid Cause related info",
+                    "Mid Treatment related info",
+                    "High Cause related info",
+                    "High Treatment related info");
+            resultScores.put(algorithm.name(),testResult);
         }
         return resultScores;
     }
+
+
 
     @Override
     public void setNextChain(CheckerChain nextChain) {

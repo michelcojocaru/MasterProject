@@ -8,7 +8,7 @@ public enum Mark {
 
     private double val;
 
-    Mark(double val) {
+    Mark(final double val) {
         this.val = val;
     }
 

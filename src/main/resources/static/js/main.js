@@ -11,6 +11,8 @@ var inputBox = document.querySelector('#inputData');
 var resultSelector = document.querySelector('#result');
 var result;
 var globalResult;
+var loaderHandle;
+var light;
 
 exportButton.style.display = 'none';
 
@@ -166,6 +168,10 @@ function bindSelectableRows(){
     }
 }
 
+function unbindLoader(){
+    toggleSpinnerAnimation();
+}
+
 function uploadSingleFile(file) {
 
     var xhr = new XMLHttpRequest();
@@ -180,6 +186,7 @@ function uploadSingleFile(file) {
                 exportButton.classList.add('export-fadein');
                 //singleFileUploadError.style.display = "none";
                 drawResults(result);
+                unbindLoader();
 
                 if (response.errorMessage) {
                     //singleFileUploadSuccess.innerHTML += "<p>Error message: " + response.errorMessage + "</p>";
@@ -291,6 +298,7 @@ function onReaderLoad(event) {
 
 singleUploadForm.addEventListener('submit', function (event) {
     event.preventDefault();
+    bindLoader();
     var singleFileUploadInput = document.querySelector('#singleFileUploadInput');
     var reader = new FileReader();
     reader.onload = onReaderLoad;
@@ -343,6 +351,50 @@ function syntaxHighlight(json) {
         }
         return '<span class="' + cls + '">' + match + '</span>';//<br>
     });
+}
+
+function toggleSpinnerAnimation(){
+    if(!light) {
+        var x = document.getElementById("spinnerId");
+        x.style.display = "block";
+        light = window.setInterval(loaderHandle, 1000 / 30);
+    }else{
+        window.clearInterval(light);
+        light = null;
+        var x = document.getElementById("spinnerId");
+        x.style.display = "none";
+    }
+}
+
+
+function bindLoader(){
+    var canvas = document.getElementById('spinner');
+    var context = canvas.getContext('2d');
+    var start = new Date();
+    var lines = 16,
+        cW = context.canvas.width,
+        cH = context.canvas.height;
+
+    loaderHandle = function() {
+        var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
+        context.save();
+        context.clearRect(0, 0, cW, cH);
+        context.translate(cW / 2, cH / 2);
+        context.rotate(Math.PI * 2 * rotation);
+        for (var i = 0; i < lines; i++) {
+
+            context.beginPath();
+            context.rotate(Math.PI * 2 / lines);
+            context.moveTo(cW / 10, 0);
+            context.lineTo(cW / 4, 0);
+            context.lineWidth = cW / 30;
+            context.strokeStyle = "rgba(92, 184, 92," + i / lines + ")";
+            context.stroke();
+        }
+        context.restore();
+    };
+    //loaderHandle = window.setInterval(draw, 1000 / 30);
+    toggleSpinnerAnimation();
 }
 
 // Stepper stuff
@@ -525,6 +577,42 @@ $(document).ready(function() {
 
     $("#similarity").click(function(){
         $("#algorithms").toggle(400);
+    });
+
+    // start loader
+
+    // Progress
+    var progressBar = $('.loading-bar span');
+    var progressAmount = $('.loading-bar').attr('data-progress');
+    progressAmount = 0;
+
+    var loadingDelay = setTimeout(function () {
+        var interval = setInterval(function() {
+            progressAmount += 10;
+
+            progressBar.css('width', progressAmount + '%');
+
+            if (progressAmount >= 100) {
+                setTimeout(function () {
+                    clearInterval(interval);
+                    reverseAnimation();
+                }, 300);
+            }
+        }, 300);
+    }, 2000);
+
+    // Processing over
+    function reverseAnimation() {
+        $('#processing').removeClass('uncomplete').addClass('complete');
+    }
+
+    // Debug button
+    $('#trigger').on('click', function() {
+        if ($('#processing.uncomplete').length) {
+            $('#processing').removeClass('uncomplete').addClass('complete');
+        } else {
+            $('#processing').removeClass('complete').addClass('uncomplete');
+        }
     });
 
 });

@@ -1,0 +1,490 @@
+/*@font-face {*/
+    /*font-family: 'Open Sans';*/
+    /*font-style: normal;*/
+    /*font-weight: 300;*/
+    /*src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN_r8OUuhs.ttf) format('truetype');*/
+/*}*/
+/*@font-face {*/
+    /*font-family: 'Open Sans';*/
+    /*font-style: normal;*/
+    /*font-weight: 400;*/
+    /*src: local('Open Sans Regular'), local('OpenSans-Regular'), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFVZ0e.ttf) format('truetype');*/
+/*}*/
+/*@font-face {*/
+    /*font-family: 'Open Sans';*/
+    /*font-style: normal;*/
+    /*font-weight: 600;*/
+    /*src: local('Open Sans SemiBold'), local('OpenSans-SemiBold'), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOUuhs.ttf) format('truetype');*/
+/*}*/
+/** {*/
+    /*box-sizing: border-box;*/
+/*}*/
+/*body {*/
+    /*font-family: 'Open Sans', sans-serif;*/
+/*}*/
+.center {
+    margin: 0 auto;
+    text-align: center;
+}
+#processing {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background-color: #e4e4e4;
+}
+#processing.uncomplete .gear-wrapper-1 {
+    -webkit-animation: gearEnter1 0.5s ease 1s forwards;
+    animation: gearEnter1 0.5s ease 1s forwards;
+}
+#processing.uncomplete .gear-wrapper-2 {
+    -webkit-animation: gearEnter2 0.5s ease 1.5s forwards;
+    animation: gearEnter2 0.5s ease 1.5s forwards;
+}
+#processing.uncomplete .gear-wrapper-3 {
+    -webkit-animation: gearEnter3 0.5s ease 1.25s forwards;
+    animation: gearEnter3 0.5s ease 1.25s forwards;
+}
+#processing.uncomplete .gear-wrapper-4 {
+    -webkit-animation: gearEnter4 0.5s ease 0.75s forwards;
+    animation: gearEnter4 0.5s ease 0.75s forwards;
+}
+#processing.complete .gears {
+    background-color: transparent;
+    transition: background-color 0.25s ease 0.75s;
+}
+#processing.complete .gear-wrapper-1 {
+    -webkit-transform: rotate(10deg) translate3d(-5px, -5px, 0);
+    transform: rotate(10deg) translate3d(-5px, -5px, 0);
+    -webkit-animation: gearLeave1 0.5s ease 0.5s forwards;
+    animation: gearLeave1 0.5s ease 0.5s forwards;
+}
+#processing.complete .gear-wrapper-2 {
+    -webkit-transform: rotate(25deg) translate3d(20px, -50px, 0);
+    transform: rotate(25deg) translate3d(20px, -50px, 0);
+    -webkit-animation: gearLeave2 0.5s ease 0.5s forwards;
+    animation: gearLeave2 0.5s ease 0.5s forwards;
+}
+#processing.complete .gear-wrapper-3 {
+    -webkit-transform: rotate(15deg) translate3d(-25px, -15px, 0);
+    transform: rotate(15deg) translate3d(-25px, -15px, 0);
+    -webkit-animation: gearLeave3 0.5s ease 0.5s forwards;
+    animation: gearLeave3 0.5s ease 0.5s forwards;
+}
+#processing.complete .gear-wrapper-4 {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-animation: gearLeave4 0.5s ease 0.5s forwards;
+    animation: gearLeave4 0.5s ease 0.5s forwards;
+}
+#processing.complete .loading-bar {
+    -webkit-animation: hideLoading 0.5s forwards;
+    animation: hideLoading 0.5s forwards;
+}
+#processing.complete .checkmark.checkmark-success {
+    -webkit-animation: fillCheckSuccess 0.4s cubic-bezier(0.65, 0, 0.45, 1) 1s forwards, beatCheck 0.2s ease-out 1.5s forwards, echoSuccess 1.25s ease-out 1.5s forwards;
+    animation: fillCheckSuccess 0.4s cubic-bezier(0.65, 0, 0.45, 1) 1s forwards, beatCheck 0.2s ease-out 1.5s forwards, echoSuccess 1.25s ease-out 1.5s forwards;
+}
+#processing.complete .checkmark.checkmark-success .checkmark-circle {
+    stroke: #3c763d;
+}
+#processing.complete .checkmark.checkmark-error {
+    -webkit-animation: fillCheckError 0.4s cubic-bezier(0.65, 0, 0.45, 1) 1s forwards, beatCheck 0.2s ease-out 1.5s forwards, echoError 1.25s ease-out 1.5s forwards;
+    animation: fillCheckError 0.4s cubic-bezier(0.65, 0, 0.45, 1) 1s forwards, beatCheck 0.2s ease-out 1.5s forwards, echoError 1.25s ease-out 1.5s forwards;
+}
+#processing.complete .checkmark.checkmark-error .checkmark-circle {
+    stroke: #a94442;
+}
+#processing.complete .checkmark-circle {
+    -webkit-animation: strokeCheck 0.5s cubic-bezier(0.65, 0, 0.45, 1) 0.75s forwards;
+    animation: strokeCheck 0.5s cubic-bezier(0.65, 0, 0.45, 1) 0.75s forwards;
+}
+#processing.complete .checkmark-check {
+    -webkit-animation: strokeCheck 0.3s cubic-bezier(0.65, 0, 0.45, 1) 1.25s forwards;
+    animation: strokeCheck 0.3s cubic-bezier(0.65, 0, 0.45, 1) 1.25s forwards;
+}
+/*h1 {*/
+    /*color: #333;*/
+    /*font-weight: 400;*/
+/*}*/
+/*h2 {*/
+    /*color: #999;*/
+    /*font-weight: 300;*/
+/*}*/
+.wrapper {
+    position: relative;
+    margin: 30px auto;
+}
+.gears {
+    width: 200px;
+    height: 200px;
+    background-color: #999;
+    border-radius: 50%;
+    overflow: hidden;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    -webkit-animation: scale 0.5s ease 0.5s forwards;
+    animation: scale 0.5s ease 0.5s forwards;
+}
+@-webkit-keyframes scale {
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+@keyframes scale {
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+.gear-wrapper {
+    position: absolute;
+}
+.gear-wrapper.gear-wrapper-1 {
+    top: 0;
+    left: 0;
+    -webkit-transform: rotate(10deg) translate3d(-40px, -60px, 0);
+    transform: rotate(10deg) translate3d(-40px, -60px, 0);
+}
+.gear-wrapper.gear-wrapper-2 {
+    top: 0;
+    right: 0;
+    -webkit-transform: rotate(25deg) translate3d(70px, -130px, 0);
+    transform: rotate(25deg) translate3d(70px, -130px, 0);
+}
+.gear-wrapper.gear-wrapper-3 {
+    bottom: 0;
+    right: 0;
+    -webkit-transform: rotate(15deg) translate3d(30px, 20px, 0);
+    transform: rotate(15deg) translate3d(30px, 20px, 0);
+}
+.gear-wrapper.gear-wrapper-4 {
+    bottom: 0;
+    left: 0;
+    -webkit-transform: translate3d(-70px, 70px, 0);
+    transform: translate3d(-70px, 70px, 0);
+}
+@-webkit-keyframes gearEnter1 {
+    to {
+        -webkit-transform: rotate(10deg) translate3d(-5px, -5px, 0);
+        transform: rotate(10deg) translate3d(-5px, -5px, 0);
+    }
+}
+@keyframes gearEnter1 {
+    to {
+        -webkit-transform: rotate(10deg) translate3d(-5px, -5px, 0);
+        transform: rotate(10deg) translate3d(-5px, -5px, 0);
+    }
+}
+@-webkit-keyframes gearEnter2 {
+    to {
+        -webkit-transform: rotate(25deg) translate3d(20px, -50px, 0);
+        transform: rotate(25deg) translate3d(20px, -50px, 0);
+    }
+}
+@keyframes gearEnter2 {
+    to {
+        -webkit-transform: rotate(25deg) translate3d(20px, -50px, 0);
+        transform: rotate(25deg) translate3d(20px, -50px, 0);
+    }
+}
+@-webkit-keyframes gearEnter3 {
+    to {
+        -webkit-transform: rotate(15deg) translate3d(-25px, -15px, 0);
+        transform: rotate(15deg) translate3d(-25px, -15px, 0);
+    }
+}
+@keyframes gearEnter3 {
+    to {
+        -webkit-transform: rotate(15deg) translate3d(-25px, -15px, 0);
+        transform: rotate(15deg) translate3d(-25px, -15px, 0);
+    }
+}
+@-webkit-keyframes gearEnter4 {
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+@keyframes gearEnter4 {
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+@-webkit-keyframes gearLeave1 {
+    from {
+        -webkit-transform: rotate(10deg) translate3d(-5px, -5px, 0);
+        transform: rotate(10deg) translate3d(-5px, -5px, 0);
+    }
+    to {
+        -webkit-transform: rotate(10deg) translate3d(-40px, -60px, 0);
+        transform: rotate(10deg) translate3d(-40px, -60px, 0);
+    }
+}
+@keyframes gearLeave1 {
+    from {
+        -webkit-transform: rotate(10deg) translate3d(-5px, -5px, 0);
+        transform: rotate(10deg) translate3d(-5px, -5px, 0);
+    }
+    to {
+        -webkit-transform: rotate(10deg) translate3d(-40px, -60px, 0);
+        transform: rotate(10deg) translate3d(-40px, -60px, 0);
+    }
+}
+@-webkit-keyframes gearLeave2 {
+    from {
+        -webkit-transform: rotate(25deg) translate3d(20px, -50px, 0);
+        transform: rotate(25deg) translate3d(20px, -50px, 0);
+    }
+    to {
+        -webkit-transform: rotate(25deg) translate3d(70px, -130px, 0);
+        transform: rotate(25deg) translate3d(70px, -130px, 0);
+    }
+}
+@keyframes gearLeave2 {
+    from {
+        -webkit-transform: rotate(25deg) translate3d(20px, -50px, 0);
+        transform: rotate(25deg) translate3d(20px, -50px, 0);
+    }
+    to {
+        -webkit-transform: rotate(25deg) translate3d(70px, -130px, 0);
+        transform: rotate(25deg) translate3d(70px, -130px, 0);
+    }
+}
+@-webkit-keyframes gearLeave3 {
+    from {
+        -webkit-transform: rotate(15deg) translate3d(-25px, -15px, 0);
+        transform: rotate(15deg) translate3d(-25px, -15px, 0);
+    }
+    to {
+        -webkit-transform: rotate(15deg) translate3d(30px, 20px, 0);
+        transform: rotate(15deg) translate3d(30px, 20px, 0);
+    }
+}
+@keyframes gearLeave3 {
+    from {
+        -webkit-transform: rotate(15deg) translate3d(-25px, -15px, 0);
+        transform: rotate(15deg) translate3d(-25px, -15px, 0);
+    }
+    to {
+        -webkit-transform: rotate(15deg) translate3d(30px, 20px, 0);
+        transform: rotate(15deg) translate3d(30px, 20px, 0);
+    }
+}
+@-webkit-keyframes gearLeave4 {
+    from {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        -webkit-transform: translate3d(-70px, 70px, 0);
+        transform: translate3d(-70px, 70px, 0);
+    }
+}
+@keyframes gearLeave4 {
+    from {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        -webkit-transform: translate3d(-70px, 70px, 0);
+        transform: translate3d(-70px, 70px, 0);
+    }
+}
+.gear {
+    fill: #e4e4e4;
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+}
+.gear.gear-1 {
+    width: 90px;
+    height: 90px;
+    animation: gearRotate 1s linear 2s infinite reverse;
+}
+.gear.gear-2 {
+    width: 150px;
+    height: 150px;
+    -webkit-animation: gearRotate 1.5s linear 2s infinite;
+    animation: gearRotate 1.5s linear 2s infinite;
+}
+.gear.gear-3 {
+    width: 60px;
+    height: 60px;
+    animation: gearRotate 0.75s linear 2s infinite reverse;
+}
+.gear.gear-4 {
+    width: 120px;
+    height: 110px;
+    -webkit-animation: gearRotate 1.25s linear 2s infinite;
+    animation: gearRotate 1.25s linear 2s infinite;
+}
+@-webkit-keyframes gearRotate {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes gearRotate {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+.loading-bar {
+    position: relative;
+    width: 200px;
+    height: 10px;
+    margin-top: 50px;
+    background-color: #e4e4e4;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.loading-bar span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #999;
+    transition: width 0.5s ease;
+}
+@-webkit-keyframes hideLoading {
+    to {
+        height: 0;
+        margin: 0;
+        opacity: 0;
+    }
+}
+@keyframes hideLoading {
+    to {
+        height: 0;
+        margin: 0;
+        opacity: 0;
+    }
+}
+.checkmark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -50px;
+    display: block;
+    border-radius: 50%;
+    stroke-width: 1px;
+    stroke: #fff;
+    stroke-miterlimit: 10px;
+}
+.checkmark-circle {
+    fill: none;
+    stroke-dasharray: 200px;
+    stroke-dashoffset: 200px;
+    stroke-width: 1px;
+    stroke-miterlimit: 10px;
+}
+@-webkit-keyframes fillCheckSuccess {
+    to {
+        box-shadow: inset 0 0 0 100px #3c763d;
+    }
+}
+@keyframes fillCheckSuccess {
+    to {
+        box-shadow: inset 0 0 0 100px #3c763d;
+    }
+}
+@-webkit-keyframes fillCheckError {
+    to {
+        box-shadow: inset 0 0 0 100px #a94442;
+    }
+}
+@keyframes fillCheckError {
+    to {
+        box-shadow: inset 0 0 0 100px #a94442;
+    }
+}
+@-webkit-keyframes beatCheck {
+    0%, 100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    50% {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05);
+    }
+}
+@keyframes beatCheck {
+    0%, 100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    50% {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05);
+    }
+}
+@-webkit-keyframes echoSuccess {
+    from {
+        box-shadow: inset 0 0 0 100px #3c763d, 0 0 0 0 #3c763d;
+    }
+    to {
+        box-shadow: inset 0 0 0 100px #3c763d, 0 0 0 50px transparent;
+    }
+}
+@keyframes echoSuccess {
+    from {
+        box-shadow: inset 0 0 0 100px #3c763d, 0 0 0 0 #3c763d;
+    }
+    to {
+        box-shadow: inset 0 0 0 100px #3c763d, 0 0 0 50px transparent;
+    }
+}
+@-webkit-keyframes echoError {
+    from {
+        box-shadow: inset 0 0 0 100px #a94442, 0 0 0 0 #a94442;
+    }
+    to {
+        box-shadow: inset 0 0 0 100px #a94442, 0 0 0 50px transparent;
+    }
+}
+@keyframes echoError {
+    from {
+        box-shadow: inset 0 0 0 100px #a94442, 0 0 0 0 #a94442;
+    }
+    to {
+        box-shadow: inset 0 0 0 100px #a94442, 0 0 0 50px transparent;
+    }
+}
+.checkmark-check {
+    stroke: #fff;
+    stroke-dasharray: 100px;
+    stroke-dashoffset: 100px;
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+}
+@-webkit-keyframes strokeCheck {
+    to {
+        stroke-dashoffset: 0px;
+    }
+}
+@keyframes strokeCheck {
+    to {
+        stroke-dashoffset: 0px;
+    }
+}
+
+
+
+.spinner {
+    margin: auto;
+    /*width: 50px;*/
+    height: 32px;
+    align-items: center;
+    /*padding: 0px;*/
+}

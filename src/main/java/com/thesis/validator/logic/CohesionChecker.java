@@ -2,6 +2,7 @@ package com.thesis.validator.logic;
 
 
 import com.thesis.validator.enums.Averages;
+import com.thesis.validator.enums.Feedback;
 import com.thesis.validator.enums.SimilarityAlgos;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.helpers.MathOperations;
@@ -44,13 +45,14 @@ public class CohesionChecker implements CheckerChain {
         }
         result = Math.abs(MathOperations.getCoefficientOfVariation(entityScores, averageType) - 1) * 10.0;
         TestResult testResult = new TestResult(Tests.ENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        //TODO do this for all other places
         CheckerChain.PopulateCauseAndTreatment(testResult,
-                "We detected an abnormally high variation in inward vs outward dependencies count per microservice!",
-                "We recommend revising the dependencies of the system.",
-                "We detected an medium variation in inward vs outward dependencies count per microservice!",
-                "We recommend revising the use of Bounded Contexts in the design process.",
-                "We detected optimal dependencies between the microservices",
-                "No need.");
+                Feedback.LOW_CAUSE_DEPENDENCIES.toString(),
+                Feedback.LOW_TREATMENT_DEPENDENCIES.toString(),
+                Feedback.MEDIUM_CAUSE_DEPENDENCIES.toString(),
+                Feedback.MEDIUM_TREATMENT_DEPENDENCIES.toString(),
+                Feedback.HIGH_CAUSE_DEPENDENCIES.toString(),
+                Feedback.HIGH_TREATMENT_DEPENDENCIES.toString());
         resultScores.put(Tests.ENTITIES_COMPOSITION_TEST.name(),testResult);
 
         // Test relations property

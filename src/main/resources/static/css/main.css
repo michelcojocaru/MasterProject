@@ -470,7 +470,7 @@ body {
 }
 
 .step-content.four {
-    height: 36px;
+    /*height: 36px;*/
     width: 100%;
     background-color: rgba(0, 0, 0, 0.0);
     border-radius: 4px;
@@ -567,3 +567,13 @@ body {
 }
 
 /* End Cause & Treatment info box */
+
+.heavy-red {
+    color: #e62e00;
+    font-weight: bold;
+}
+
+.custom-flex-row {
+    display: flex;
+    flex-direction: row;
+}

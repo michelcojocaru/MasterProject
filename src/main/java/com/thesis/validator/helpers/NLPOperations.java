@@ -1,5 +1,6 @@
 package com.thesis.validator.helpers;
 
+import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.SimilarityAlgos;
 import com.thesis.validator.model.Service;
 import edu.cmu.lti.lexical_db.ILexicalDatabase;
@@ -42,6 +43,11 @@ public class NLPOperations {
         return calculator.calcRelatednessOfWords(word1, word2);
     }
 
+    public static String[] splitWords(String entity){
+        return entity.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])");
+
+    }
+
     public static double checkSemanticSimilarity(List<Service> services, SimilarityAlgos algorithm) {
         ArrayList<Double> similarities = new ArrayList<>();
 
@@ -52,18 +58,40 @@ public class NLPOperations {
                 distinctEntities.toArray(entities);
                 for (int i = 0; i < entities.length; i++) {
                     for (int j = i + 1; j < entities.length; j++) {
-                        similarities.add(calculateSemanticSimilarity(entities[i], entities[j], algorithm));
+                        String[] entityOneItems = splitWords(entities[i]);
+                        String[] entityTwoItems = splitWords(entities[j]);
+
+                        if(entityOneItems.length > 1 || entityTwoItems.length > 1){
+                            ArrayList<Double> innerSimilarities = new ArrayList<>();
+                            for (String itemOne : entityOneItems) {
+                                for (String itemTwo : entityTwoItems) {
+                                    double sim = calculateSemanticSimilarity(itemOne, itemTwo, algorithm);
+                                    innerSimilarities.add(sim);
+                                }
+                            }
+                            similarities.add(calculateMeanOfSimilarities(innerSimilarities));
+                        } else {
+                            similarities.add(calculateSemanticSimilarity(entities[i], entities[j], algorithm));
+                        }
                     }
                 }
             }
         }
+        double result = scoreToMark(calculateMeanOfSimilarities(similarities));
+        return result;
+    }
 
+    private static double calculateMeanOfSimilarities(ArrayList<Double> similarities) {
         double median = MathOperations.median(Operations.ListToArray(similarities));
 
         if (median == 0.0) {
             median = MathOperations.average(Operations.ListToArray(similarities));
         }
 
+        return median;
+    }
+
+    private static double scoreToMark(double median){
         return Math.abs(median - 1) * 10;
     }
 }

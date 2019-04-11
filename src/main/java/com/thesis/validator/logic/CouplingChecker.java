@@ -1,10 +1,12 @@
 package com.thesis.validator.logic;
 
 import com.thesis.validator.enums.Averages;
-import com.thesis.validator.enums.Mark;
+import com.thesis.validator.enums.Feedback;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
+import com.thesis.validator.model.Node;
+import com.thesis.validator.helpers.GraphOperations;
 import com.thesis.validator.model.*;
 
 import java.text.DecimalFormat;
@@ -20,6 +22,8 @@ public class CouplingChecker implements CheckerChain {
     // calculate the coefficient of variation of the differences between
     // inward and outward dependencies for each service
     private static HashMap<String, TestResult> calculateCoupling(List<Service> services, List<Relation> relations, Averages averageType) {
+        HashMap<String,TestResult> resultScores = new HashMap<>();
+        TestResult testResult;
         final int N = services.size();
         double[] couplingScores = new double[N];
         ArrayList<Dependency> dependencies = new ArrayList<>(N);
@@ -41,8 +45,8 @@ public class CouplingChecker implements CheckerChain {
         MathOperations.normalize(couplingScores);
 
         double result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
-        HashMap<String,TestResult> resultScores = new HashMap<>();
-        TestResult testResult = new TestResult(Tests.COUPLING_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+
+        testResult = new TestResult(Tests.COUPLING_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
         CheckerChain.PopulateCauseAndTreatment(testResult,
                 "We detected an abnormally high variation in inward vs outward dependencies count per microservice!",
                 "We recommend revising the dependencies of the system.",
@@ -51,6 +55,26 @@ public class CouplingChecker implements CheckerChain {
                 "We detected optimal dependencies between the microservices",
                 "No need.");
         resultScores.put(Tests.COUPLING_COMPOSITION_TEST.name() ,testResult);
+
+        // SCC identification
+        List<List<Node>> components = GraphOperations.searchStronglyConnectedComponents(services,relations);
+        //TODO revise logic for SCC scoring
+        result = 10.0;
+        for(List<Node> component:components){
+            if(component.size() > 1){
+                result = 0.0;
+            }
+        }
+
+        testResult = new TestResult(Tests.COUPLING_SCC_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        CheckerChain.PopulateCauseAndTreatment(testResult,
+                Feedback.LOW_CAUSE_SCC.toString(),
+                Feedback.LOW_TREATMENT_SCC.toString(),
+                Feedback.MEDIUM_CAUSE_SCC.toString(),
+                Feedback.MEDIUM_TREATMENT_SCC.toString(),
+                Feedback.HIGH_CAUSE_SCC.toString(),
+                Feedback.HIGH_TREATMENT_SCC.toString());
+        resultScores.put(Tests.COUPLING_SCC_TEST.name() ,testResult);
 
         return resultScores;
     }

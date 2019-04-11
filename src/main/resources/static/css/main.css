@@ -548,22 +548,23 @@ body {
 
 .info {
     color: black;
-    background-color: #e7e7e7;
+    /*background-color: #e7e7e7;*/
+    background-color: #cccccc;
 }
 
 .success {
     color: black;
-    background-color: #dff2bf;
+    background-color: rgba(92, 184, 92, 0.6);
 }
 
 .warning {
     color: black;
-    background-color: #FEEFB3;
+    background-color: rgba(255, 163, 26, 0.8);
 }
 
 .danger {
     color: black;
-    background-color: #FFBABA;
+    background-color: rgba(230, 46, 0, 0.8);
 }
 
 /* End Cause & Treatment info box */

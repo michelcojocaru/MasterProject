@@ -354,15 +354,19 @@ function syntaxHighlight(json) {
 }
 
 function toggleSpinnerAnimation(){
+    var spinnerDiv = document.getElementById("spinnerId");
+    var submitButton = document.getElementById("send");
     if(!light) {
-        var x = document.getElementById("spinnerId");
-        x.style.display = "block";
+        spinnerDiv.style.display = "block";
         light = window.setInterval(loaderHandle, 1000 / 30);
+        submitButton.innerText = "Processing";
+        submitButton.disabled = true;
     }else{
         window.clearInterval(light);
         light = null;
-        var x = document.getElementById("spinnerId");
-        x.style.display = "none";
+        spinnerDiv.style.display = "none";
+        submitButton.innerText = "Submit";
+        submitButton.disabled = false;
     }
 }
 

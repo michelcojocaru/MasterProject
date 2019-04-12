@@ -136,7 +136,6 @@ function bindSelectableRows(){
                                 causeText.innerHTML = globalResult[attributeIndex][testIndex]['cause'];
                                 treatmentText.innerHTML = globalResult[attributeIndex][testIndex]['treatment'];
 
-                                //TODO check mark and colour the cause & treatment box accordingly
                                 if (selectedTest[0] < 5) {
                                     causeCard.classList.add("danger");
                                     causeCard.classList.remove("warning");

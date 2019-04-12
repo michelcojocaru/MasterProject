@@ -1,7 +1,6 @@
 package com.thesis.validator.helpers;
 
-import com.thesis.validator.enums.Averages;
-import com.thesis.validator.enums.SimilarityAlgos;
+import com.thesis.validator.enums.SimilarityAlgorithms;
 import com.thesis.validator.model.Service;
 import edu.cmu.lti.lexical_db.ILexicalDatabase;
 import edu.cmu.lti.lexical_db.NictWordNet;
@@ -19,24 +18,24 @@ public class NLPOperations {
     private static final double SIMILARITY_COEFFICIENT_THRESHOLD = 0.2;
     private static ILexicalDatabase db = new NictWordNet();
     private static RelatednessCalculator calculator;
-    private static HashMap<SimilarityAlgos,RelatednessCalculator> rcs;
+    private static HashMap<SimilarityAlgorithms,RelatednessCalculator> rcs;
 
     static {
         //fallback
         calculator = new WuPalmer(db);
 
         rcs = new HashMap<>();
-        rcs.put(SimilarityAlgos.HIRST_ST_ONGE, new HirstStOnge(db));
-        rcs.put(SimilarityAlgos.LEACOCK_CHODOROW, new LeacockChodorow(db));
-        rcs.put(SimilarityAlgos.RESNIK, new Resnik(db));
-        rcs.put(SimilarityAlgos.JIANG_CONRATH, new JiangConrath(db));
-        rcs.put(SimilarityAlgos.LIN, new Lin(db));
-        rcs.put(SimilarityAlgos.PATH, new Path(db));
-        rcs.put(SimilarityAlgos.LESK, new Lesk(db));
-        rcs.put(SimilarityAlgos.WU_PALMER, new WuPalmer(db));
+        rcs.put(SimilarityAlgorithms.HIRST_ST_ONGE, new HirstStOnge(db));
+        rcs.put(SimilarityAlgorithms.LEACOCK_CHODOROW, new LeacockChodorow(db));
+        rcs.put(SimilarityAlgorithms.RESNIK, new Resnik(db));
+        rcs.put(SimilarityAlgorithms.JIANG_CONRATH, new JiangConrath(db));
+        rcs.put(SimilarityAlgorithms.LIN, new Lin(db));
+        rcs.put(SimilarityAlgorithms.PATH, new Path(db));
+        rcs.put(SimilarityAlgorithms.LESK, new Lesk(db));
+        rcs.put(SimilarityAlgorithms.WU_PALMER, new WuPalmer(db));
     }
 
-    public static double calculateSemanticSimilarity(String word1, String word2, SimilarityAlgos algorithm) {
+    public static double calculateSemanticSimilarity(String word1, String word2, SimilarityAlgorithms algorithm) {
         WS4JConfiguration.getInstance().setMFS(true);
         calculator = rcs.get(algorithm);
 
@@ -48,11 +47,11 @@ public class NLPOperations {
 
     }
 
-    public static double checkSemanticSimilarity(List<Service> services, SimilarityAlgos algorithm) {
+    public static double checkSemanticSimilarity(List<Service> services, SimilarityAlgorithms algorithm) {
         ArrayList<Double> similarities = new ArrayList<>();
 
         for (Service service : services) {
-            HashSet<String> distinctEntities = Operations.getDistinctEntities(service);
+            HashSet<String> distinctEntities = Operations.getEntities(service, true);
             if (distinctEntities.size() > 1) {
                 String[] entities = new String[distinctEntities.size()];
                 distinctEntities.toArray(entities);
@@ -77,8 +76,7 @@ public class NLPOperations {
                 }
             }
         }
-        double result = scoreToMark(calculateMeanOfSimilarities(similarities));
-        return result;
+        return scoreToMark(calculateMeanOfSimilarities(similarities));
     }
 
     private static double calculateMeanOfSimilarities(ArrayList<Double> similarities) {

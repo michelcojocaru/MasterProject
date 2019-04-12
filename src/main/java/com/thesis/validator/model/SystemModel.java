@@ -2,7 +2,7 @@ package com.thesis.validator.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thesis.validator.enums.Averages;
-import com.thesis.validator.enums.SimilarityAlgos;
+import com.thesis.validator.enums.SimilarityAlgorithms;
 
 import java.util.List;
 
@@ -17,5 +17,5 @@ public class SystemModel {
     @JsonProperty("averageType")
     public Averages averageType;
     @JsonProperty("similaritiesAlgorithms")
-    public List<SimilarityAlgos> algorithms;
+    public List<SimilarityAlgorithms> algorithms;
 }

@@ -1,6 +1,7 @@
 package com.thesis.validator.logic;
 
 import com.thesis.validator.enums.Averages;
+import com.thesis.validator.enums.Feedback;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
@@ -27,7 +28,7 @@ public class GranularityChecker implements CheckerChain {
         int i = 0;
 
         for (Service service : services) {
-            entities = Operations.getDistinctEntities(service);
+            entities = Operations.getEntities(service, false);
             serviceScores[i++] = entities.size();
         }
 
@@ -37,12 +38,12 @@ public class GranularityChecker implements CheckerChain {
         HashMap<String, TestResult> resultScores = new HashMap<>();
         TestResult testResult = new TestResult(Tests.NANOENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
         CheckerChain.PopulateCauseAndTreatment(testResult,
-                "We detected an abnormally high variation in microservice's sizes!",
-                "We recommend revising the use of Bounded Contexts in the design process.",
-                "We detected an medium variation in microservice's sizes!",
-                "We recommend revising the use of Bounded Contexts in the design process.",
-                "We detected optimal microservice's sizes!",
-                "No need.");
+                Feedback.LOW_CAUSE_NANOENTITIES_COMPOSITION.toString(),
+                Feedback.LOW_TREATMENT_NANOENTITIES_COMPOSITION.toString(),
+                Feedback.MEDIUM_CAUSE_NANOENTITIES_COMPOSITION.toString(),
+                Feedback.MEDIUM_TREATMENT_NANOENTITIES_COMPOSITION.toString(),
+                Feedback.HIGH_CAUSE_NANOENTITIES_COMPOSITION.toString(),
+                Feedback.HIGH_TREATMENT_NANOENTITIES_COMPOSITION.toString());
         resultScores.put(Tests.NANOENTITIES_COMPOSITION_TEST.name(), testResult);
 
         return resultScores;

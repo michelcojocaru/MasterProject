@@ -1,6 +1,6 @@
 package com.thesis.validator.enums;
 
-public enum SimilarityAlgos {
+public enum SimilarityAlgorithms {
     HIRST_ST_ONGE,
     LEACOCK_CHODOROW,
     RESNIK,

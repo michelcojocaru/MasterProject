@@ -1,6 +1,6 @@
 package com.thesis.validator.model;
 import com.thesis.validator.enums.Averages;
-import com.thesis.validator.enums.SimilarityAlgos;
+import com.thesis.validator.enums.SimilarityAlgorithms;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +12,10 @@ public class CrystalGlobe {
     private List<Relation> relations;
     private UseCaseResponsibility useCaseResponsibilities;
     private Averages averageType;
-    private List<SimilarityAlgos> algorithms;
+    private List<SimilarityAlgorithms> algorithms;
 
 
-    public CrystalGlobe(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities, Averages averageType, List<SimilarityAlgos> algorithms) {
+    public CrystalGlobe(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities, Averages averageType, List<SimilarityAlgorithms> algorithms) {
         this.results = new HashMap<>();
         this.services = services;
         this.relations = relations;
@@ -48,7 +48,7 @@ public class CrystalGlobe {
         return this.averageType;
     }
 
-    public List<SimilarityAlgos> getSimilarityAlgorithm() {
+    public List<SimilarityAlgorithms> getSimilarityAlgorithm() {
         return this.algorithms;
     }
 }

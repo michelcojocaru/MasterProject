@@ -38,17 +38,14 @@ public class GraphOperations {
             if(!v.isVisited()) {
                 dfs(v);
             }
-
             // there is an edge back
             if(node.getLowLink() > v.getLowLink()) {
                 node.setLowLink(v.getLowLink());
                 isComponentRoot = false;
             }
         }
-
         // root has special treatment
         if(isComponentRoot) {
-            //count++;
             List<Node> component = new ArrayList<>();
 
             while(true) {
@@ -71,6 +68,7 @@ public class GraphOperations {
                 return node;
             }
         }
+
         return null;
     }
 

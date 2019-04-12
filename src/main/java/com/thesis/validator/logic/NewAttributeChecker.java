@@ -1,6 +1,7 @@
 package com.thesis.validator.logic;
 
 import com.thesis.validator.enums.Averages;
+import com.thesis.validator.enums.Feedback;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.model.*;
 
@@ -25,12 +26,12 @@ public class NewAttributeChecker implements CheckerChain {
 
         testResult = new TestResult(Tests.NEWATTRIBUTE_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
         CheckerChain.PopulateCauseAndTreatment(testResult,
-                "Low Cause related info",
-                "Low Treatment related info",
-                " Mid Cause related info",
-                "Mid Treatment related info",
-                "High Cause related info",
-                "High Treatment related info");
+                Feedback.LOW_CAUSE_NEWATTRIBUTE.toString(),
+                Feedback.LOW_TREATMENT_NEWATTRIBUTE.toString(),
+                Feedback.MEDIUM_CAUSE_NEWATTRIBUTE.toString(),
+                Feedback.MEDIUM_TREATMENT_NEWATTRIBUTE.toString(),
+                Feedback.HIGH_CAUSE_NEWATTRIBUTE.toString(),
+                Feedback.HIGH_TREATMENT_NEWATTRIBUTE.toString());
         resultScores.put(testResult.getTestName().name(),testResult);
         return resultScores;
     }

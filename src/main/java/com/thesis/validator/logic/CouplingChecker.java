@@ -28,6 +28,7 @@ public class CouplingChecker implements CheckerChain {
         double[] couplingScores = new double[N];
         ArrayList<Dependency> dependencies = new ArrayList<>(N);
         int i = 0;
+        double result = 0.0;
 
         for (Service service : services) {
             dependencies.add(new Dependency(service.name, 0, 0));
@@ -44,37 +45,37 @@ public class CouplingChecker implements CheckerChain {
 
         MathOperations.normalize(couplingScores);
 
-        double result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
+        result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
 
-        testResult = new TestResult(Tests.COUPLING_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        testResult = new TestResult(Tests.DEPENDENCIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
         CheckerChain.PopulateCauseAndTreatment(testResult,
-                "We detected an abnormally high variation in inward vs outward dependencies count per microservice!",
-                "We recommend revising the dependencies of the system.",
-                "We detected an medium variation in inward vs outward dependencies count per microservice!",
-                "We recommend revising the use of Bounded Contexts in the design process.",
-                "We detected optimal dependencies between the microservices",
-                "No need.");
-        resultScores.put(Tests.COUPLING_COMPOSITION_TEST.name() ,testResult);
+                Feedback.LOW_CAUSE_DEPENDENCIES.toString(),
+                Feedback.LOW_TREATMENT_DEPENDENCIES.toString(),
+                Feedback.MEDIUM_CAUSE_DEPENDENCIES.toString(),
+                Feedback.MEDIUM_TREATMENT_DEPENDENCIES.toString(),
+                Feedback.HIGH_CAUSE_DEPENDENCIES.toString(),
+                Feedback.HIGH_TREATMENT_DEPENDENCIES.toString());
+        resultScores.put(Tests.DEPENDENCIES_COMPOSITION_TEST.name() ,testResult);
 
         // SCC identification
         List<List<Node>> components = GraphOperations.searchStronglyConnectedComponents(services,relations);
-        //TODO revise logic for SCC scoring
-        result = 10.0;
+        String treatment = null;
+        result = ((double) components.size()/services.size()) * 10.0;
         for(List<Node> component:components){
             if(component.size() > 1){
-                result = 0.0;
+                treatment = "We recommend refactoring " + component + " into one microservice!";
             }
         }
 
-        testResult = new TestResult(Tests.COUPLING_SCC_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        testResult = new TestResult(Tests.SCC_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
         CheckerChain.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_SCC.toString(),
-                Feedback.LOW_TREATMENT_SCC.toString(),
+                treatment == null ? Feedback.LOW_TREATMENT_SCC.toString() : treatment,
                 Feedback.MEDIUM_CAUSE_SCC.toString(),
-                Feedback.MEDIUM_TREATMENT_SCC.toString(),
+                treatment == null ? Feedback.MEDIUM_TREATMENT_SCC.toString() : treatment,
                 Feedback.HIGH_CAUSE_SCC.toString(),
-                Feedback.HIGH_TREATMENT_SCC.toString());
-        resultScores.put(Tests.COUPLING_SCC_TEST.name() ,testResult);
+                treatment == null ? Feedback.HIGH_TREATMENT_SCC.toString() : treatment);
+        resultScores.put(Tests.SCC_TEST.name() ,testResult);
 
         return resultScores;
     }

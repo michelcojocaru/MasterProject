@@ -67,7 +67,7 @@ function drawResults(result) {
 
             //build table for inner tests
             var tests = document.querySelector('#' + attribute + 'Tests');
-            tests.innerHTML += "<table id='" + attribute +"Table' class='table table-striped table-sm'><thead><tr class='clickable'><th scope='col'>Mark</th><th scope='col'>Test Name</th></tr></thead><tbody id='"+ attribute +"TBody'>";
+            tests.innerHTML += "<table id='" + attribute + "Table' class='table table-striped table-sm'><thead><tr><th scope='col'>Mark</th><th scope='col'>Test Name</th></tr></thead><tbody id='"+ attribute +"TBody'>";
             var tbody = document.querySelector('#' + attribute + 'TBody');
             var cause = document.querySelector('#' + attribute + 'Cause');
             var treatment = document.querySelector('#' + attribute + 'Treatment');
@@ -76,19 +76,79 @@ function drawResults(result) {
             treatment.innerHTML = "";
             var average = 0.0;
             var count = 0;
+
             for(var test in result[attribute]) {
                 if (result[attribute].hasOwnProperty(test)) {
-                    count++;
-                    average += result[attribute][test]['score'];
-                    tbody.innerHTML += "<tr id='" + attribute + "TestRow' class='clickable' style='cursor:pointer'>" +
-                                            "<td class='clickable' style='text-align: center'>" + result[attribute][test]['score'] + "</td>" +
-                                            "<td class='clickable'>" + test + "</td>" +
-                                        "</tr>";
-
+                    if(test !== "HIRST_ST_ONGE" &&
+                        test !== "LEACOCK_CHODOROW" &&
+                        test !== "RESNIK" &&
+                        test !== "LIN" &&
+                        test !== "JIANG_CONRATH" &&
+                        test !== "PATH" &&
+                        test !== "LESK" &&
+                        test !== "WU_PALMER"
+                    ) {
+                        count++;
+                        average += result[attribute][test]['score'];
+                        tbody.innerHTML += "<tr id='" + test + "TestRow' class='clickable' style='cursor:pointer'>" +
+                            "<td class='clickable' style='text-align: center'>" + result[attribute][test]['score'] + "</td>" +
+                            "<td class='clickable'>" + test + "</td>" +
+                            "</tr>";
+                    }
                 }
             }
+
+
+
+            if(attribute === "CohesionChecker" && $("#similarity").is(":checked")) {
+                //build table for semantic similarity tests
+                var semanticTests = document.querySelector('#' + attribute + 'Tests');
+                tests.innerHTML += "<table id='" + attribute + "SemanticTable' class='table table-striped table-sm'><thead><tr><th scope='col'>Mark</th><th scope='col'>Algorithm</th></tr></thead><tbody id='" + attribute + "SemanticTBody'>";
+                var semanticTbody = document.querySelector('#' + attribute + 'SemanticTBody');
+                semanticTbody.innerHTML = "";
+                var semanticAverage = 0.0;
+                var semanticTestsCount = 0;
+                for (var semanticTest in result[attribute]) {
+                    if (result[attribute].hasOwnProperty(semanticTest)) {
+                        if(semanticTest === "HIRST_ST_ONGE" ||
+                            semanticTest === "LEACOCK_CHODOROW" ||
+                            semanticTest === "RESNIK" ||
+                            semanticTest === "LIN" ||
+                            semanticTest === "JIANG_CONRATH" ||
+                            semanticTest === "PATH" ||
+                            semanticTest === "LESK" ||
+                            semanticTest === "WU_PALMER"
+                        ) {
+                            semanticTestsCount++;
+                            semanticAverage += result[attribute][semanticTest]['score'];
+                            semanticTbody.innerHTML += "<tr id='" + test + "SemanticTestRow'>" +
+                                "<td class='clickable' style='text-align: center'>" + result[attribute][semanticTest]['score'] + "</td>" +
+                                "<td class='clickable'>" + semanticTest + "</td>" +
+                                "</tr>";
+                        }
+
+                    }
+                }
+                if(semanticTestsCount > 0) {
+                    semanticAverage /= semanticTestsCount;
+                }
+                semanticAverage = Math.round(semanticAverage * 10) / 10;
+                semanticTests.innerHTML += "</tbody></table>";
+
+                average += semanticAverage;
+                count++;
+
+                tbody = document.querySelector('#' + attribute + 'TBody');
+                tbody.innerHTML += "<tr id='" + "SEMANTIC_SIMILARITY_TEST" + "TestRow'>" +
+                    "<td class='clickable' style='text-align: center'>" + semanticAverage + "</td>" +
+                    "<td class='clickable'>" + "SEMANTIC_SIMILARITY_TEST" + "</td>" +
+                    "</tr>";
+
+            }
+
             average /= count;
             average = Math.round(average * 10) / 10;
+
             tests.innerHTML += "</tbody></table>";
 
             var gauge = document.getElementById(attribute + 'Gauge');
@@ -289,6 +349,7 @@ singleFileUploadInput.onchange = function onInputDetected(event) {
     }
 
     reader.readAsText(files[0]);
+    document.getElementById('singleFileUploadInput').removeEventListener('change', inputDetected, false);
 };
 
 function onReaderLoad(event) {

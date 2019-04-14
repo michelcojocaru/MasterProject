@@ -9,8 +9,6 @@ public class TestResult {
     private String cause;
     private String treatment;
 
-
-
     public TestResult(Tests name, double score){
         this.name = name;
         this.score = score;

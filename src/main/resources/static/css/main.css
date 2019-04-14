@@ -476,6 +476,13 @@ body {
     border-radius: 4px;
     margin-top: 10px;
 }
+.step-content.five {
+    /*height: 36px;*/
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.0);
+    border-radius: 4px;
+    margin-top: 10px;
+}
 
 .next-btn {
     position: absolute;

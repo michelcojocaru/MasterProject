@@ -18,4 +18,6 @@ public class SystemModel {
     public Averages averageType;
     @JsonProperty("similaritiesAlgorithms")
     public List<SimilarityAlgorithms> algorithms;
+    @JsonProperty("repo")
+    public Repo repo;
 }

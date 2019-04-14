@@ -20,7 +20,7 @@ function drawResults(result) {
     var i = 0;
     var j = 0;
     globalResult = result;
-    //console.log(result);
+    console.log(result);
     resultSelector.innerHTML = "";
 
     for (var attribute in result) {
@@ -278,6 +278,10 @@ function uploadSingleFile(file) {
 }
 
 function getCheckBoxes(file){
+    var repoAnalysis = $("#repoAnalysis").is(":checked");
+    if (!repoAnalysis) {
+        file['repo'] = null;
+    }
     var averageType = $("#averageType").is(":checked");
     if (averageType) {
         file['averageType'] = "MEDIAN";
@@ -506,6 +510,16 @@ $(document).ready(function() {
         var next = $(cur).next();
         //$(cur).addClass('minimized');
         setTimeout(function() {
+            $(next).removeClass('minimized');
+            curOpen = $(next);
+        }, 400);
+    });
+
+    $('#repoAnalysis').change(function () {
+        var cur = $(this).closest('.step');
+        var next = $(cur).next();
+        //$(cur).addClass('minimized');
+        setTimeout(function () {
             $(next).removeClass('minimized');
             curOpen = $(next);
         }, 400);

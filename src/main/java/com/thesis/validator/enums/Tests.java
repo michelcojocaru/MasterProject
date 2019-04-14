@@ -2,6 +2,7 @@ package com.thesis.validator.enums;
 
 public enum Tests {
     NANOENTITIES_COMPOSITION_TEST,
+    LOC_TEST,
     DEPENDENCIES_COMPOSITION_TEST,
     SCC_TEST,
     ENTITIES_COMPOSITION_TEST,

@@ -10,6 +10,14 @@ public enum Feedback {
         HIGH_CAUSE_NANOENTITIES_COMPOSITION("We detected optimal variation between microservice's sizes."),
         HIGH_TREATMENT_NANOENTITIES_COMPOSITION("Nothing."),
 
+        // relativity of sizes between microservices (GRANULARITY)
+        LOW_CAUSE_LOC("We detected high variation between microservice's sizes (in LOC)."),
+        LOW_TREATMENT_LOC("We recommend reconsidering the sizes of the microservices (in LOC)."),
+        MEDIUM_CAUSE_LOC("We detected an acceptable variation between microservice's sizes (in LOC)."),
+        MEDIUM_TREATMENT_LOC("We recommend reconsidering the sizes of the microservices (in LOC)."),
+        HIGH_CAUSE_LOC("We detected optimal variation between microservice's sizes (in LOC)."),
+        HIGH_TREATMENT_LOC("Nothing."),
+
         // variation between inward vs outward dependencies per microservice (COUPLING)
         LOW_CAUSE_DEPENDENCIES("We detected an abnormally high variation between inward vs outward dependencies count per microservice!"),
         LOW_TREATMENT_DEPENDENCIES("We recommend revising the dependencies between components."),

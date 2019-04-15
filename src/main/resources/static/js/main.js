@@ -20,7 +20,7 @@ function drawResults(result) {
     var i = 0;
     var j = 0;
     globalResult = result;
-    console.log(result);
+    //console.log(result);
     resultSelector.innerHTML = "";
 
     for (var attribute in result) {

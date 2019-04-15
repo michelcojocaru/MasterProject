@@ -1,12 +1,9 @@
 package com.thesis.validator.logic;
 
-import com.thesis.validator.config.ClocInstaller;
 import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Feedback;
 import com.thesis.validator.enums.Tests;
-import com.thesis.validator.file.ExternalProgramExecutor;
 import com.thesis.validator.file.FileSearch;
-import com.thesis.validator.file.GitRepoDownloader;
 import com.thesis.validator.file.GitRepoDownloader;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
@@ -15,11 +12,8 @@ import com.thesis.validator.model.CrystalGlobe;
 import com.thesis.validator.model.Repo;
 import com.thesis.validator.model.Service;
 import com.thesis.validator.model.TestResult;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
@@ -63,7 +57,6 @@ public class GranularityChecker implements CheckerChain {
         resultScores.put(Tests.NANOENTITIES_COMPOSITION_TEST.name(), testResult);
 
         //TODO prettify code
-        //long startTime = System.currentTimeMillis();
         Path pathToBeDeleted = Paths.get(System.getProperty("user.dir")).resolve("repo");
         if(GitRepoDownloader.deleteDirectory(pathToBeDeleted.toFile())){
             System.out.println("There was a previous repo!");

@@ -47,7 +47,6 @@ public class GraphOperations {
         // root has special treatment
         if(isComponentRoot) {
             List<Node> component = new ArrayList<>();
-
             while(true) {
                 Node actualNode = stack.pop();
                 component.add(actualNode);
@@ -99,6 +98,7 @@ public class GraphOperations {
 
         GraphOperations graphOperations = new GraphOperations(vertices);
         graphOperations.runAlgorithm();
+
         return graphOperations.getComponents();
     }
 }

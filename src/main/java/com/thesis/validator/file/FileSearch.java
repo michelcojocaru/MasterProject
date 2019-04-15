@@ -11,9 +11,8 @@ public class FileSearch {
     private List<String> result = new ArrayList<>();
     private static FileSearch instance = null;
 
-    private FileSearch() {
-        // Exists only to defeat instantiation.
-    }
+    // Exists only to defeat instantiation.
+    private FileSearch() {}
 
     public static FileSearch getInstance() {
         if (instance == null) {
@@ -25,15 +24,12 @@ public class FileSearch {
     private String getFileName() {
         return fileName;
     }
-
     private void setFileName(String fileName) {
         this.fileName = fileName;
     }
-
     public List<String> getResult() {
         return result;
     }
-
     public void clearResults(){
         this.result.clear();
     }
@@ -43,16 +39,12 @@ public class FileSearch {
         if (directory.isDirectory()) {
             search(directory);
             return result;
-        } //else {
-          //  System.out.println(directory.getAbsoluteFile() + " is not a directory!");
-        //}
+        }
         return null;
     }
 
     private void search(File file) {
         if (file.isDirectory()) {
-            //System.out.println("Searching directory ... " + file.getAbsoluteFile());
-            //do you have permission to read this directory?
             if (file.canRead()) {
                 for (File temp : Objects.requireNonNull(file.listFiles())) {
                     if (temp.isDirectory()) {
@@ -63,10 +55,7 @@ public class FileSearch {
                         }
                     }
                 }
-            } //else {
-                //System.out.println(file.getAbsoluteFile() + "Permission Denied");
-            //}
+            }
         }
     }
-
 }

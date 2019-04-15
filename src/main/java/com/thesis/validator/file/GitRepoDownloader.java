@@ -10,14 +10,11 @@ public class GitRepoDownloader {
     public static boolean download(String url){
         String cloneDirectoryPath = System.getProperty("user.dir") + "/repo";
         try {
-            //System.out.println("Cloning " + url + " into "+cloneDirectoryPath);
             Git.cloneRepository()
                     .setURI(url)
                     .setDirectory(Paths.get(cloneDirectoryPath).toFile())
                     .call();
-            //System.out.println("Completed Cloning");
         } catch (GitAPIException e) {
-            //System.out.println("Exception occurred while cloning repo");
             e.printStackTrace();
             return false;
         }

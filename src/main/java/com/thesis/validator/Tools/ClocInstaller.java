@@ -1,6 +1,5 @@
-package com.thesis.validator.config;
+package com.thesis.validator.Tools;
 
-import com.thesis.validator.file.ExternalProgramExecutor;
 
 public class ClocInstaller {
 
@@ -9,18 +8,19 @@ public class ClocInstaller {
     public static boolean installCloc(){
 
         if (isWindows()) {
-            System.out.println("This is Windows");
+            //System.out.println("This is Windows");
         } else if (isMac()) {
-            System.out.println("This is Mac");
+            //System.out.println("This is Mac");
+            ExternalProgramExecutor.exec( "brew" ,"install" ,"perl");
             ExternalProgramExecutor.exec( "brew" ,"install" ,"cloc");
         } else if (isUnix()) {
-            System.out.println("This is Unix or Linux");
+            //System.out.println("This is Unix or Linux");
             ExternalProgramExecutor.exec( "apt-get" ,"install" ,"perl");
             ExternalProgramExecutor.exec( "apt-get" ,"install" ,"cloc");
         } else if (isSolaris()) {
-            System.out.println("This is Solaris");
+            //System.out.println("This is Solaris");
         } else {
-            System.out.println("Your OS is not support!!");
+            //System.out.println("Your OS is not support!!");
             return false;
         }
         return true;

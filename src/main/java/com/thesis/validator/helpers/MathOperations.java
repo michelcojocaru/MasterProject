@@ -37,7 +37,6 @@ public class MathOperations {
 
     public static double median(double[] array) {
         double median;
-
         Arrays.sort(array);
         int len = array.length;
         if (len % 2 == 0) {
@@ -77,7 +76,6 @@ public class MathOperations {
         double coefficientOfVariation = 0.0;
 
         standardDeviation = calculateStandardDeviation(scores);
-
 
         if (type == Averages.MEDIAN) {
             if (n > 0) {

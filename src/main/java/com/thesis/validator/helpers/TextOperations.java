@@ -23,7 +23,9 @@ public class TextOperations {
                     !string.trim().startsWith("\r") &&
                     !string.trim().startsWith("\r\n") &&
                     !string.trim().isEmpty() &&
-                    !string.trim().startsWith("//")) {
+                    !string.trim().startsWith("//") &&
+                    !string.trim().equals("{") &&
+                    !string.trim().equals("}")) {
                         lineCount++;
                 }
             }

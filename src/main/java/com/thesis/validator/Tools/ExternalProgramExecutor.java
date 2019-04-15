@@ -1,4 +1,4 @@
-package com.thesis.validator.file;
+package com.thesis.validator.Tools;
 
 import java.io.BufferedReader;
 import java.io.IOException;

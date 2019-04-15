@@ -1,16 +1,16 @@
 package com.thesis.validator.file;
 
-import com.thesis.validator.enums.Result;
+
+import com.thesis.validator.model.TestResult;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Response {
 
     public String errorMessage;
-    public HashMap<String, HashMap<String,Double>> results;
+    public HashMap<String, HashMap<String,TestResult>> results;
 
-    public Response(HashMap<String, HashMap<String,Double>> results) {
+    public Response(HashMap<String, HashMap<String, TestResult>> results) {
         this.results = results;
     }
 

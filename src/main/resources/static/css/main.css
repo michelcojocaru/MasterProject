@@ -233,6 +233,20 @@ form {
     border-radius: 10px;
 }
 
+.cause-box {
+    overflow: auto;
+    margin-top: 10px;
+    box-shadow: 3px 3px 11px rgba(0, 0, 0, 0.27);
+    border-radius: 5px;
+}
+
+.treatment-box {
+    overflow: auto;
+    margin-top: 10px;
+    box-shadow: 3px 3px 11px rgba(0, 0, 0, 0.27);
+    border-radius: 5px;
+}
+
 .string {
     color: green;
 }
@@ -311,9 +325,9 @@ pre {
     /*margin-top: 10px;*/
     /*margin-left: 10px !important;*/
     margin-top: 10px !important;
-    margin-right: 10px !important;
+    /*margin-right: 10px !important;*/
+    margin-right: 10px;
 }
-
 
 /* stuff for stepper */
 
@@ -448,7 +462,7 @@ body {
 }
 
 .step-content.three {
-    height: 36px;
+    /*height: 100px;*/
     width: 100%;
     background-color: rgba(0, 0, 0, 0.0);
     border-radius: 4px;
@@ -456,7 +470,14 @@ body {
 }
 
 .step-content.four {
-    height: 36px;
+    /*height: 36px;*/
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.0);
+    border-radius: 4px;
+    margin-top: 10px;
+}
+.step-content.five {
+    /*height: 36px;*/
     width: 100%;
     background-color: rgba(0, 0, 0, 0.0);
     border-radius: 4px;
@@ -515,9 +536,52 @@ body {
 }
 
 /* End stuff for stepper*/
+
 .container-custom {
     padding-right: 0px !important;
     padding-left: 0px !important;
     margin-right: 0px !important;
     margin-left: 0px !important;
+}
+
+/* Cause & Treatment info box */
+
+.info, .success, .warning, .danger {
+    border: 1px solid #cccccc;
+    margin: 5px 5px;
+    padding: 7px 5px;
+    border-radius: 5px;
+}
+
+.info {
+    color: black;
+    /*background-color: #e7e7e7;*/
+    background-color: #cccccc;
+}
+
+.success {
+    color: #007E33;
+    /*background-color: #007E33;*/
+}
+
+.warning {
+    color: #FF8800;
+    /*background-color: #FF8800;*/
+}
+
+.danger {
+    color: #CC0000;
+    /*background-color: #CC0000;*/
+}
+
+/* End Cause & Treatment info box */
+
+.heavy-red {
+    color: #CC0000;
+    font-weight: bold;
+}
+
+.custom-flex-row {
+    display: flex;
+    flex-direction: row;
 }

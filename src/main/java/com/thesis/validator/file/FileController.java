@@ -31,7 +31,7 @@ public class FileController {
     public Response uploadFile(@RequestBody SystemModel model) {
         try {
 
-            CrystalGlobe crystalGlobe = new CrystalGlobe(model.services, model.relations, model.useCaseResponsibility, model.averageType);
+            CrystalGlobe crystalGlobe = new CrystalGlobe(model.services, model.relations, model.useCaseResponsibility, model.averageType, model.algorithms, model.repo);
 
             Checker checker = new Checker();
             checker.getFirstTest().runAssessment(crystalGlobe);

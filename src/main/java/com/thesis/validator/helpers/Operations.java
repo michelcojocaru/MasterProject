@@ -7,7 +7,6 @@ import com.thesis.validator.model.Service;
 import com.thesis.validator.model.UseCaseResponsibility;
 import org.springframework.util.StringUtils;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Operations {
@@ -41,7 +40,7 @@ public class Operations {
 
         for (T t : items) {
             entitySet.clear();
-            entitySet = getDistinctEntities(t);
+            entitySet = getEntities(t,true);
             for (String entity : entitySet) {
                 if (!entityOccurrences.containsKey(entity)) {
                     entityOccurrences.put(entity, 1);
@@ -82,37 +81,32 @@ public class Operations {
         return false;
     }
 
-    public static <T> HashSet<String> getDistinctEntities(T t) {
+    public static <T> HashSet<String> getEntities(T t, boolean distinct) {
         HashSet<String> entities = new HashSet<>();
 
         if (t instanceof Service) {
             for (String nanoentity : ((Service) t).nanoentities) {
-                String[] tokens = StringUtils.split(nanoentity, ".");
-                if (tokens != null) {
-                    entities.add(tokens[0]);
-                }
+                populateEntities(distinct, entities, nanoentity);
             }
         } else if (t instanceof Relation) {
             for (String sharedEntity : ((Relation) t).sharedEntities) {
-                String[] tokens = StringUtils.split(sharedEntity, ".");
-                if (tokens != null) {
-                    entities.add(tokens[0]);
-                }
+                populateEntities(distinct, entities, sharedEntity);
             }
         }
 
         return entities;
     }
 
-//TODO try to generify method
-//    public static <T> T[] ListToArray(List<T> t){
-//        @SuppressWarnings("unchecked")
-//        T[] array = (T[]) new Object[t.size()];
-//        for(int i = 0; i < t.size(); i++){
-//            array[i] = t.get(i);
-//        }
-//        return array;
-//    }
+    private static void populateEntities(boolean distinct, HashSet<String> entities, String sharedEntity) {
+        if(distinct) {
+            String[] tokens = StringUtils.split(sharedEntity, ".");
+            if (tokens != null) {
+                entities.add(tokens[0]);
+            }
+        }else {
+            entities.add(sharedEntity);
+        }
+    }
 
     public static double[] ListToArray(List<Double> t){
         double[] result = new double[t.size()];

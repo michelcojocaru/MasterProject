@@ -1,14 +1,13 @@
 package com.thesis.validator.logic;
 
 import com.thesis.validator.enums.Averages;
-import com.thesis.validator.enums.Result;
+import com.thesis.validator.enums.Feedback;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
-import com.thesis.validator.model.CrystalGlobe;
-import com.thesis.validator.model.Dependency;
-import com.thesis.validator.model.Relation;
-import com.thesis.validator.model.Service;
+import com.thesis.validator.model.Node;
+import com.thesis.validator.helpers.GraphOperations;
+import com.thesis.validator.model.*;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -22,11 +21,14 @@ public class CouplingChecker implements CheckerChain {
 
     // calculate the coefficient of variation of the differences between
     // inward and outward dependencies for each service
-    private static HashMap<String,Double> calculateCoupling(List<Service> services, List<Relation> relations, Averages averageType) {
+    private static HashMap<String, TestResult> calculateCoupling(List<Service> services, List<Relation> relations, Averages averageType) {
+        HashMap<String,TestResult> resultScores = new HashMap<>();
+        TestResult testResult;
         final int N = services.size();
         double[] couplingScores = new double[N];
         ArrayList<Dependency> dependencies = new ArrayList<>(N);
         int i = 0;
+        double result = 0.0;
 
         for (Service service : services) {
             dependencies.add(new Dependency(service.name, 0, 0));
@@ -43,9 +45,37 @@ public class CouplingChecker implements CheckerChain {
 
         MathOperations.normalize(couplingScores);
 
-        double result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
-        HashMap<String,Double> resultScores = new HashMap<>();
-        resultScores.put(Tests.COUPLING_COMPOSITION_TEST.name() ,Double.parseDouble(new DecimalFormat(".#").format(result)));
+        result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
+
+        testResult = new TestResult(Tests.DEPENDENCIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        CheckerChain.PopulateCauseAndTreatment(testResult,
+                Feedback.LOW_CAUSE_DEPENDENCIES.toString(),
+                Feedback.LOW_TREATMENT_DEPENDENCIES.toString(),
+                Feedback.MEDIUM_CAUSE_DEPENDENCIES.toString(),
+                Feedback.MEDIUM_TREATMENT_DEPENDENCIES.toString(),
+                Feedback.HIGH_CAUSE_DEPENDENCIES.toString(),
+                Feedback.HIGH_TREATMENT_DEPENDENCIES.toString());
+        resultScores.put(Tests.DEPENDENCIES_COMPOSITION_TEST.name() ,testResult);
+
+        // SCC identification
+        List<List<Node>> components = GraphOperations.searchStronglyConnectedComponents(services,relations);
+        String treatment = null;
+        result = ((double) components.size()/services.size()) * 10.0;
+        for(List<Node> component:components){
+            if(component.size() > 1){
+                treatment = "We recommend refactoring " + component + " into one microservice!";
+            }
+        }
+
+        testResult = new TestResult(Tests.SCC_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        CheckerChain.PopulateCauseAndTreatment(testResult,
+                Feedback.LOW_CAUSE_SCC.toString(),
+                treatment == null ? Feedback.LOW_TREATMENT_SCC.toString() : treatment,
+                Feedback.MEDIUM_CAUSE_SCC.toString(),
+                treatment == null ? Feedback.MEDIUM_TREATMENT_SCC.toString() : treatment,
+                Feedback.HIGH_CAUSE_SCC.toString(),
+                treatment == null ? Feedback.HIGH_TREATMENT_SCC.toString() : treatment);
+        resultScores.put(Tests.SCC_TEST.name() ,testResult);
 
         return resultScores;
     }

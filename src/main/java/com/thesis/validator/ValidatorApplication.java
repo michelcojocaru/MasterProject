@@ -17,10 +17,10 @@ public class ValidatorApplication {
 
 
     public static void main(String[] args) {
-        boolean clocInit = ClocInstaller.installCloc();
-        if(clocInit){
-            System.out.println("Successfully initialized cloc!");
-        }
+//        boolean clocInit = ClocInstaller.installCloc();
+//        if(clocInit){
+//            System.out.println("Successfully initialized cloc!");
+//        }
         SpringApplication.run(ValidatorApplication.class, args);
     }
 

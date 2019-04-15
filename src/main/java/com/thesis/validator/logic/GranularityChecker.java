@@ -10,6 +10,7 @@ import com.thesis.validator.file.GitRepoDownloader;
 import com.thesis.validator.file.GitRepoDownloader;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
+import com.thesis.validator.helpers.TextOperations;
 import com.thesis.validator.model.CrystalGlobe;
 import com.thesis.validator.model.Repo;
 import com.thesis.validator.model.Service;
@@ -71,7 +72,6 @@ public class GranularityChecker implements CheckerChain {
             if (GitRepoDownloader.download(repo.url)) {
                 i = 0;
                 int lineCount;
-                String stats = null;
                 FileSearch fileSearch = FileSearch.getInstance();
                 for (Service service : services) {
                     lineCount = 0;
@@ -81,21 +81,7 @@ public class GranularityChecker implements CheckerChain {
                             for (String language : repo.languages) {
                                 List<String> files = fileSearch.searchDirectory(new File(System.getProperty("user.dir") + "/repo"), entity + language);
                                 for (String file : files) {
-                                    try {
-                                        if(ClocInstaller.isMac()) {
-                                            stats = ExternalProgramExecutor.exec("/usr/local/Cellar/cloc/1.80/bin/cloc", file, "--json");
-                                        }else if(ClocInstaller.isUnix()){
-                                            stats = ExternalProgramExecutor.exec("cloc", file, "--json"); /* "/usr/bin/cloc" */
-                                        }
-                                        if (stats != null) {
-                                            JSONObject clocResult = new JSONObject(stats);
-                                            JSONObject java = clocResult.getJSONObject("Java");
-                                            String loc = java.getString("code");
-                                            lineCount += Integer.parseInt(loc);
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                    lineCount += TextOperations.countLines(file);
                                 }
                                 fileSearch.clearResults();
                             }
@@ -123,10 +109,6 @@ public class GranularityChecker implements CheckerChain {
                 resultScores.put(Tests.LOC_TEST.name(), testResult);
             }
         }
-
-        //long stopTime = System.currentTimeMillis();
-        //long elapsedTime = stopTime - startTime;
-        //System.out.println("LOC test time:" + elapsedTime);
 
         return resultScores;
     }

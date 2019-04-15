@@ -85,7 +85,7 @@ public class GranularityChecker implements CheckerChain {
                                         if(ClocInstaller.isMac()) {
                                             stats = ExternalProgramExecutor.exec("/usr/local/Cellar/cloc/1.80/bin/cloc", file, "--json");
                                         }else if(ClocInstaller.isUnix()){
-                                            stats = ExternalProgramExecutor.exec("/usr/bin/cloc", file, "--json");
+                                            stats = ExternalProgramExecutor.exec("cloc", file, "--json"); /* "/usr/bin/cloc" */
                                         }
                                         if (stats != null) {
                                             JSONObject clocResult = new JSONObject(stats);

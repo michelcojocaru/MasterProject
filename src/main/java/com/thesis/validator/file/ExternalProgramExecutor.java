@@ -21,10 +21,11 @@ public class ExternalProgramExecutor {
             while ((line = br.readLine()) != null) {
                 result.append(line);
             }
+            return String.valueOf(result);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return String.valueOf(result);
+        return null;
     }
 }

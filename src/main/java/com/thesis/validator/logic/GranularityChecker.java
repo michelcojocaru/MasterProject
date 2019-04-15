@@ -1,5 +1,6 @@
 package com.thesis.validator.logic;
 
+import com.thesis.validator.config.ClocInstaller;
 import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Feedback;
 import com.thesis.validator.enums.Tests;
@@ -70,7 +71,7 @@ public class GranularityChecker implements CheckerChain {
             if (GitRepoDownloader.download(repo.url)) {
                 i = 0;
                 int lineCount;
-                String stats;
+                String stats = null;
                 FileSearch fileSearch = FileSearch.getInstance();
                 for (Service service : services) {
                     lineCount = 0;
@@ -81,7 +82,11 @@ public class GranularityChecker implements CheckerChain {
                                 List<String> files = fileSearch.searchDirectory(new File(System.getProperty("user.dir") + "/repo"), entity + language);
                                 for (String file : files) {
                                     try {
-                                        stats = ExternalProgramExecutor.exec("/usr/local/Cellar/cloc/1.80/bin/cloc", file, "--json");
+                                        if(ClocInstaller.isMac()) {
+                                            stats = ExternalProgramExecutor.exec("/usr/local/Cellar/cloc/1.80/bin/cloc", file, "--json");
+                                        }else if(ClocInstaller.isUnix()){
+                                            stats = ExternalProgramExecutor.exec("/usr/bin/cloc", file, "--json");
+                                        }
                                         if (stats != null) {
                                             JSONObject clocResult = new JSONObject(stats);
                                             JSONObject java = clocResult.getJSONObject("Java");

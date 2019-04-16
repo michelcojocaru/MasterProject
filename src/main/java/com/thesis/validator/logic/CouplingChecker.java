@@ -2,6 +2,7 @@ package com.thesis.validator.logic;
 
 import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Feedback;
+import com.thesis.validator.enums.SimilarityAlgorithms;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
@@ -14,14 +15,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CouplingChecker implements CheckerChain {
+public class CouplingChecker extends Attribute {
 
     private static final double COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.15;
-    private CheckerChain chain;
+    private Attribute chain;
 
     // calculate the coefficient of variation of the differences between
     // inward and outward dependencies for each service
-    private static HashMap<String, TestResult> calculateCoupling(List<Service> services, List<Relation> relations, Averages averageType) {
+    public HashMap<String, TestResult> assessAttribute(List<Service> services,
+                                                               List<Relation> relations,
+                                                               UseCaseResponsibility useCaseResponsibilities,
+                                                               Averages averageType,
+                                                               List<SimilarityAlgorithms> algorithms,
+                                                               Repo repo) {
         HashMap<String,TestResult> resultScores = new HashMap<>();
         TestResult testResult;
         final int N = services.size();
@@ -48,7 +54,7 @@ public class CouplingChecker implements CheckerChain {
         result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
 
         testResult = new TestResult(Tests.DEPENDENCIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-        CheckerChain.PopulateCauseAndTreatment(testResult,
+        Attribute.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_DEPENDENCIES.toString(),
                 Feedback.LOW_TREATMENT_DEPENDENCIES.toString(),
                 Feedback.MEDIUM_CAUSE_DEPENDENCIES.toString(),
@@ -68,7 +74,7 @@ public class CouplingChecker implements CheckerChain {
         }
 
         testResult = new TestResult(Tests.SCC_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-        CheckerChain.PopulateCauseAndTreatment(testResult,
+        Attribute.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_SCC.toString(),
                 treatment == null ? Feedback.LOW_TREATMENT_SCC.toString() : treatment,
                 Feedback.MEDIUM_CAUSE_SCC.toString(),
@@ -80,17 +86,4 @@ public class CouplingChecker implements CheckerChain {
         return resultScores;
     }
 
-    @Override
-    public void setNextChain(CheckerChain nextChain) {
-        this.chain = nextChain;
-    }
-
-    @Override
-    public void runAssessment(CrystalGlobe crystalGlobe) {
-        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), calculateCoupling(crystalGlobe.getServices(), crystalGlobe.getRelations(), crystalGlobe.getTypeOfAverage()));
-
-        if (this.chain != null) {
-            this.chain.runAssessment(crystalGlobe);
-        }
-    }
 }

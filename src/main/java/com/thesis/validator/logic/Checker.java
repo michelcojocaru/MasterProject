@@ -1,23 +1,35 @@
 package com.thesis.validator.logic;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Checker {
 
-    CheckerChain[] chain = {
-            new GranularityChecker(),
-            new CohesionChecker(),
-            new CouplingChecker(),
-            //register your new Checker
-            new NewAttributeChecker(),
-    };
+    private List<Attribute> chain;
 
     public Checker() {
-        for (int i = 0; i < chain.length - 1; i++) {
-            chain[i].setNextChain(chain[i + 1]);
-        }
+        this.chain = new ArrayList<>();
+        this.chain.add(new GranularityChecker());
+        this.chain.add(new CouplingChecker());
+        this.chain.add(new CohesionChecker());
+        //chain.add(new NewAttributeChecker());
+
+        setChainOrder();
     }
 
-    public CheckerChain getFirstTest() {
-        return this.chain[0];
+    public Attribute getFirstChecker() {
+        return this.chain.get(0);
+    }
+
+    public void registerAttributeChecker(Attribute checker){
+        this.chain.add(checker);
+        setChainOrder();
+    }
+
+    private void setChainOrder(){
+        for (int i = 0; i < chain.size() - 1; i++) {
+            chain.get(i).setNextInChain(chain.get(i + 1));
+        }
     }
 }

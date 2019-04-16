@@ -2,16 +2,14 @@ package com.thesis.validator.logic;
 
 import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Feedback;
+import com.thesis.validator.enums.SimilarityAlgorithms;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.file.FileSearch;
 import com.thesis.validator.file.GitRepoDownloader;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
 import com.thesis.validator.helpers.TextOperations;
-import com.thesis.validator.model.CrystalGlobe;
-import com.thesis.validator.model.Repo;
-import com.thesis.validator.model.Service;
-import com.thesis.validator.model.TestResult;
+import com.thesis.validator.model.*;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -21,14 +19,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-public class GranularityChecker implements CheckerChain {
+public class GranularityChecker extends Attribute {
 
     private static final double GRANULARITY_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.5;
-    private CheckerChain chain;
+    private Attribute chain;
 
     // calculate the coefficient of variation between the lengths
     // of nanoentity lists from each service
-    private static HashMap<String,TestResult> calculateGranularity(List<Service> services, Averages averageType, Repo repo) {
+    public HashMap<String,TestResult> assessAttribute(List<Service> services,
+                                                      List<Relation> relations,
+                                                      UseCaseResponsibility useCaseResponsibilities,
+                                                      Averages averageType,
+                                                      List<SimilarityAlgorithms> algorithms,
+                                                      Repo repo) {
         final int N = services.size();
         double[] serviceScores = new double[N];
         double[] locScores = new double[N];
@@ -47,7 +50,7 @@ public class GranularityChecker implements CheckerChain {
 
         result = Math.abs(MathOperations.getCoefficientOfVariation(serviceScores, averageType) - 1) * 10.0;
         testResult = new TestResult(Tests.NANOENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-        CheckerChain.PopulateCauseAndTreatment(testResult,
+        Attribute.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_NANOENTITIES_COMPOSITION.toString(),
                 Feedback.LOW_TREATMENT_NANOENTITIES_COMPOSITION.toString(),
                 Feedback.MEDIUM_CAUSE_NANOENTITIES_COMPOSITION.toString(),
@@ -92,7 +95,7 @@ public class GranularityChecker implements CheckerChain {
 
                 result = Math.abs(MathOperations.getCoefficientOfVariation(locScores, averageType) - 1) * 10.0;
                 testResult = new TestResult(Tests.LOC_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-                CheckerChain.PopulateCauseAndTreatment(testResult,
+                Attribute.PopulateCauseAndTreatment(testResult,
                         Feedback.LOW_CAUSE_LOC.toString(),
                         Feedback.LOW_TREATMENT_LOC.toString(),
                         Feedback.MEDIUM_CAUSE_LOC.toString(),
@@ -104,20 +107,5 @@ public class GranularityChecker implements CheckerChain {
         }
 
         return resultScores;
-    }
-
-
-    @Override
-    public void setNextChain(CheckerChain nextChain) {
-        this.chain = nextChain;
-    }
-
-    @Override
-    public void runAssessment(CrystalGlobe crystalGlobe) {
-        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), calculateGranularity(crystalGlobe.getServices(), crystalGlobe.getTypeOfAverage(), crystalGlobe.getRepo()));
-
-        if (this.chain != null) {
-            this.chain.runAssessment(crystalGlobe);
-        }
     }
 }

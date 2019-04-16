@@ -2,6 +2,7 @@ package com.thesis.validator.logic;
 
 import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Feedback;
+import com.thesis.validator.enums.SimilarityAlgorithms;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.model.*;
 
@@ -9,12 +10,18 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 
-public class NewAttributeChecker implements CheckerChain {
+public class NewAttributeChecker extends Attribute {
 
     private static final double NEW_ATTRIBUTE_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.0;
-    private CheckerChain chain;
+    private Attribute chain;
 
-    private static HashMap<String, TestResult> calculateNewAttribute(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibility, Averages averageType) {
+
+    public HashMap<String, TestResult> assessAttribute(List<Service> services,
+                                                List<Relation> relations,
+                                                UseCaseResponsibility useCaseResponsibilities,
+                                                Averages averageType,
+                                                List<SimilarityAlgorithms> algorithms,
+                                                Repo repo) {
         HashMap<String,TestResult> resultScores = new HashMap<>();
         TestResult testResult = null;
         double result = 0.0;
@@ -25,7 +32,7 @@ public class NewAttributeChecker implements CheckerChain {
          * assessment */
 
         testResult = new TestResult(Tests.NEWATTRIBUTE_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-        CheckerChain.PopulateCauseAndTreatment(testResult,
+        Attribute.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_NEWATTRIBUTE.toString(),
                 Feedback.LOW_TREATMENT_NEWATTRIBUTE.toString(),
                 Feedback.MEDIUM_CAUSE_NEWATTRIBUTE.toString(),
@@ -34,20 +41,5 @@ public class NewAttributeChecker implements CheckerChain {
                 Feedback.HIGH_TREATMENT_NEWATTRIBUTE.toString());
         resultScores.put(testResult.getTestName().name(),testResult);
         return resultScores;
-    }
-
-    @Override
-    public void setNextChain(CheckerChain nextChain) {
-        this.chain = nextChain;
-    }
-
-    @Override
-    public void runAssessment(CrystalGlobe crystalGlobe) {
-        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), calculateNewAttribute(crystalGlobe.getServices(),
-                crystalGlobe.getRelations(), crystalGlobe.getUseCaseResponsibilities(), crystalGlobe.getTypeOfAverage()));
-
-        if (this.chain != null) {
-            this.chain.runAssessment(crystalGlobe);
-        }
     }
 }

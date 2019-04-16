@@ -1,4 +1,4 @@
-package com.thesis.validator.Tools;
+package com.thesis.validator.tools;
 
 
 public class ClocInstaller {

@@ -35,7 +35,8 @@ public class FileController {
             CrystalGlobe crystalGlobe = new CrystalGlobe(model.services, model.relations, model.useCaseResponsibility, model.averageType, model.algorithms, model.repo);
 
             Checker checker = new Checker();
-            InlineCompiler.run(crystalGlobe,"package com.thesis.validator.logic;\n" +
+            //InlineCompiler.run(crystalGlobe,"package com.thesis.validator.logic;\n" +
+            InlineCompiler.load("package com.thesis.validator.logic;\n" +
                     "\n" +
                     "import com.thesis.validator.enums.Averages;\n" +
                     "import com.thesis.validator.enums.Feedback;\n" +
@@ -50,7 +51,9 @@ public class FileController {
                     "public class NewAttributeChecker extends Attribute {\n" +
                     "\n" +
                     "    private static final double NEW_ATTRIBUTE_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.0;\n" +
-                    "    private Attribute chain;\n" +
+                    //"    private Attribute chain;\n" +
+                    //"@Override\n" +
+                    " public String pup(){return \"te fut!\";}" +
                     "\n" +
                     "\n" +
                     "    public HashMap<String, TestResult> assessAttribute(List<Service> services,\n" +
@@ -61,7 +64,7 @@ public class FileController {
                     "                                                Repo repo) {\n" +
                     "        HashMap<String,TestResult> resultScores = new HashMap<>();\n" +
                     "        TestResult testResult = null;\n" +
-                    "        double result = 0.0;\n" +
+                    "        double result = 7.0;\n" +
                     "\n" +
                     "        /** Write here\n" +
                     "         * the implementation\n" +

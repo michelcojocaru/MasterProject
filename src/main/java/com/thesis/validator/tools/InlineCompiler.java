@@ -9,6 +9,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +36,53 @@ public class InlineCompiler {
             instance = new InlineCompiler();
         }
         return instance;
+    }
+
+    public static void load(String userCode, Checker checker){
+        File root = new File(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/"); // On Windows running on C:\, this is C:\java.
+        File sourceFile = new File(root, "NewAttributeChecker.java");
+        sourceFile.getParentFile().mkdirs();
+        try {
+            Files.write(sourceFile.toPath(), userCode.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+// Compile source file.
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        compiler.run(null, System.out, null, sourceFile.getPath());
+        while(!Files.exists(Paths.get(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/" + "NewAttributeChecker.class"))){
+            System.out.println("Not found!");//this has to stay in here to delay the class search
+        }
+// Load and instantiate compiled class.
+        URLClassLoader classLoader = null;
+        try {
+            classLoader = URLClassLoader.newInstance(new URL[] { root.toURI().toURL() });
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Class<?> cls = null; // Should print "hello".
+        try {
+            cls = Class.forName("com.thesis.validator.logic.NewAttributeChecker", true, InlineCompiler.getInstance().getClass().getClassLoader());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        Object instance = null; // Should print "world".
+        try {
+            instance = cls.newInstance();
+
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        System.out.println(instance);
+        if (instance != null) {
+            System.out.println("---- BOOOOOOOOOOOOM -----");
+            Attribute userChecker = (Attribute) instance;
+            //System.out.println(userChecker.pup());
+            checker.registerAttributeChecker(userChecker);
+        }
     }
 
     public static void run(CrystalGlobe crystalGlobe, String userCode, Checker checker) {
@@ -101,14 +154,16 @@ public class InlineCompiler {
                     {
                         System.out.println("file exists, and it is a file");
                     }
-
-                    Object obj = Class.forName("com.thesis.validator.logic.NewAttributeChecker").newInstance();
+                    Class cls = Class.forName("com.thesis.validator.logic.NewAttributeChecker");
+                    Attribute obj = (Attribute) cls.newInstance();
+                    //Object obj = Class.forName("com.thesis.validator.logic.NewAttributeChecker").newInstance();
 //                    while(obj == null) {
 //                        obj = Class.forName("com.thesis.validator.logic.NewAttributeChecker").newInstance();
 //                    }
 
                     // Santity check
-                    if (obj instanceof Attribute) {
+                    //if (obj instanceof Attribute) {
+                    if (obj != null) {
                         System.out.println("---- BOOOOOOOOOOOOM -----");
                         // Cast to the DoStuff interface
                         Attribute userChecker = (Attribute)obj;

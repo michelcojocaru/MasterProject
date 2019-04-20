@@ -13,8 +13,7 @@ import java.util.List;
 public class NewAttributeChecker extends Attribute {
 
     private static final double NEW_ATTRIBUTE_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.0;
-    private Attribute chain;
-
+ public String pup(){return "te fut!";}
 
     public HashMap<String, TestResult> assessAttribute(List<Service> services,
                                                 List<Relation> relations,
@@ -24,7 +23,7 @@ public class NewAttributeChecker extends Attribute {
                                                 Repo repo) {
         HashMap<String,TestResult> resultScores = new HashMap<>();
         TestResult testResult = null;
-        double result = 0.0;
+        double result = 7.0;
 
         /** Write here
          * the implementation

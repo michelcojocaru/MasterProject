@@ -1,35 +1,60 @@
 package com.thesis.validator.logic;
 
+import com.thesis.validator.enums.Averages;
+import com.thesis.validator.enums.Mark;
+import com.thesis.validator.enums.SimilarityAlgorithms;
+import com.thesis.validator.model.*;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class Checker {
+public abstract class Checker {
 
-    private List<Attribute> chain;
+    private Checker chain;
 
-    public Checker() {
-        this.chain = new ArrayList<>();
-        this.chain.add(new GranularityChecker());
-        this.chain.add(new CouplingChecker());
-        this.chain.add(new CohesionChecker());
-        //chain.add(new NewAttributeChecker());
-
-        setChainOrder();
+    final void setNextInChain(Checker nextChain) {
+        this.chain = nextChain;
     }
 
-    public Attribute getFirstChecker() {
-        return this.chain.get(0);
-    }
+    final public void runAssessment(CrystalGlobe crystalGlobe) {
+        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), assessAttribute(crystalGlobe.getServices(),
+                                                                            crystalGlobe.getRelations(),
+                                                                            crystalGlobe.getUseCaseResponsibilities(),
+                                                                            crystalGlobe.getTypeOfAverage(),
+                                                                            crystalGlobe.getSimilarityAlgorithm(),
+                                                                            crystalGlobe.getRepo()));
 
-    public void registerAttributeChecker(Attribute checker){
-        this.chain.add(checker);
-        setChainOrder();
-    }
-
-    private void setChainOrder(){
-        for (int i = 0; i < chain.size() - 1; i++) {
-            chain.get(i).setNextInChain(chain.get(i + 1));
+        if (this.chain != null) {
+            this.chain.runAssessment(crystalGlobe);
         }
     }
+
+    abstract HashMap<String, TestResult> assessAttribute(List<Service> services,
+                                                       List<Relation> relations,
+                                                       UseCaseResponsibility useCaseResponsibilities,
+                                                       Averages averageType,
+                                                       List<SimilarityAlgorithms> algorithms,
+                                                       Repo repo);
+
+    // output helper messages for the user of the framework in regards
+    // to what went wrong with a test and what could be done
+    static void PopulateCauseAndTreatment(TestResult result,
+                                                  String lowCause,
+                                                  String lowTreatment,
+                                                  String midCause,
+                                                  String midTreatment,
+                                                  String highCause,
+                                                  String highTreatment){
+        if(result.getScore() >= Mark.ZERO.getValue() && result.getScore() < Mark.LOW.getValue()){
+            result.setCause(lowCause);
+            result.setTreatment(lowTreatment);
+        }else if(result.getScore() >= Mark.LOW.getValue() && result.getScore() < Mark.MID.getValue()){
+            result.setCause(midCause);
+            result.setTreatment(midTreatment);
+        }else if(result.getScore() >= Mark.MID.getValue() && result.getScore() <= Mark.HIGH.getValue()){
+            result.setCause(highCause);
+            result.setTreatment(highTreatment);
+        }
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.thesis.validator.file;
 
-import com.thesis.validator.logic.Checker;
+import com.thesis.validator.logic.Chain;
 import com.thesis.validator.model.CrystalGlobe;
 import com.thesis.validator.model.SystemModel;
 import com.thesis.validator.tools.InlineCompiler;
@@ -34,57 +34,8 @@ public class FileController {
 
             CrystalGlobe crystalGlobe = new CrystalGlobe(model.services, model.relations, model.useCaseResponsibility, model.averageType, model.algorithms, model.repo);
 
-            Checker checker = new Checker();
-            //InlineCompiler.run(crystalGlobe,"package com.thesis.validator.logic;\n" +
-            InlineCompiler.load("package com.thesis.validator.logic;\n" +
-                    "\n" +
-                    "import com.thesis.validator.enums.Averages;\n" +
-                    "import com.thesis.validator.enums.Feedback;\n" +
-                    "import com.thesis.validator.enums.SimilarityAlgorithms;\n" +
-                    "import com.thesis.validator.enums.Tests;\n" +
-                    "import com.thesis.validator.model.*;\n" +
-                    "\n" +
-                    "import java.text.DecimalFormat;\n" +
-                    "import java.util.HashMap;\n" +
-                    "import java.util.List;\n" +
-                    "\n" +
-                    "public class NewAttributeChecker extends Attribute {\n" +
-                    "\n" +
-                    "    private static final double NEW_ATTRIBUTE_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.0;\n" +
-                    //"    private Attribute chain;\n" +
-                    //"@Override\n" +
-                    " public String pup(){return \"te fut!\";}" +
-                    "\n" +
-                    "\n" +
-                    "    public HashMap<String, TestResult> assessAttribute(List<Service> services,\n" +
-                    "                                                List<Relation> relations,\n" +
-                    "                                                UseCaseResponsibility useCaseResponsibilities,\n" +
-                    "                                                Averages averageType,\n" +
-                    "                                                List<SimilarityAlgorithms> algorithms,\n" +
-                    "                                                Repo repo) {\n" +
-                    "        HashMap<String,TestResult> resultScores = new HashMap<>();\n" +
-                    "        TestResult testResult = null;\n" +
-                    "        double result = 7.0;\n" +
-                    "\n" +
-                    "        /** Write here\n" +
-                    "         * the implementation\n" +
-                    "         * of your quality attribute\n" +
-                    "         * assessment */\n" +
-                    "\n" +
-                    "        testResult = new TestResult(Tests.NEWATTRIBUTE_TEST, Double.parseDouble(new DecimalFormat(\".#\").format(result)));\n" +
-                    "        Attribute.PopulateCauseAndTreatment(testResult,\n" +
-                    "                Feedback.LOW_CAUSE_NEWATTRIBUTE.toString(),\n" +
-                    "                Feedback.LOW_TREATMENT_NEWATTRIBUTE.toString(),\n" +
-                    "                Feedback.MEDIUM_CAUSE_NEWATTRIBUTE.toString(),\n" +
-                    "                Feedback.MEDIUM_TREATMENT_NEWATTRIBUTE.toString(),\n" +
-                    "                Feedback.HIGH_CAUSE_NEWATTRIBUTE.toString(),\n" +
-                    "                Feedback.HIGH_TREATMENT_NEWATTRIBUTE.toString());\n" +
-                    "        resultScores.put(testResult.getTestName().name(),testResult);\n" +
-                    "        return resultScores;\n" +
-                    "    }\n" +
-                    "}\n", checker);
-
-            checker.getFirstChecker().runAssessment(crystalGlobe);
+            Chain chain = new Chain();
+            chain.getFirstChecker().runAssessment(crystalGlobe);
 
             return new Response(crystalGlobe.getResults());
 

@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CouplingChecker extends Attribute {
+public class CouplingChecker extends Checker {
 
     private static final double COUPLING_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.15;
-    private Attribute chain;
+    private Checker chain;
 
     // calculate the coefficient of variation of the differences between
     // inward and outward dependencies for each service
@@ -54,7 +54,7 @@ public class CouplingChecker extends Attribute {
         result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
 
         testResult = new TestResult(Tests.DEPENDENCIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-        Attribute.PopulateCauseAndTreatment(testResult,
+        Checker.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_DEPENDENCIES.toString(),
                 Feedback.LOW_TREATMENT_DEPENDENCIES.toString(),
                 Feedback.MEDIUM_CAUSE_DEPENDENCIES.toString(),
@@ -74,7 +74,7 @@ public class CouplingChecker extends Attribute {
         }
 
         testResult = new TestResult(Tests.SCC_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-        Attribute.PopulateCauseAndTreatment(testResult,
+        Checker.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_SCC.toString(),
                 treatment == null ? Feedback.LOW_TREATMENT_SCC.toString() : treatment,
                 Feedback.MEDIUM_CAUSE_SCC.toString(),

@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-public class GranularityChecker extends Attribute {
+public class GranularityChecker extends Checker {
 
     private static final double GRANULARITY_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.5;
-    private Attribute chain;
+    private Checker chain;
 
     // calculate the coefficient of variation between the lengths
     // of nanoentity lists from each service
@@ -50,7 +50,7 @@ public class GranularityChecker extends Attribute {
 
         result = Math.abs(MathOperations.getCoefficientOfVariation(serviceScores, averageType) - 1) * 10.0;
         testResult = new TestResult(Tests.NANOENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-        Attribute.PopulateCauseAndTreatment(testResult,
+        Checker.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_NANOENTITIES_COMPOSITION.toString(),
                 Feedback.LOW_TREATMENT_NANOENTITIES_COMPOSITION.toString(),
                 Feedback.MEDIUM_CAUSE_NANOENTITIES_COMPOSITION.toString(),
@@ -95,7 +95,7 @@ public class GranularityChecker extends Attribute {
 
                 result = Math.abs(MathOperations.getCoefficientOfVariation(locScores, averageType) - 1) * 10.0;
                 testResult = new TestResult(Tests.LOC_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-                Attribute.PopulateCauseAndTreatment(testResult,
+                Checker.PopulateCauseAndTreatment(testResult,
                         Feedback.LOW_CAUSE_LOC.toString(),
                         Feedback.LOW_TREATMENT_LOC.toString(),
                         Feedback.MEDIUM_CAUSE_LOC.toString(),

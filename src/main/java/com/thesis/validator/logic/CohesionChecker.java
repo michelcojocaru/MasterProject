@@ -15,10 +15,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-public class CohesionChecker extends Attribute {
+public class CohesionChecker extends Checker {
 
     private static final double COHESION_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.7;
-    private Attribute chain;
+    private Checker chain;
 
     // calculate the coefficient of variation between the lengths
     // of concepts sets for each service
@@ -41,7 +41,7 @@ public class CohesionChecker extends Attribute {
         // Test services property
         if (Operations.checkForDuplicates(services)) {
             testResult = new TestResult(Tests.ENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(0.0)));
-            Attribute.PopulateCauseAndTreatment(testResult,
+            Checker.PopulateCauseAndTreatment(testResult,
                     Feedback.LOW_CAUSE_ENTITIES_DUPLICATES.toString(),
                     Feedback.LOW_TREATMENT_ENTITIES_DUPLICATES.toString(),
                     Feedback.MEDIUM_CAUSE_ENTITIES_DUPLICATES.toString(),
@@ -56,7 +56,7 @@ public class CohesionChecker extends Attribute {
             MathOperations.normalize(entityScores);
             result = Math.abs(MathOperations.getCoefficientOfVariation(entityScores, averageType) - 1) * 10.0;
             testResult = new TestResult(Tests.ENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-            Attribute.PopulateCauseAndTreatment(testResult,
+            Checker.PopulateCauseAndTreatment(testResult,
                     Feedback.LOW_CAUSE_ENTITIES_COMPOSITION.toString(),
                     Feedback.LOW_TREATMENT_ENTITIES_COMPOSITION.toString(),
                     Feedback.MEDIUM_CAUSE_ENTITIES_COMPOSITION.toString(),
@@ -69,7 +69,7 @@ public class CohesionChecker extends Attribute {
         // Test relations property
         if (Operations.checkForDuplicates(relations)) {
             testResult = new TestResult(Tests.RELATIONS_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(0.0)));
-            Attribute.PopulateCauseAndTreatment(testResult,
+            Checker.PopulateCauseAndTreatment(testResult,
                     Feedback.LOW_CAUSE_RELATIONS_DUPLICATES.toString(),
                     Feedback.LOW_TREATMENT_RELATIONS_DUPLICATES.toString(),
                     Feedback.MEDIUM_CAUSE_RELATIONS_DUPLICATES.toString(),
@@ -84,7 +84,7 @@ public class CohesionChecker extends Attribute {
             }
             result = Math.abs(MathOperations.getCoefficientOfVariation(relationScores, averageType) - 1) * 10.0;
             testResult = new TestResult(Tests.RELATIONS_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-            Attribute.PopulateCauseAndTreatment(testResult,
+            Checker.PopulateCauseAndTreatment(testResult,
                     Feedback.LOW_CAUSE_RELATIONS_COMPOSITION.toString(),
                     Feedback.LOW_TREATMENT_RELATIONS_COMPOSITION.toString(),
                     Feedback.MEDIUM_CAUSE_RELATIONS_COMPOSITION.toString(),
@@ -99,7 +99,7 @@ public class CohesionChecker extends Attribute {
         if(useCaseResponsibilities != null && useCaseResponsibilities.size() != 0) {
             if (Operations.checkForDuplicates(useCaseResponsibilities)) {
                 testResult = new TestResult(Tests.RESPONSIBILITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(0.0)));
-                Attribute.PopulateCauseAndTreatment(testResult,
+                Checker.PopulateCauseAndTreatment(testResult,
                         Feedback.LOW_CAUSE_RESPONSIBILITIES_DUPLICATES.toString(),
                         Feedback.LOW_TREATMENT_RESPONSIBILITIES_DUPLICATES.toString(),
                         Feedback.MEDIUM_CAUSE_RESPONSIBILITIES_DUPLICATES.toString(),
@@ -114,7 +114,7 @@ public class CohesionChecker extends Attribute {
                 result = Math.abs(MathOperations.getCoefficientOfVariation(useCaseResponsibilityScores, averageType) - 1) * 10.0;
                 testResult = new TestResult(Tests.RESPONSIBILITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
 
-                Attribute.PopulateCauseAndTreatment(testResult,
+                Checker.PopulateCauseAndTreatment(testResult,
                         Feedback.LOW_CAUSE_RESPONSIBILITIES_COMPOSITION.toString(),
                         Feedback.LOW_TREATMENT_RESPONSIBILITIES_COMPOSITION.toString(),
                         Feedback.MEDIUM_CAUSE_RESPONSIBILITIES_COMPOSITION.toString(),
@@ -131,7 +131,7 @@ public class CohesionChecker extends Attribute {
             result = NLPOperations.checkSemanticSimilarity(services, algorithm);
 
             testResult = new TestResult(Tests.SEMANTIC_SIMILARITY_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-            Attribute.PopulateCauseAndTreatment(testResult,
+            Checker.PopulateCauseAndTreatment(testResult,
                     Feedback.LOW_CAUSE_SEMANTIC_SIMILARITY.toString(),
                     Feedback.LOW_TREATMENT_SEMANTIC_SIMILARITY.toString(),
                     Feedback.MEDIUM_CAUSE_SEMANTIC_SIMILARITY.toString(),

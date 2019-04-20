@@ -1,8 +1,8 @@
 package com.thesis.validator.tools;
 
 
+import com.thesis.validator.logic.Chain;
 import com.thesis.validator.logic.Checker;
-import com.thesis.validator.logic.Attribute;
 import com.thesis.validator.model.CrystalGlobe;
 
 import java.io.File;
@@ -38,9 +38,9 @@ public class InlineCompiler {
         return instance;
     }
 
-    public static void load(String userCode, Checker checker){
+    public static void load(String userCode, Chain chain){
         File root = new File(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/"); // On Windows running on C:\, this is C:\java.
-        File sourceFile = new File(root, "NewAttributeChecker.java");
+        File sourceFile = new File(root, "NewChecker.java");
         sourceFile.getParentFile().mkdirs();
         try {
             Files.write(sourceFile.toPath(), userCode.getBytes(StandardCharsets.UTF_8));
@@ -51,7 +51,7 @@ public class InlineCompiler {
 // Compile source file.
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         compiler.run(null, System.out, null, sourceFile.getPath());
-        while(!Files.exists(Paths.get(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/" + "NewAttributeChecker.class"))){
+        while(!Files.exists(Paths.get(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/" + "NewChecker.class"))){
             System.out.println("Not found!");//this has to stay in here to delay the class search
         }
 // Load and instantiate compiled class.
@@ -63,7 +63,7 @@ public class InlineCompiler {
         }
         Class<?> cls = null; // Should print "hello".
         try {
-            cls = Class.forName("com.thesis.validator.logic.NewAttributeChecker", true, InlineCompiler.getInstance().getClass().getClassLoader());
+            cls = Class.forName("com.thesis.validator.logic.NewChecker", true, InlineCompiler.getInstance().getClass().getClassLoader());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -79,13 +79,13 @@ public class InlineCompiler {
         System.out.println(instance);
         if (instance != null) {
             System.out.println("---- BOOOOOOOOOOOOM -----");
-            Attribute userChecker = (Attribute) instance;
+            Checker userChecker = (Checker) instance;
             //System.out.println(userChecker.pup());
-            checker.registerAttributeChecker(userChecker);
+            chain.registerAttributeChecker(userChecker);
         }
     }
 
-    public static void run(CrystalGlobe crystalGlobe, String userCode, Checker checker) {
+    public static void run(CrystalGlobe crystalGlobe, String userCode, Chain chain) {
 
         Package pack = InlineCompiler.getInstance().getClass().getPackage();
         String packageName = pack.getName();
@@ -95,14 +95,14 @@ public class InlineCompiler {
 
 //        sb.append("package "+ packageName +";\n");
 //        //sb.append("package com.thesis.validator.tools;\n");
-//        sb.append("public class UserAttributeChecker implements Attribute {\n");
+//        sb.append("public class UserAttributeChecker implements Checker {\n");
 //
 //        sb.append("    public void calculateAttribute() {\n");
 //        sb.append("        System.out.println(\"Hello world\");\n");
 //        sb.append("    }\n");
 //        sb.append("}\n");
 
-        File userAttributeCheckerCode = new File(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/NewAttributeChecker.java");
+        File userAttributeCheckerCode = new File(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/NewChecker.java");
         if (userAttributeCheckerCode.getParentFile().exists() || userAttributeCheckerCode.getParentFile().mkdirs()) {
 
             try {
@@ -144,39 +144,39 @@ public class InlineCompiler {
                     //URLClassLoader classLoader = new URLClassLoader(new URL[]{new File("./").toURI().toURL()});
 
                     // Load the class from the classloader by name....
-                    //Class<?> loadedClass = classLoader.loadClass("com.thesis.validator.logic.NewAttributeChecker");
+                    //Class<?> loadedClass = classLoader.loadClass("com.thesis.validator.logic.NewChecker");
                     // Create a new instance...
                     //Object obj = loadedClass.newInstance();
                     //TODO busy waiting... avoid this shit!
-                    File javaFile = new File(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/" + "NewAttributeChecker" + ".java");
+                    File javaFile = new File(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/" + "NewChecker" + ".java");
                     //boolean exists = classFile.exists();
                     while(!javaFile.exists() || !javaFile.isFile())
                     {
                         System.out.println("file exists, and it is a file");
                     }
-                    Class cls = Class.forName("com.thesis.validator.logic.NewAttributeChecker");
-                    Attribute obj = (Attribute) cls.newInstance();
-                    //Object obj = Class.forName("com.thesis.validator.logic.NewAttributeChecker").newInstance();
+                    Class cls = Class.forName("com.thesis.validator.logic.NewChecker");
+                    Checker obj = (Checker) cls.newInstance();
+                    //Object obj = Class.forName("com.thesis.validator.logic.NewChecker").newInstance();
 //                    while(obj == null) {
-//                        obj = Class.forName("com.thesis.validator.logic.NewAttributeChecker").newInstance();
+//                        obj = Class.forName("com.thesis.validator.logic.NewChecker").newInstance();
 //                    }
 
                     // Santity check
-                    //if (obj instanceof Attribute) {
+                    //if (obj instanceof Checker) {
                     if (obj != null) {
                         System.out.println("---- BOOOOOOOOOOOOM -----");
                         // Cast to the DoStuff interface
-                        Attribute userChecker = (Attribute)obj;
-                        checker.registerAttributeChecker(userChecker);
+                        Checker userChecker = (Checker)obj;
+                        chain.registerAttributeChecker(userChecker);
                         // Run it baby
                         //userChecker.runAssessment(crystalGlobe);
                     }
-//                    File codeFile = new File(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/NewAttributeChecker.java");
+//                    File codeFile = new File(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/NewChecker.java");
 //                    if(codeFile.delete())
 //                    {
 //                        System.out.println("File deleted successfully");
 //                    }
-                    File classFile = new File(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/NewAttributeChecker.class");
+                    File classFile = new File(System.getProperty("user.dir") + "/src/main/java/com/thesis/validator/logic/NewChecker.class");
 
                     if(classFile.delete())
                     {

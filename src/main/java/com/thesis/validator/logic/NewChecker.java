@@ -10,10 +10,9 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 
-public class NewAttributeChecker extends Attribute {
+public class NewChecker extends Checker {
 
     private static final double NEW_ATTRIBUTE_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.0;
- public String pup(){return "te fut!";}
 
     public HashMap<String, TestResult> assessAttribute(List<Service> services,
                                                 List<Relation> relations,
@@ -23,7 +22,7 @@ public class NewAttributeChecker extends Attribute {
                                                 Repo repo) {
         HashMap<String,TestResult> resultScores = new HashMap<>();
         TestResult testResult = null;
-        double result = 7.0;
+        double result = 0.0;
 
         /** Write here
          * the implementation
@@ -31,7 +30,7 @@ public class NewAttributeChecker extends Attribute {
          * assessment */
 
         testResult = new TestResult(Tests.NEWATTRIBUTE_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
-        Attribute.PopulateCauseAndTreatment(testResult,
+        Checker.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_NEWATTRIBUTE.toString(),
                 Feedback.LOW_TREATMENT_NEWATTRIBUTE.toString(),
                 Feedback.MEDIUM_CAUSE_NEWATTRIBUTE.toString(),

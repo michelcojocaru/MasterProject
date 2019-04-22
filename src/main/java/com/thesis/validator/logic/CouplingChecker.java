@@ -31,7 +31,7 @@ public class CouplingChecker extends Checker {
         HashMap<String,TestResult> resultScores = new HashMap<>();
         TestResult testResult;
         final int N = services.size();
-        double[] couplingScores = new double[N];
+        double[] couplingScores = new double[N-1]; // disregard the terminal node
         ArrayList<Dependency> dependencies = new ArrayList<>(N);
         int i = 0;
         double result = 0.0;
@@ -46,10 +46,11 @@ public class CouplingChecker extends Checker {
             int in = dependency.getInwardCount();
             int out = dependency.getOutwardCount();
 
-            couplingScores[i++] = Math.abs(in - out);
+            //couplingScores[i++] = Math.abs(in + out);
+            if(out > 0) {
+                couplingScores[i++] = out;
+            }
         }
-
-        MathOperations.normalize(couplingScores);
 
         result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
 

@@ -81,30 +81,30 @@ public class Operations {
         return false;
     }
 
-    public static <T> HashSet<String> getEntities(T t, boolean distinct) {
+    public static <T> HashSet<String> getEntities(T t, boolean composed) {
         HashSet<String> entities = new HashSet<>();
 
         if (t instanceof Service) {
             for (String nanoentity : ((Service) t).nanoentities) {
-                populateEntities(distinct, entities, nanoentity);
+                populateEntities(composed, entities, nanoentity);
             }
         } else if (t instanceof Relation) {
             for (String sharedEntity : ((Relation) t).sharedEntities) {
-                populateEntities(distinct, entities, sharedEntity);
+                populateEntities(composed, entities, sharedEntity);
             }
         }
 
         return entities;
     }
 
-    private static void populateEntities(boolean distinct, HashSet<String> entities, String sharedEntity) {
-        if(distinct) {
-            String[] tokens = StringUtils.split(sharedEntity, ".");
+    private static void populateEntities(boolean composed, HashSet<String> entities, String entity) {
+        if(composed) {
+            String[] tokens = StringUtils.split(entity, ".");
             if (tokens != null) {
                 entities.add(tokens[0]);
             }
-        }else {
-            entities.add(sharedEntity);
+        } else {
+            entities.add(entity);
         }
     }
 

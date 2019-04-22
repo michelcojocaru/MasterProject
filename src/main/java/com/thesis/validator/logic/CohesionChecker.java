@@ -11,6 +11,7 @@ import com.thesis.validator.helpers.Operations;
 import com.thesis.validator.model.*;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -38,8 +39,9 @@ public class CohesionChecker extends Checker {
         int i = 0;
         double result = 0.0;
 
+
         // Test services property
-        if (Operations.checkForDuplicates(services)) {
+        if (Operations.checkForDuplicates(new ArrayList<>(Operations.getEntities(services, false)))) {
             testResult = new TestResult(Tests.ENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(0.0)));
             Checker.PopulateCauseAndTreatment(testResult,
                     Feedback.LOW_CAUSE_ENTITIES_DUPLICATES.toString(),
@@ -76,7 +78,7 @@ public class CohesionChecker extends Checker {
                     Feedback.MEDIUM_TREATMENT_RELATIONS_DUPLICATES.toString(),
                     Feedback.HIGH_CAUSE_RELATIONS_DUPLICATES.toString(),
                     Feedback.HIGH_TREATMENT_RELATIONS_DUPLICATES.toString());
-        }else {
+        } else {
             i = 0;
             for (Relation relation : relations) {
                 entities = Operations.getEntities(relation, true);
@@ -106,7 +108,7 @@ public class CohesionChecker extends Checker {
                         Feedback.MEDIUM_TREATMENT_RESPONSIBILITIES_DUPLICATES.toString(),
                         Feedback.HIGH_CAUSE_RESPONSIBILITIES_DUPLICATES.toString(),
                         Feedback.HIGH_TREATMENT_RESPONSIBILITIES_DUPLICATES.toString());
-            }else {
+            } else {
                 i = 0;
                 for (List<String> useCase : useCaseResponsibilities.values()) {
                     useCaseResponsibilityScores[i++] = useCase.size();

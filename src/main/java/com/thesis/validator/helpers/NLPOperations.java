@@ -74,6 +74,8 @@ public class NLPOperations {
                         }
                     }
                 }
+            }else if(distinctEntities.size() == 1){
+                similarities.add(0.0);
             }
         }
         return scoreToMark(calculateMeanOfSimilarities(similarities));

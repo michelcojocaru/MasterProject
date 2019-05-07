@@ -1,0 +1,41 @@
+﻿{
+	"services": [{
+		"nanoentities": ["AccountOwner.address", "NaturalPerson.name", "Company.companyName"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["Price.dateTime", "Price.price", "Price.currency"],
+		"id": "B",
+		"name": "Service B"
+	}, {
+		"nanoentities": ["News.title", "News.text", "News.image"],
+		"id": "C",
+		"name": "Service C"
+	}, {
+		"nanoentities": ["Instruction.instructedTime", "Order.posted", "Order.expires", "Order.triggerPrice", "Order.executed", "Order.type", "Order.amount", "Account.number", "PaymentInfo.cashAccount", "Position.balance", "Stock.identifier", "Stock.stockName", "Recommendation.description"],
+		"id": "D",
+		"name": "Service D"
+	}],
+	"relations": [{
+		"serviceA": "Service A",
+		"serviceB": "Service D",
+		"sharedEntities": ["Company.companyName", "AccountOwner.address", "NaturalPerson.name"],
+		"direction": "INCOMING"
+	}, {
+		"serviceA": "Service B",
+		"serviceB": "Service D",
+		"sharedEntities": ["Order.triggerPrice", "Stock.identifier"],
+		"direction": "OUTGOING"
+	}, {
+		"serviceA": "Service C",
+		"serviceB": "Service D",
+		"sharedEntities": ["Stock.identifier"],
+		"direction": "OUTGOING"
+	}],
+	"useCaseResponsibility": {
+		"Service D": ["PostOrder", "InstructOrder", "View Recommendations", "SuggestRecommendations", "CreateAccount", "viewPortfolio"],
+		"Service C": ["ReadNews", "ImportNews"],
+		"Service B": ["ImportPrice"],
+		"Service A": ["CreateAccountOwner"]
+	}
+}

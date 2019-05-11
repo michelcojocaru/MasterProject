@@ -31,11 +31,12 @@ public class CouplingChecker extends Checker {
         HashMap<String,TestResult> resultScores = new HashMap<>();
         TestResult testResult;
         final int N = services.size();
-        double[] couplingScores = new double[N-1]; // disregard the terminal node
+        double[] couplingScores = new double[N]; // disregard the terminal node N-1
         ArrayList<Dependency> dependencies = new ArrayList<>(N);
         int i = 0;
         double result = 0.0;
 
+        testResult = new TestResult(Tests.DEPENDENCIES_COMPOSITION_TEST);
         for (Service service : services) {
             dependencies.add(new Dependency(service.name, 0, 0));
         }
@@ -43,18 +44,17 @@ public class CouplingChecker extends Checker {
         Operations.countDependencies(relations, dependencies);
 
         for (Dependency dependency : dependencies) {
-            int in = dependency.getInwardCount();
             int out = dependency.getOutwardCount();
-
-            //couplingScores[i++] = Math.abs(in + out);
-            if(out > 0) {
-                couplingScores[i++] = out;
-            }
+            couplingScores[i++] = out;
+            Checker.PopulateDetails(testResult, dependency.getServiceName(), String.valueOf(out), "Service", "outward dependencies");
         }
 
-        result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
-
-        testResult = new TestResult(Tests.DEPENDENCIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        if(Operations.areDependenciesBalanced(couplingScores)){
+            result = 10.0;
+        } else {
+            result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
+        }
+        testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
         Checker.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_DEPENDENCIES.toString(),
                 Feedback.LOW_TREATMENT_DEPENDENCIES.toString(),
@@ -65,23 +65,23 @@ public class CouplingChecker extends Checker {
         resultScores.put(Tests.DEPENDENCIES_COMPOSITION_TEST.name() ,testResult);
 
         // SCC identification
+        testResult = new TestResult(Tests.SCC_TEST);
         List<List<Node>> components = GraphOperations.searchStronglyConnectedComponents(services,relations);
-        String treatment = null;
         result = ((double) components.size()/services.size()) * 10.0;
         for(List<Node> component:components){
             if(component.size() > 1){
-                treatment = "We recommend refactoring " + component + " into one microservice!";
+                Checker.PopulateDetails(testResult, component.toString(), null, "Services", "to be grouped into one microservice");
             }
         }
 
-        testResult = new TestResult(Tests.SCC_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
         Checker.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_SCC.toString(),
-                treatment == null ? Feedback.LOW_TREATMENT_SCC.toString() : treatment,
+                Feedback.LOW_TREATMENT_SCC.toString(),
                 Feedback.MEDIUM_CAUSE_SCC.toString(),
-                treatment == null ? Feedback.MEDIUM_TREATMENT_SCC.toString() : treatment,
+                Feedback.MEDIUM_TREATMENT_SCC.toString(),
                 Feedback.HIGH_CAUSE_SCC.toString(),
-                treatment == null ? Feedback.HIGH_TREATMENT_SCC.toString() : treatment);
+                Feedback.HIGH_TREATMENT_SCC.toString());
         resultScores.put(Tests.SCC_TEST.name() ,testResult);
 
         return resultScores;

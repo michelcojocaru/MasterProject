@@ -119,4 +119,21 @@ public class Operations {
     public static <T> List<T> ArrayToList(T[] t){
        return new ArrayList<>(Arrays.asList(t));
     }
+
+    public static boolean areDependenciesBalanced(double[] couplingScores) {
+        int terminalNode = 0;
+        int differences = 0;
+        for(int j = 0; j < couplingScores.length;j++){
+            if(couplingScores[j] == 0.0){
+                terminalNode++;
+            }
+        }
+
+        for(int j = 0; j < couplingScores.length - 1;j++){
+            if(couplingScores[j] != couplingScores[j+1]){
+                differences++;
+            }
+        }
+        return terminalNode <= 1 && differences <= 1;
+    }
 }

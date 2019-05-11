@@ -41,15 +41,17 @@ public class GranularityChecker extends Checker {
         double result;
         int i = 0;
 
+        testResult = new TestResult(Tests.NANOENTITIES_COMPOSITION_TEST);
         for (Service service : services) {
             entities = Operations.getEntities(service, false);
             serviceScores[i++] = entities.size();
+            Checker.PopulateDetails(testResult, service.name, String.valueOf(entities.size()), "Service", "nanoentities");
         }
 
         MathOperations.normalize(serviceScores);
 
         result = Math.abs(MathOperations.getCoefficientOfVariation(serviceScores, averageType) - 1) * 10.0;
-        testResult = new TestResult(Tests.NANOENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+        testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
         Checker.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_NANOENTITIES_COMPOSITION.toString(),
                 Feedback.LOW_TREATMENT_NANOENTITIES_COMPOSITION.toString(),
@@ -59,6 +61,7 @@ public class GranularityChecker extends Checker {
                 Feedback.HIGH_TREATMENT_NANOENTITIES_COMPOSITION.toString());
         resultScores.put(Tests.NANOENTITIES_COMPOSITION_TEST.name(), testResult);
 
+        testResult = new TestResult(Tests.LOC_TEST);
         //TODO prettify code
         Path pathToBeDeleted = Paths.get(System.getProperty("user.dir")).resolve("repo");
         if(GitRepoDownloader.deleteDirectory(pathToBeDeleted.toFile())){
@@ -84,6 +87,7 @@ public class GranularityChecker extends Checker {
                         }
                     }
                     locScores[i++] = lineCount;
+                    Checker.PopulateDetails(testResult, service.name, String.valueOf(lineCount), "Microservice", "lines of code");
                 }
 
                 pathToBeDeleted = Paths.get(System.getProperty("user.dir")).resolve("repo");
@@ -94,7 +98,7 @@ public class GranularityChecker extends Checker {
                 MathOperations.normalize(locScores);
 
                 result = Math.abs(MathOperations.getCoefficientOfVariation(locScores, averageType) - 1) * 10.0;
-                testResult = new TestResult(Tests.LOC_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+                testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
                 Checker.PopulateCauseAndTreatment(testResult,
                         Feedback.LOW_CAUSE_LOC.toString(),
                         Feedback.LOW_TREATMENT_LOC.toString(),

@@ -61,6 +61,15 @@ function drawResults(result) {
                                                         "  </div>" +
                                                         "</div>" +
                                                     "</div>" +
+                                                    "<div class='row'>"+
+                                                    "<div class='card' id='" + attribute + "DetailsCard'>" +
+                                                    "  <div class='card-body'>" +
+                                                    "    <h5 class='card-title'>Details</h5>" +
+                                                    // "    <h6 class=\"card-subtitle mb-2 text-muted\">Card subtitle</h6>\n" +
+                                                    "    <p class='card-text' id='" + attribute + "Details'></p>" +
+                                                    "  </div>" +
+                                                    "</div>" +
+                                                    "</div>" +
                                                 "</div>" +
                                             //"</div>" +
                                         "</div>";
@@ -71,9 +80,11 @@ function drawResults(result) {
             var tbody = document.querySelector('#' + attribute + 'TBody');
             var cause = document.querySelector('#' + attribute + 'Cause');
             var treatment = document.querySelector('#' + attribute + 'Treatment');
+            var details = document.querySelector('#' + attribute + 'Details');
             tbody.innerHTML = "";
             cause.innerHTML = "";
             treatment.innerHTML = "";
+            details.innerHTML = "";
             var average = 0.0;
             var count = 0;
 
@@ -181,10 +192,12 @@ function bindSelectableRows(){
             var causeText = document.querySelector('#' + attributeIndex + 'Cause');
             var treatmentCard = document.querySelector('#' + attributeIndex + 'TreatmentCard');
             var treatmentText = document.querySelector('#' + attributeIndex + 'Treatment');
+            var detailsCard = document.querySelector('#' + attributeIndex + 'DetailsCard');
+            var detailsText = document.querySelector('#' + attributeIndex + 'Details');
 
             for(var testIndex in globalResult[attributeIndex]) {
                 if (globalResult[attributeIndex].hasOwnProperty(testIndex)) {
-                    (function(testIndex, attributeIndex, causeCard, treatmentCard, causeText, treatmentText) {
+                    (function(testIndex, attributeIndex, causeCard, treatmentCard, detailsCard, causeText, treatmentText, detailsText) {
 
                         $("tr.clickable").click(function() {
                             $(this).addClass('info').siblings().removeClass('info');
@@ -195,6 +208,7 @@ function bindSelectableRows(){
                             if(testIndex === selectedTest[1]) {
                                 causeText.innerHTML = globalResult[attributeIndex][testIndex]['cause'];
                                 treatmentText.innerHTML = globalResult[attributeIndex][testIndex]['treatment'];
+                                detailsText.innerHTML = globalResult[attributeIndex][testIndex]['details'];
 
                                 if (selectedTest[0] < 5) {
                                     causeCard.classList.add("danger");
@@ -203,6 +217,9 @@ function bindSelectableRows(){
                                     treatmentCard.classList.add("danger");
                                     treatmentCard.classList.remove("warning");
                                     treatmentCard.classList.remove("success");
+                                    detailsCard.classList.add("danger");
+                                    detailsCard.classList.remove("warning");
+                                    detailsCard.classList.remove("success");
                                 } else if (selectedTest[0] >= 5 && selectedTest[0] < 7.5) {
                                     causeCard.classList.add("warning");
                                     causeCard.classList.remove("danger");
@@ -210,6 +227,9 @@ function bindSelectableRows(){
                                     treatmentCard.classList.add("warning");
                                     treatmentCard.classList.remove("danger");
                                     treatmentCard.classList.remove("success");
+                                    detailsCard.classList.add("warning");
+                                    detailsCard.classList.remove("danger");
+                                    detailsCard.classList.remove("success");
                                 } else if (selectedTest[0] >= 7.5 && selectedTest[0] <= 10) {
                                     causeCard.classList.add("success");
                                     causeCard.classList.remove("warning");
@@ -217,10 +237,13 @@ function bindSelectableRows(){
                                     treatmentCard.classList.add("success");
                                     treatmentCard.classList.remove("warning");
                                     treatmentCard.classList.remove("danger");
+                                    detailsCard.classList.add("success");
+                                    detailsCard.classList.remove("warning");
+                                    detailsCard.classList.remove("danger");
                                 }
                             }
                         });
-                    })(testIndex, attributeIndex, causeCard, treatmentCard, causeText, treatmentText);
+                    })(testIndex, attributeIndex, causeCard, treatmentCard, detailsCard, causeText, treatmentText, detailsText);
                 }
             }
         }

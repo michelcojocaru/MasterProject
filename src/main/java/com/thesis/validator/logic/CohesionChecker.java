@@ -1,20 +1,14 @@
 package com.thesis.validator.logic;
 
 
-import com.thesis.validator.enums.Averages;
-import com.thesis.validator.enums.Feedback;
-import com.thesis.validator.enums.SimilarityAlgorithms;
-import com.thesis.validator.enums.Tests;
+import com.thesis.validator.enums.*;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.NLPOperations;
 import com.thesis.validator.helpers.Operations;
 import com.thesis.validator.model.*;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class CohesionChecker extends Checker {
 
@@ -41,8 +35,9 @@ public class CohesionChecker extends Checker {
 
 
         // Test services property
-        if (Operations.checkForDuplicates(new ArrayList<>(Operations.getEntities(services, false)))) {
-            testResult = new TestResult(Tests.ENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(0.0)));
+        testResult = new TestResult(Tests.ENTITIES_COMPOSITION_TEST);
+        if (Operations.checkForDuplicates(new ArrayList<>(Operations.getEntities(services, false)), testResult)) {
+            testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(0.0)));
             Checker.PopulateCauseAndTreatment(testResult,
                     Feedback.LOW_CAUSE_ENTITIES_DUPLICATES.toString(),
                     Feedback.LOW_TREATMENT_ENTITIES_DUPLICATES.toString(),
@@ -54,10 +49,11 @@ public class CohesionChecker extends Checker {
             for (Service service : services) {
                 entities = Operations.getEntities(service, true);
                 entityScores[i++] = entities.size();
+                Checker.PopulateDetails(testResult, service.name, String.valueOf(entities.size()), "Service", "entities");
             }
             MathOperations.normalize(entityScores);
             result = Math.abs(MathOperations.getCoefficientOfVariation(entityScores, averageType) - 1) * 10.0;
-            testResult = new TestResult(Tests.ENTITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+            testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
             Checker.PopulateCauseAndTreatment(testResult,
                     Feedback.LOW_CAUSE_ENTITIES_COMPOSITION.toString(),
                     Feedback.LOW_TREATMENT_ENTITIES_COMPOSITION.toString(),
@@ -69,8 +65,9 @@ public class CohesionChecker extends Checker {
         resultScores.put(Tests.ENTITIES_COMPOSITION_TEST.name(),testResult);
 
         // Test relations property
-        if (Operations.checkForDuplicates(relations)) {
-            testResult = new TestResult(Tests.RELATIONS_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(0.0)));
+        testResult = new TestResult(Tests.RELATIONS_COMPOSITION_TEST);
+        if (Operations.checkForDuplicates(relations, testResult)) {
+            testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(0.0)));
             Checker.PopulateCauseAndTreatment(testResult,
                     Feedback.LOW_CAUSE_RELATIONS_DUPLICATES.toString(),
                     Feedback.LOW_TREATMENT_RELATIONS_DUPLICATES.toString(),
@@ -83,9 +80,11 @@ public class CohesionChecker extends Checker {
             for (Relation relation : relations) {
                 entities = Operations.getEntities(relation, true);
                 relationScores[i++] = entities.size();
+                Checker.PopulateDetails(testResult, relation.serviceA + (relation.direction == Direction.INCOMING ? "<-":"->") + relation.serviceB,
+                        String.valueOf(entities.size()), "Relation", "shared entities");
             }
             result = Math.abs(MathOperations.getCoefficientOfVariation(relationScores, averageType) - 1) * 10.0;
-            testResult = new TestResult(Tests.RELATIONS_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+            testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
             Checker.PopulateCauseAndTreatment(testResult,
                     Feedback.LOW_CAUSE_RELATIONS_COMPOSITION.toString(),
                     Feedback.LOW_TREATMENT_RELATIONS_COMPOSITION.toString(),
@@ -99,8 +98,9 @@ public class CohesionChecker extends Checker {
 
         // Test useCaseResponsibility property if provided! [optional parameter]
         if(useCaseResponsibilities != null && useCaseResponsibilities.size() != 0) {
-            if (Operations.checkForDuplicates(useCaseResponsibilities)) {
-                testResult = new TestResult(Tests.RESPONSIBILITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(0.0)));
+            testResult = new TestResult(Tests.RESPONSIBILITIES_COMPOSITION_TEST);
+            if (Operations.checkForDuplicates(useCaseResponsibilities, testResult)) {
+                testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(0.0)));
                 Checker.PopulateCauseAndTreatment(testResult,
                         Feedback.LOW_CAUSE_RESPONSIBILITIES_DUPLICATES.toString(),
                         Feedback.LOW_TREATMENT_RESPONSIBILITIES_DUPLICATES.toString(),
@@ -110,11 +110,12 @@ public class CohesionChecker extends Checker {
                         Feedback.HIGH_TREATMENT_RESPONSIBILITIES_DUPLICATES.toString());
             } else {
                 i = 0;
-                for (List<String> useCase : useCaseResponsibilities.values()) {
-                    useCaseResponsibilityScores[i++] = useCase.size();
+                for (Map.Entry<String,List<String>> useCase : useCaseResponsibilities.entrySet()) {
+                    useCaseResponsibilityScores[i++] = useCase.getValue().size();
+                    Checker.PopulateDetails(testResult, useCase.getKey(), String.valueOf(useCase.getValue().size()), "Service", "use cases");
                 }
                 result = Math.abs(MathOperations.getCoefficientOfVariation(useCaseResponsibilityScores, averageType) - 1) * 10.0;
-                testResult = new TestResult(Tests.RESPONSIBILITIES_COMPOSITION_TEST, Double.parseDouble(new DecimalFormat(".#").format(result)));
+                testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
 
                 Checker.PopulateCauseAndTreatment(testResult,
                         Feedback.LOW_CAUSE_RESPONSIBILITIES_COMPOSITION.toString(),

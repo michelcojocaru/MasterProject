@@ -1,10 +1,8 @@
 package com.thesis.validator.helpers;
 
 import com.thesis.validator.enums.Direction;
-import com.thesis.validator.model.Dependency;
-import com.thesis.validator.model.Relation;
-import com.thesis.validator.model.Service;
-import com.thesis.validator.model.UseCaseResponsibility;
+import com.thesis.validator.logic.Checker;
+import com.thesis.validator.model.*;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -34,7 +32,7 @@ public class Operations {
         }
     }
 
-    public static <T> Boolean checkForDuplicates(List<T> items) {
+    public static <T> Boolean checkForDuplicates(List<T> items, TestResult testResult) {
         HashSet<String> entitySet = new HashSet<>();
         HashMap<String, Integer> entityOccurrences = new HashMap<>();
 
@@ -46,7 +44,14 @@ public class Operations {
                     entityOccurrences.put(entity, 1);
                 } else {
                     entityOccurrences.put(entity, entityOccurrences.get(entity) + 1);
+
                 }
+            }
+        }
+
+        for(Map.Entry<String, Integer> entry: entityOccurrences.entrySet()){
+            if(entry.getValue() > 1){
+                Checker.PopulateDetails(testResult, entry.getKey(), String.valueOf(entry.getValue()), "Entity", "duplicates");
             }
         }
 
@@ -59,7 +64,7 @@ public class Operations {
         return false;
     }
 
-    public static Boolean checkForDuplicates(UseCaseResponsibility useCaseResponsibility) {
+    public static Boolean checkForDuplicates(UseCaseResponsibility useCaseResponsibility, TestResult testResult) {
         HashMap<String, Integer> useCaseOccurrences = new HashMap<>();
 
         for (List<String> useCases : useCaseResponsibility.values()) {
@@ -69,6 +74,12 @@ public class Operations {
                 } else {
                     useCaseOccurrences.put(useCase, useCaseOccurrences.get(useCase) + 1);
                 }
+            }
+        }
+
+        for(Map.Entry<String, Integer> entry: useCaseOccurrences.entrySet()){
+            if(entry.getValue() > 1){
+                Checker.PopulateDetails(testResult, entry.getKey(), String.valueOf(entry.getValue()), "Use case", "duplicates");
             }
         }
 

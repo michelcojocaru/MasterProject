@@ -35,6 +35,7 @@ public class CouplingChecker extends Checker {
         ArrayList<Dependency> dependencies = new ArrayList<>(N);
         int i = 0;
         double result = 0.0;
+        boolean sccDetected = false;
 
         testResult = new TestResult(Tests.DEPENDENCIES_COMPOSITION_TEST);
         for (Service service : services) {
@@ -54,6 +55,7 @@ public class CouplingChecker extends Checker {
         } else {
             result = Math.abs(MathOperations.getCoefficientOfVariation(couplingScores, averageType) - 1) * 10.0;
         }
+
         testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
         Checker.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_DEPENDENCIES.toString(),
@@ -68,13 +70,16 @@ public class CouplingChecker extends Checker {
         testResult = new TestResult(Tests.SCC_TEST);
         List<List<Node>> components = GraphOperations.searchStronglyConnectedComponents(services,relations);
         result = ((double) components.size()/services.size()) * 10.0;
+        testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
         for(List<Node> component:components){
             if(component.size() > 1){
                 Checker.PopulateDetails(testResult, component.toString(), null, "Services", "to be grouped into one microservice");
+                sccDetected = true;
             }
         }
-
-        testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
+        if(!sccDetected){
+            testResult.setDetails("No details.");
+        }
         Checker.PopulateCauseAndTreatment(testResult,
                 Feedback.LOW_CAUSE_SCC.toString(),
                 Feedback.LOW_TREATMENT_SCC.toString(),

@@ -57,8 +57,8 @@ public abstract class Checker {
         }
     }
 
-    static void PopulateDetails(TestResult result, String name, String detail, String target, String attribute) {
-        result.appendDetail(target + " \"" + name + "\" has " + (detail == null ? "" : detail) + " "+ attribute + ".\n");
+    public static void PopulateDetails(TestResult result, String name, String detail, String target, String attributeOrAction) {
+        result.appendDetail(target + " \"" + name + "\" has " + (detail == null ? "" : detail) + " "+ attributeOrAction + ".\n");
     }
 
 }

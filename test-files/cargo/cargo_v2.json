@@ -33,7 +33,7 @@
 	},{
 		"serviceA": "Service B",
 		"serviceB": "Service C",
-		"sharedEntities": ["Cargo.trackingId", "Voyage.voyageNumber", "RouteSpecification.destination", "Delivery.routingStatus"],
+		"sharedEntities": ["Itinerary.itineraryNumber", "HandlingEvent.type", "HandlingEvent.completionTime", "Delivery.routingStatus"],
 		"direction": "INCOMING"
 	},{
 		"serviceA": "Service D",

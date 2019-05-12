@@ -1,0 +1,48 @@
+{
+  "name" : "Booking",
+  "entities": [
+    {
+      "name": "Customer",
+      "nanoentities": [
+			"customerIdentifier",
+      		"firstname",
+      		"name",
+			"street",
+			"city",
+			"accountNr",
+			"creditCard"
+      ]
+    },
+    {
+      "name": "Booking",
+      "nanoentities": [
+		  "bookingIdentifier",
+          "bookingDate",
+          "paymentDate",
+          "totalPrice",
+          "bookingState"
+      ]
+    },
+    {
+      "name": "Article",
+      "nanoentities": [
+		  "articleIdentifier",
+          "articleName",
+          "price",
+          "serial"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "origin": "Booking",
+      "destination": "Article",
+      "type": "AGGREGATION"
+    },
+    {
+      "origin": "Booking",
+      "destination": "Customer",
+      "type": "AGGREGATION"
+    }
+  ]
+}

@@ -32,6 +32,10 @@ public class GranularityChecker extends Checker {
                                                       Averages averageType,
                                                       List<SimilarityAlgorithms> algorithms,
                                                       Repo repo) {
+        // time measurement begin
+
+        // time measurement
+
         final int N = services.size();
         double[] serviceScores = new double[N];
         double[] locScores = new double[N];

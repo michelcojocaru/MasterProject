@@ -1,0 +1,1 @@
+﻿{"services":[{"nanoentities":["Movie.movie_name","Movie.movie_detail","Movie.comments","Comment.user_name","Comment.content","Comment.time","Comment.user_avatar","DB_helper.db_config","DB_helper.db_connection","Crawler.crawl_url","Crawler.crawl_config","Web_page.page_url","Web_page.page_content"],"id":"A","name":"Service A"}],"relations":[],"useCaseResponsibility":{}}

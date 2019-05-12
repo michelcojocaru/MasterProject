@@ -1,0 +1,132 @@
+{
+  "useCases": [
+    {
+      "name": "createCustomer",
+      "nanoentitiesRead": [],
+      "nanoentitiesWritten": [
+        "Customer.firstname",
+        "Customer.name",
+        "Customer.street",
+        "Customer.city",
+        "Customer.creditCard",
+        "Customer.accountNr",
+        "Customer.customerIdentifier"
+      ]
+    },
+    {
+      "name": "createBooking",
+      "nanoentitiesRead": [
+        "Article.price"
+      ],
+      "nanoentitiesWritten": [
+        "Booking.bookingDate",
+        "Booking.paymentDate",
+        "Booking.totalPrice",
+        "Booking.bookingState",
+        "Booking.bookingIdentifier"
+      ]
+    },
+    {
+      "name": "createArticle",
+      "nanoentitiesRead": [],
+      "nanoentitiesWritten": [
+        "Article.articleName",
+        "Article.price",
+        "Article.serial",
+        "Article.articleIdentifier"
+      ]
+    },
+    {
+      "name": "searchArticles",
+      "nanoentitiesRead": [
+        "Article.articleName",
+        "Article.price",
+        "Article.serial"
+      ],
+      "nanoentitiesWritten": [],
+      "isLatencyCritical": "true"
+    },
+    {
+      "name": "payBooking",
+      "nanoentitiesRead": [
+        "Customer.creditCard",
+        "Customer.customerIdentifier",
+        "Article.articleIdentifier"
+      ],
+      "nanoentitiesWritten": [
+        "Booking.paymentDate",
+        "Booking.bookingState"
+      ],
+      "isLatencyCritical": "true"
+    }
+  ],
+  "compatibilities": {
+    "availabilityCriticality": [
+      {
+        "characteristic": "Low",
+        "nanoentities": [
+          "Customer.firstname"
+        ]
+      },
+      {
+        "characteristic": "Critical",
+        "nanoentities": [
+          "Article.articleIdentifier",
+          "Article.articleName",
+          "Article.price",
+          "Article.serial",
+          "Customer.creditCard"
+        ]
+      }
+    ]
+  },
+  "aggregates": [
+    {
+      "name": "BookingAggregate",
+      "nanoentities": [
+        "Booking.bookingDate",
+        "Booking.paymentDate",
+        "Booking.totalPrice",
+        "Booking.bookingState",
+        "Booking.bookingIdentifier"
+      ]
+    }
+  ],
+  "securityAccessGroups": [
+    {
+      "name": "adminAccess",
+      "nanoentities": [
+        "Article.articleName",
+        "Article.price",
+        "Article.serial",
+        "Article.articleIdentifier"
+      ]
+    },
+    {
+      "name": "userAccess",
+      "nanoentities": [
+        "Customer.firstname",
+        "Customer.name",
+        "Customer.street",
+        "Customer.city",
+        "Customer.creditCard",
+        "Customer.accountNr",
+        "Customer.customerIdentifier"
+      ]
+    }
+  ],
+  "predefinedServices": [
+    {
+      "name": "CRM",
+      "nanoentities": [
+        "Customer.firstname",
+        "Customer.name",
+        "Customer.street",
+        "Customer.city",
+        "Customer.creditCard",
+        "Customer.accountNr",
+        "Customer.customerIdentifier"
+      ]
+    }
+  ]
+}

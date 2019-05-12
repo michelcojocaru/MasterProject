@@ -1,0 +1,80 @@
+{
+	"name": "Crawler",
+	"entities":[
+		{
+			"name":"Movie",
+			"nanoentities": [
+				"movie_name",
+				"movie_detail",
+				"comments"
+			]
+		},
+		{
+			"name":"Comment",
+			"nanoentities": [
+				"user_name",
+				"content",
+				"time",
+				"user_avatar"
+			]
+		},
+		{
+			"name":"Web_page",
+			"nanoentities": [
+				"page_url",
+				"page_content"
+			]
+		},
+		{
+			"name":"DB_helper",
+			"nanoentities": [
+				"db_config",
+				"db_connection"
+			]
+		},
+		{
+			"name":"Crawler",
+			"nanoentities": [
+				"crawl_url",
+				"crawl_config"
+			]
+		}
+	],
+	"relations":[
+		{
+			"origin":"Movie",
+			"destination":"Comment",
+			"type":"COMPOSITION"
+		},
+		{
+			"origin":"Web_page",
+			"destination":"Movie",
+			"type":"AGGREGATION"
+		},
+		{
+			"origin":"Web_page",
+			"destination":"Comment",
+			"type":"AGGREGATION"
+		},
+		{
+			"origin":"Crawler",
+			"destination":"Comment",
+			"type":"AGGREGATION"
+		},
+		{
+			"origin":"Crawler",
+			"destination":"Movie",
+			"type":"AGGREGATION"
+		},
+		{
+			"origin":"DB_helper",
+			"destination":"Comment",
+			"type":"AGGREGATION"
+		},
+		{
+			"origin":"DB_helper",
+			"destination":"Movie",
+			"type":"AGGREGATION"
+		}
+	]
+}

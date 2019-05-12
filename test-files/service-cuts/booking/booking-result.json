@@ -1,0 +1,21 @@
+﻿{
+	"services": [{
+		"nanoentities": ["Article.articleIdentifier", "Article.articleName", "Article.price", "Article.serial", "Booking.bookingIdentifier", "Booking.bookingDate", "Booking.paymentDate", "Booking.totalPrice", "Booking.bookingState"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["Customer.customerIdentifier", "Customer.firstname", "Customer.name", "Customer.street", "Customer.city", "Customer.accountNr", "Customer.creditCard"],
+		"id": "B",
+		"name": "Service B"
+	}],
+	"relations": [{
+		"serviceA": "Service A",
+		"serviceB": "Service B",
+		"sharedEntities": ["Customer.customerIdentifier", "Customer.creditCard"],
+		"direction": "OUTGOING"
+	}],
+	"useCaseResponsibility": {
+		"Service B": ["createCustomer"],
+		"Service A": ["createBooking", "createArticle", "searchArticles", "payBooking"]
+	}
+}

@@ -1,0 +1,17 @@
+﻿{
+	"services": [{
+		"nanoentities": ["Movie.movieName", "Movie.movieDetail", "Movie.comments", "Comment.userName", "Comment.content", "Comment.time", "Comment.userAvatar", "WebPage.pageUrl", "WebPage.pageContent"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["Crawler.crawlUrl", "Crawler.crawlConfig"],
+		"id": "B",
+		"name": "Service B"
+	}, {
+		"nanoentities": ["DBHelper.dbConfig", "DBHelper.dbConnection"],
+		"id": "C",
+		"name": "Service C"
+	}],
+	"relations": null,
+	"useCaseResponsibility": null
+}

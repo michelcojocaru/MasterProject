@@ -42,7 +42,7 @@ public class NewChecker extends Checker {
 
         endTime = System.nanoTime();
         duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
-        System.out.println("New Attribute Checker took: " + duration + " nanoseconds.");
+        System.out.println("New Attribute Checker took: " + duration + " nanoseconds.\n--------------------------------------");
         return resultScores;
     }
 }

@@ -1,1 +1,17 @@
-﻿{"services":[{"nanoentities":["Movie.movie_name","Movie.movie_detail","Movie.comments","Comment.user_name","Comment.content","Comment.time","Comment.user_avatar","DB_helper.db_config","DB_helper.db_connection","Crawler.crawl_url","Crawler.crawl_config","Web_page.page_url","Web_page.page_content"],"id":"A","name":"Service A"}],"relations":[],"useCaseResponsibility":{}}
+﻿{
+	"services": [{
+		"nanoentities": ["WebPage.pageUrl", "WebPage.pageContent"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["Movie.movieName", "Movie.movieDetail", "Movie.comments", "Comment.userName", "Comment.content", "Comment.time", "Comment.userAvatar", "DbHelper.dbConfig", "DbHelper.dbConnection"],
+		"id": "B",
+		"name": "Service B"
+	}, {
+		"nanoentities": ["Crawler.crawlUrl", "Crawler.crawlConfig"],
+		"id": "C",
+		"name": "Service C"
+	}],
+	"relations": null,
+	"useCaseResponsibility": null
+}

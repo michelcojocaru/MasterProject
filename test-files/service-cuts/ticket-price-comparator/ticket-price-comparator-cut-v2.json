@@ -1,0 +1,25 @@
+﻿{
+	"services": [{
+		"nanoentities": ["Platform.name", "Platform.url"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["Play.time", "Play.movie", "Play.theatre"],
+		"id": "B",
+		"name": "Service B"
+	}, {
+		"nanoentities": ["Theatre.name", "Theatre.location", "Theatre.phone", "Movie.movie_name", "Movie.movie_detail", "Time.date", "Time.timeOfDay"],
+		"id": "C",
+		"name": "Service C"
+	}, {
+		"nanoentities": ["DBHelper.dbConfig", "DBHelper.dbConnection"],
+		"id": "D",
+		"name": "Service D"
+	}, {
+		"nanoentities": ["DiffPrices.price", "DiffPrices.platform", "DiffPrices.play", "MainPage.diffPrices", "MainPage.url", "MainPage.movie"],
+		"id": "E",
+		"name": "Service E"
+	}],
+	"relations": null,
+	"useCaseResponsibility": null
+}

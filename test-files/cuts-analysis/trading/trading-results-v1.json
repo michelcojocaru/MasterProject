@@ -1,0 +1,115 @@
+{
+	"NewChecker": {
+		"NEWATTRIBUTE_TEST": {
+			"score": 0,
+			"cause": "Fill in the cause of the test fail.",
+			"treatment": "Fill in the recommendation for fixing the fail.",
+			"details": null,
+			"testName": "NEWATTRIBUTE_TEST"
+		}
+	},
+	"CouplingChecker": {
+		"DEPENDENCIES_COMPOSITION_TEST": {
+			"score": 10,
+			"cause": "We detected optimal dependencies between the microservices",
+			"treatment": "Nothing.",
+			"details": "Service \"Service A\" has 0 outward dependencies.\nService \"Service B\" has 1 outward dependencies.\nService \"Service C\" has 1 outward dependencies.\nService \"Service D\" has 1 outward dependencies.\n",
+			"testName": "DEPENDENCIES_COMPOSITION_TEST"
+		},
+		"SCC_TEST": {
+			"score": 10,
+			"cause": "We identified no strongly connected components between the microservices.",
+			"treatment": "Nothing.",
+			"details": "No details.",
+			"testName": "SCC_TEST"
+		}
+	},
+	"GranularityChecker": {
+		"NANOENTITIES_COMPOSITION_TEST": {
+			"score": 1.1,
+			"cause": "We detected high variation between microservice's sizes.",
+			"treatment": "We recommend reconsidering the sizes of the microservices.",
+			"details": "Service \"Service A\" has 3 nanoentities.\nService \"Service B\" has 3 nanoentities.\nService \"Service C\" has 3 nanoentities.\nService \"Service D\" has 13 nanoentities.\n",
+			"testName": "NANOENTITIES_COMPOSITION_TEST"
+		}
+	},
+	"CohesionChecker": {
+		"ENTITIES_COMPOSITION_TEST": {
+			"score": 0.8,
+			"cause": "We detected an abnormally high variation between entities counts per microservice.",
+			"treatment": "We recommend reconsidering the sizes of the microservices.",
+			"details": "Service \"Service A\" has 3 entities.\nService \"Service B\" has 1 entities.\nService \"Service C\" has 1 entities.\nService \"Service D\" has 7 entities.\n",
+			"testName": "ENTITIES_COMPOSITION_TEST"
+		},
+		"RESNIK": {
+			"score": 2.2,
+			"cause": "We detected a poor semantic similarity between the entities per microservice.",
+			"treatment": "We recommend renaming the entities.",
+			"details": null,
+			"testName": "SEMANTIC_SIMILARITY_TEST"
+		},
+		"LIN": {
+			"score": 9.1,
+			"cause": "We detected optimal semantic similarity between the entities per microservice.",
+			"treatment": "Nothing.",
+			"details": null,
+			"testName": "SEMANTIC_SIMILARITY_TEST"
+		},
+		"PATH": {
+			"score": 9,
+			"cause": "We detected optimal semantic similarity between the entities per microservice.",
+			"treatment": "Nothing.",
+			"details": null,
+			"testName": "SEMANTIC_SIMILARITY_TEST"
+		},
+		"WU_PALMER": {
+			"score": 6.4,
+			"cause": "We detected an acceptable semantic similarity between the entities per microservice.",
+			"treatment": "We recommend renaming the entities.",
+			"details": null,
+			"testName": "SEMANTIC_SIMILARITY_TEST"
+		},
+		"LESK": {
+			"score": 9.8,
+			"cause": "We detected optimal semantic similarity between the entities per microservice.",
+			"treatment": "Nothing.",
+			"details": null,
+			"testName": "SEMANTIC_SIMILARITY_TEST"
+		},
+		"JIANG_CONRATH": {
+			"score": 9.3,
+			"cause": "We detected optimal semantic similarity between the entities per microservice.",
+			"treatment": "Nothing.",
+			"details": null,
+			"testName": "SEMANTIC_SIMILARITY_TEST"
+		},
+		"RESPONSIBILITIES_COMPOSITION_TEST": {
+			"score": 1.8,
+			"cause": "We detected an abnormally high variation between the use-cases counts per microservice.",
+			"treatment": "We recommend revising the use cases.",
+			"details": "Service \"Service D\" has 6 use cases.\nService \"Service C\" has 2 use cases.\nService \"Service B\" has 1 use cases.\nService \"Service A\" has 1 use cases.\n",
+			"testName": "RESPONSIBILITIES_COMPOSITION_TEST"
+		},
+		"RELATIONS_COMPOSITION_TEST": {
+			"score": 0,
+			"cause": "We detected an abundance of duplicates among the entities of different relations.",
+			"treatment": "We recommend revising the relations between the microservices.",
+			"details": "Entity \"Stock\" has 2 duplicates.\n",
+			"testName": "RELATIONS_COMPOSITION_TEST"
+		},
+		"LEACOCK_CHODOROW": {
+			"score": 3.9,
+			"cause": "We detected a poor semantic similarity between the entities per microservice.",
+			"treatment": "We recommend renaming the entities.",
+			"details": null,
+			"testName": "SEMANTIC_SIMILARITY_TEST"
+		},
+		"HIRST_ST_ONGE": {
+			"score": 6.9,
+			"cause": "We detected an acceptable semantic similarity between the entities per microservice.",
+			"treatment": "We recommend renaming the entities.",
+			"details": null,
+			"testName": "SEMANTIC_SIMILARITY_TEST"
+		}
+	}
+}

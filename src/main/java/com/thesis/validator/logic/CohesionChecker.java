@@ -28,7 +28,7 @@ public class CohesionChecker extends Checker {
         long duration;
         final int N = services.size();
         double[] entityScores = new double[N];
-        double[] relationScores = new double[relations.size()];
+        double[] relationScores = new double[relations != null ? relations.size() : 0];
         double[] useCaseResponsibilityScores = new double[N];
         HashSet<String> entities;
         HashMap<String, TestResult> resultScores = new HashMap<>();
@@ -72,42 +72,44 @@ public class CohesionChecker extends Checker {
         duration = (endTestTime - startTestTime);
         System.out.println("ENTITIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
 
-        // Test relations property
-        startTestTime = System.nanoTime();
-        testResult = new TestResult(Tests.RELATIONS_COMPOSITION_TEST);
-        if (Operations.checkForDuplicates(relations, testResult)) {
-            testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(0.0)));
-            Checker.PopulateCauseAndTreatment(testResult,
-                    Feedback.LOW_CAUSE_RELATIONS_DUPLICATES.toString(),
-                    Feedback.LOW_TREATMENT_RELATIONS_DUPLICATES.toString(),
-                    Feedback.MEDIUM_CAUSE_RELATIONS_DUPLICATES.toString(),
-                    Feedback.MEDIUM_TREATMENT_RELATIONS_DUPLICATES.toString(),
-                    Feedback.HIGH_CAUSE_RELATIONS_DUPLICATES.toString(),
-                    Feedback.HIGH_TREATMENT_RELATIONS_DUPLICATES.toString());
-        } else {
-            i = 0;
-            for (Relation relation : relations) {
-                entities = Operations.getEntities(relation, true);
-                relationScores[i++] = entities.size();
-                Checker.PopulateDetails(testResult, relation.serviceA + (relation.direction == Direction.INCOMING ? "<-":"->") + relation.serviceB,
-                        String.valueOf(entities.size()), "Relation", "shared entities");
+        if(relations != null) {
+            // Test relations property
+            startTestTime = System.nanoTime();
+            testResult = new TestResult(Tests.RELATIONS_COMPOSITION_TEST);
+            if (Operations.checkForDuplicates(relations, testResult)) {
+                testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(0.0)));
+                Checker.PopulateCauseAndTreatment(testResult,
+                        Feedback.LOW_CAUSE_RELATIONS_DUPLICATES.toString(),
+                        Feedback.LOW_TREATMENT_RELATIONS_DUPLICATES.toString(),
+                        Feedback.MEDIUM_CAUSE_RELATIONS_DUPLICATES.toString(),
+                        Feedback.MEDIUM_TREATMENT_RELATIONS_DUPLICATES.toString(),
+                        Feedback.HIGH_CAUSE_RELATIONS_DUPLICATES.toString(),
+                        Feedback.HIGH_TREATMENT_RELATIONS_DUPLICATES.toString());
+            } else {
+                i = 0;
+                for (Relation relation : relations) {
+                    entities = Operations.getEntities(relation, true);
+                    relationScores[i++] = entities.size();
+                    Checker.PopulateDetails(testResult, relation.serviceA + (relation.direction == Direction.INCOMING ? "<-" : "->") + relation.serviceB,
+                            String.valueOf(entities.size()), "Relation", "shared entities");
+                }
+                result = Math.abs(MathOperations.getCoefficientOfVariation(relationScores, averageType) - 1) * 10.0;
+                testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
+                Checker.PopulateCauseAndTreatment(testResult,
+                        Feedback.LOW_CAUSE_RELATIONS_COMPOSITION.toString(),
+                        Feedback.LOW_TREATMENT_RELATIONS_COMPOSITION.toString(),
+                        Feedback.MEDIUM_CAUSE_RELATIONS_COMPOSITION.toString(),
+                        Feedback.MEDIUM_TREATMENT_RELATIONS_COMPOSITION.toString(),
+                        Feedback.HIGH_CAUSE_RELATIONS_COMPOSITION.toString(),
+                        Feedback.HIGH_TREATMENT_RELATIONS_COMPOSITION.toString());
             }
-            result = Math.abs(MathOperations.getCoefficientOfVariation(relationScores, averageType) - 1) * 10.0;
-            testResult.setScore(Double.parseDouble(new DecimalFormat(".#").format(result)));
-            Checker.PopulateCauseAndTreatment(testResult,
-                    Feedback.LOW_CAUSE_RELATIONS_COMPOSITION.toString(),
-                    Feedback.LOW_TREATMENT_RELATIONS_COMPOSITION.toString(),
-                    Feedback.MEDIUM_CAUSE_RELATIONS_COMPOSITION.toString(),
-                    Feedback.MEDIUM_TREATMENT_RELATIONS_COMPOSITION.toString(),
-                    Feedback.HIGH_CAUSE_RELATIONS_COMPOSITION.toString(),
-                    Feedback.HIGH_TREATMENT_RELATIONS_COMPOSITION.toString());
+
+            resultScores.put(testResult.getTestName().name(), testResult);
+
+            endTestTime = System.nanoTime();
+            duration = (endTestTime - startTestTime);
+            System.out.println("RELATIONS_COMPOSITION_TEST took: " + duration + " nanoseconds.");
         }
-
-        resultScores.put(testResult.getTestName().name(),testResult);
-
-        endTestTime = System.nanoTime();
-        duration = (endTestTime - startTestTime);
-        System.out.println("RELATIONS_COMPOSITION_TEST took: " + duration + " nanoseconds.");
 
         // Test useCaseResponsibility property if provided! [optional parameter]
         startTestTime = System.nanoTime();

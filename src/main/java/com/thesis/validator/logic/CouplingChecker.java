@@ -28,6 +28,9 @@ public class CouplingChecker extends Checker {
                                                                Averages averageType,
                                                                List<SimilarityAlgorithms> algorithms,
                                                                Repo repo) {
+        long startCheckerTime = System.nanoTime(), endCheckerTime;
+        long startTestTime, endTestTime;
+        long duration;
         HashMap<String,TestResult> resultScores = new HashMap<>();
         TestResult testResult;
         final int N = services.size();
@@ -37,6 +40,7 @@ public class CouplingChecker extends Checker {
         double result = 0.0;
         boolean sccDetected = false;
 
+        startTestTime = System.nanoTime();
         testResult = new TestResult(Tests.DEPENDENCIES_COMPOSITION_TEST);
         for (Service service : services) {
             dependencies.add(new Dependency(service.name, 0, 0));
@@ -66,7 +70,12 @@ public class CouplingChecker extends Checker {
                 Feedback.HIGH_TREATMENT_DEPENDENCIES.toString());
         resultScores.put(Tests.DEPENDENCIES_COMPOSITION_TEST.name() ,testResult);
 
+        endTestTime = System.nanoTime();
+        duration = (endTestTime - startTestTime);
+        System.out.println("DEPENDENCIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
+
         // SCC identification
+        startTestTime = System.nanoTime();
         testResult = new TestResult(Tests.SCC_TEST);
         List<List<Node>> components = GraphOperations.searchStronglyConnectedComponents(services,relations);
         result = ((double) components.size()/services.size()) * 10.0;
@@ -88,6 +97,14 @@ public class CouplingChecker extends Checker {
                 Feedback.HIGH_CAUSE_SCC.toString(),
                 Feedback.HIGH_TREATMENT_SCC.toString());
         resultScores.put(Tests.SCC_TEST.name() ,testResult);
+
+        endTestTime = System.nanoTime();
+        duration = (endTestTime - startTestTime);
+        System.out.println("SCC_TEST took: " + duration + " nanoseconds.");
+
+        endCheckerTime = System.nanoTime();
+        duration = (endCheckerTime - startCheckerTime);
+        System.out.println("CouplingChecker took: " + duration + " nanoseconds.");
 
         return resultScores;
     }

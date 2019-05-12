@@ -32,10 +32,9 @@ public class GranularityChecker extends Checker {
                                                       Averages averageType,
                                                       List<SimilarityAlgorithms> algorithms,
                                                       Repo repo) {
-        // time measurement begin
-
-        // time measurement
-
+        long startCheckerTime = System.nanoTime(), endCheckerTime;
+        long startTestTime, endTestTime;
+        long duration;
         final int N = services.size();
         double[] serviceScores = new double[N];
         double[] locScores = new double[N];
@@ -45,6 +44,7 @@ public class GranularityChecker extends Checker {
         double result;
         int i = 0;
 
+        startTestTime = System.nanoTime();
         testResult = new TestResult(Tests.NANOENTITIES_COMPOSITION_TEST);
         for (Service service : services) {
             entities = Operations.getEntities(service, false);
@@ -65,6 +65,11 @@ public class GranularityChecker extends Checker {
                 Feedback.HIGH_TREATMENT_NANOENTITIES_COMPOSITION.toString());
         resultScores.put(Tests.NANOENTITIES_COMPOSITION_TEST.name(), testResult);
 
+        endTestTime = System.nanoTime();
+        duration = (endTestTime - startTestTime);
+        System.out.println("NANOENTITIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
+
+        startTestTime = System.nanoTime();
         testResult = new TestResult(Tests.LOC_TEST);
         //TODO prettify code
         Path pathToBeDeleted = Paths.get(System.getProperty("user.dir")).resolve("repo");
@@ -113,7 +118,13 @@ public class GranularityChecker extends Checker {
                 resultScores.put(Tests.LOC_TEST.name(), testResult);
             }
         }
+        endTestTime = System.nanoTime();
+        duration = (endTestTime - startTestTime);
+        System.out.println("LOC_TEST took: " + duration + " nanoseconds.");
 
+        endCheckerTime = System.nanoTime();
+        duration = (endCheckerTime - startCheckerTime);  //divide by 1000000 to get milliseconds.
+        System.out.println("GranularityChecker took: " + duration + " nanoseconds.");
         return resultScores;
     }
 }

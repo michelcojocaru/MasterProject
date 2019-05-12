@@ -20,6 +20,7 @@ public class NewChecker extends Checker {
                                                 Averages averageType,
                                                 List<SimilarityAlgorithms> algorithms,
                                                 Repo repo) {
+        long startTime = System.nanoTime(), endTime, duration;
         HashMap<String,TestResult> resultScores = new HashMap<>();
         TestResult testResult = null;
         double result = 0.0;
@@ -38,6 +39,10 @@ public class NewChecker extends Checker {
                 Feedback.HIGH_CAUSE_NEWATTRIBUTE.toString(),
                 Feedback.HIGH_TREATMENT_NEWATTRIBUTE.toString());
         resultScores.put(testResult.getTestName().name(),testResult);
+
+        endTime = System.nanoTime();
+        duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
+        System.out.println("New Attribute Checker took: " + duration + " nanoseconds.");
         return resultScores;
     }
 }

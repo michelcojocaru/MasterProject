@@ -13,7 +13,7 @@ public class Chain {
         this.chain.add(new GranularityChecker());
         this.chain.add(new CouplingChecker());
         this.chain.add(new CohesionChecker());
-        //chain.add(new NewChecker());
+        this.chain.add(new NewChecker());
 
         setChainOrder();
     }

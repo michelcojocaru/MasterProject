@@ -8,7 +8,7 @@
         "CarrierMovement.arrivalTime"
       ],
       "id": "A",
-      "name": "Service A"
+      "name": "Service A"4
     },
     {
       "nanoentities": [
@@ -72,10 +72,5 @@
       "ViewTracking"
     ]
   },
-  "repo": {
-    "url": "https://github.com/javaee/cargotracker.git",
-    "languages": [
-      ".java"
-    ]
-  }
+  "repo": null
 }

@@ -14,7 +14,7 @@
     {
       "serviceA": "String",
       "serviceB": "String",
-      "sharedEntities": [],
+      "sharedEntities": ["String"],
       "direction": "INCOMING/OUTGOING"
     }
   ],

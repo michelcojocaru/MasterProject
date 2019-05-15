@@ -28,6 +28,16 @@ public class Operations {
                         dependency.incrementInward();
                     }
                 }
+            } else if (relation.direction.equals(Direction.BIDIRECTIONAL)){
+                for (Dependency dependency : dependencies) {
+                    if (dependency.getServiceName().equals(relation.serviceA)) {
+                        dependency.incrementOutward();
+                        dependency.incrementInward();
+                    } else if (dependency.getServiceName().equals(relation.serviceB)) {
+                        dependency.incrementInward();
+                        dependency.incrementOutward();
+                    }
+                }
             }
         }
     }

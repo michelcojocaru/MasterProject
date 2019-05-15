@@ -1,0 +1,41 @@
+﻿{
+	"services": [{
+		"nanoentities": ["Cargo.trackingId"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["RouteSpecification.origin", "RouteSpecification.destination", "RouteSpecification.arrivalDeadline"],
+		"id": "B",
+		"name": "Service B"
+	}, {
+		"nanoentities": ["Itinerary.itineraryNumber"],
+		"id": "C",
+		"name": "Service C"
+	}, {
+		"nanoentities": ["Delivery.transportStatus", "Delivery.misdirected", "Delivery.estimatedArrivalTime", "Delivery.isUnloadedAtDestination", "Delivery.routingStatus"],
+		"id": "D",
+		"name": "Service D"
+	}, {
+		"nanoentities": ["Leg.loadLocation", "Leg.unloadLocation", "Leg.loadTime", "Leg.unloadTime"],
+		"id": "E",
+		"name": "Service E"
+	}, {
+		"nanoentities": ["HandlingEvent.type", "HandlingEvent.completionTime", "HandlingEvent.registrationTime", "HandlingEvent.location"],
+		"id": "F",
+		"name": "Service F"
+	}, {
+		"nanoentities": ["Voyage.voyageNumber"],
+		"id": "G",
+		"name": "Service G"
+	}, {
+		"nanoentities": ["CarrierMovement.departureLocation", "CarrierMovement.arrivalLocation", "CarrierMovement.departureTime", "CarrierMovement.arrivalTime"],
+		"id": "H",
+		"name": "Service H"
+	}, {
+		"nanoentities": ["Location.unLocode", "Location.name"],
+		"id": "I",
+		"name": "Service I"
+	}],
+	"relations": [],
+	"useCaseResponsibility": {}
+}

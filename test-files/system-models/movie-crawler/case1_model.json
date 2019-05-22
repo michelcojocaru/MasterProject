@@ -4,39 +4,39 @@
 		{
 			"name":"Movie",
 			"nanoentities": [
-				"movie_name",
-				"movie_detail",
+				"movieName",
+				"movieDetail",
 				"comments"
 			]
 		},
 		{
 			"name":"Comment",
 			"nanoentities": [
-				"user_name",
+				"userName",
 				"content",
 				"time",
-				"user_avatar"
+				"userAvatar"
 			]
 		},
 		{
-			"name":"Web_page",
+			"name":"WebPage",
 			"nanoentities": [
-				"page_url",
-				"page_content"
+				"pageUrl",
+				"pageContent"
 			]
 		},
 		{
-			"name":"DB_helper",
+			"name":"DbHelper",
 			"nanoentities": [
-				"db_config",
-				"db_connection"
+				"dbConfig",
+				"dbConnection"
 			]
 		},
 		{
 			"name":"Crawler",
 			"nanoentities": [
-				"crawl_url",
-				"crawl_config"
+				"crawlUrl",
+				"crawlConfig"
 			]
 		}
 	],
@@ -47,12 +47,12 @@
 			"type":"COMPOSITION"
 		},
 		{
-			"origin":"Web_page",
+			"origin":"WebPage",
 			"destination":"Movie",
 			"type":"AGGREGATION"
 		},
 		{
-			"origin":"Web_page",
+			"origin":"WebPage",
 			"destination":"Comment",
 			"type":"AGGREGATION"
 		},
@@ -67,12 +67,12 @@
 			"type":"AGGREGATION"
 		},
 		{
-			"origin":"DB_helper",
+			"origin":"DbHelper",
 			"destination":"Comment",
 			"type":"AGGREGATION"
 		},
 		{
-			"origin":"DB_helper",
+			"origin":"DbHelper",
 			"destination":"Movie",
 			"type":"AGGREGATION"
 		}

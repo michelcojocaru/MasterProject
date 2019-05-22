@@ -1,0 +1,31 @@
+﻿{
+	"name": "movie-crawler_girvan",
+	"services": [{
+		"nanoentities": ["WebPage.pageUrl", "WebPage.pageContent", "Crawler.crawlUrl", "Crawler.crawlConfig"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["Movie.movieName", "Movie.movieDetail", "Movie.comments", "Comment.userName", "Comment.content", "Comment.time", "Comment.userAvatar"],
+		"id": "B",
+		"name": "Service B"
+	}, {
+		"nanoentities": ["DbHelper.dbConfig", "DbHelper.dbConnection"],
+		"id": "C",
+		"name": "Service C"
+	}],
+	"relations": [{
+		"serviceA": "Service A",
+		"serviceB": "Service B",
+		"sharedEntities": ["WebPage.pageContent", "WebPage.pageUrl"],
+		"direction": "INCOMING"
+	}, {
+		"serviceA": "Service B",
+		"serviceB": "Service C",
+		"sharedEntities": ["DbHelper.dbConfig", "DbHelper.dbConnection"],
+		"direction": "OUTGOING"
+	}],
+	"useCaseResponsibility": {
+		"Service B": ["extractContent", "parseContent"],
+		"Service A": ["crawlWebPage"]
+	}
+}

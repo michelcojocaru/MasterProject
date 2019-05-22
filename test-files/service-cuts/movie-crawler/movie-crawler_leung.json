@@ -1,0 +1,21 @@
+﻿{
+	"name": "movie-crawler_leung",
+	"services": [{
+		"nanoentities": ["DbHelper.dbConfig", "DbHelper.dbConnection"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["WebPage.pageUrl", "WebPage.pageContent", "Movie.movieName", "Movie.movieDetail", "Movie.comments", "Comment.userName", "Comment.content", "Comment.time", "Comment.userAvatar", "Crawler.crawlUrl", "Crawler.crawlConfig"],
+		"id": "B",
+		"name": "Service B"
+	}],
+	"relations": [{
+		"serviceA": "Service A",
+		"serviceB": "Service B",
+		"sharedEntities": ["DbHelper.dbConfig", "DbHelper.dbConnection"],
+		"direction": "INCOMING"
+	}],
+	"useCaseResponsibility": {
+		"Service B": ["crawlWebPage", "extractContent", "parseContent"]
+	}
+}

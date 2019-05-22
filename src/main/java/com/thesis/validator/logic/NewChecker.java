@@ -4,6 +4,7 @@ import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Feedback;
 import com.thesis.validator.enums.SimilarityAlgorithms;
 import com.thesis.validator.enums.Tests;
+import com.thesis.validator.helpers.CSVOperations;
 import com.thesis.validator.model.*;
 
 import java.text.DecimalFormat;
@@ -14,12 +15,13 @@ public class NewChecker extends Checker {
 
     private static final double NEW_ATTRIBUTE_COEFFICIENT_OF_VARIATION_THRESHOLD = 0.0;
 
-    public HashMap<String, TestResult> assessAttribute(List<Service> services,
-                                                List<Relation> relations,
-                                                UseCaseResponsibility useCaseResponsibilities,
-                                                Averages averageType,
-                                                List<SimilarityAlgorithms> algorithms,
-                                                Repo repo) {
+    public HashMap<String, TestResult> assessAttribute(String systemName,
+                                                       List<Service> services,
+                                                        List<Relation> relations,
+                                                        UseCaseResponsibility useCaseResponsibilities,
+                                                        Averages averageType,
+                                                        List<SimilarityAlgorithms> algorithms,
+                                                        Repo repo) {
         long startTime = System.nanoTime(), endTime, duration;
         HashMap<String,TestResult> resultScores = new HashMap<>();
         TestResult testResult = null;
@@ -42,7 +44,8 @@ public class NewChecker extends Checker {
 
         endTime = System.nanoTime();
         duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
-        System.out.println("New Attribute Checker took: " + duration + " nanoseconds.\n--------------------------------------");
+        CSVOperations.logRunTimes(systemName, new String[]{ Tests.NEWATTRIBUTE_TEST.toString() , String.valueOf(duration), "\n"});
+        //System.out.println("New Attribute Checker took: " + duration + " nanoseconds.\n--------------------------------------");
         return resultScores;
     }
 }

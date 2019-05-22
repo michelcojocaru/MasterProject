@@ -4,6 +4,7 @@ import com.thesis.validator.enums.Averages;
 import com.thesis.validator.enums.Feedback;
 import com.thesis.validator.enums.SimilarityAlgorithms;
 import com.thesis.validator.enums.Tests;
+import com.thesis.validator.helpers.CSVOperations;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
 import com.thesis.validator.model.Node;
@@ -22,7 +23,8 @@ public class CouplingChecker extends Checker {
 
     // calculate the coefficient of variation of the differences between
     // inward and outward dependencies for each service
-    public HashMap<String, TestResult> assessAttribute(List<Service> services,
+    public HashMap<String, TestResult> assessAttribute(String systemName,
+                                                       List<Service> services,
                                                                List<Relation> relations,
                                                                UseCaseResponsibility useCaseResponsibilities,
                                                                Averages averageType,
@@ -73,7 +75,9 @@ public class CouplingChecker extends Checker {
 
             endTestTime = System.nanoTime();
             duration = (endTestTime - startTestTime);
-            System.out.println("DEPENDENCIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
+            System.out.print(Tests.DEPENDENCIES_COMPOSITION_TEST.toString() + "," + duration + ",");
+            CSVOperations.logRunTimes(systemName, new String[]{ Tests.DEPENDENCIES_COMPOSITION_TEST.toString() , String.valueOf(duration)});
+            //System.out.println("DEPENDENCIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
 
             // SCC identification
             startTestTime = System.nanoTime();
@@ -101,12 +105,14 @@ public class CouplingChecker extends Checker {
 
             endTestTime = System.nanoTime();
             duration = (endTestTime - startTestTime);
-            System.out.println("SCC_TEST took: " + duration + " nanoseconds.");
+            System.out.print(Tests.SCC_TEST.toString() + "," + duration + ",");
+            CSVOperations.logRunTimes(systemName, new String[]{ Tests.SCC_TEST.toString() , String.valueOf(duration)});
+            //System.out.println("SCC_TEST took: " + duration + " nanoseconds.");
         }
 
         endCheckerTime = System.nanoTime();
         duration = (endCheckerTime - startCheckerTime);
-        System.out.println("CouplingChecker took: " + duration + " nanoseconds.");
+        //System.out.println("CouplingChecker took: " + duration + " nanoseconds.");
 
         return resultScores;
     }

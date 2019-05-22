@@ -1,0 +1,22 @@
+﻿{
+	"name":"cargo-tracker_leung",
+	"services": [{
+		"nanoentities": ["Cargo.trackingId", "RouteSpecification.origin", "RouteSpecification.destination", "Itinerary.itineraryNumber", "Delivery.routingStatus", "Leg.loadLocation", "Leg.unloadLocation", "Leg.loadTime", "Leg.unloadTime", "Voyage.voyageNumber", "CarrierMovement.departureLocation", "CarrierMovement.arrivalLocation", "CarrierMovement.departureTime", "CarrierMovement.arrivalTime", "Location.unLocode", "Location.name"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["RouteSpecification.arrivalDeadline", "Delivery.transportStatus", "Delivery.misdirected", "Delivery.estimatedArrivalTime", "Delivery.isUnloadedAtDestination", "HandlingEvent.type", "HandlingEvent.completionTime", "HandlingEvent.registrationTime", "HandlingEvent.location"],
+		"id": "B",
+		"name": "Service B"
+	}],
+	"relations": [{
+		"serviceA": "Service A",
+		"serviceB": "Service B",
+		"sharedEntities": ["Cargo.trackingId", "RouteSpecification.arrivalDeadline", "Voyage.voyageNumber", "RouteSpecification.destination", "Delivery.routingStatus"],
+		"direction": "BIDIRECTIONAL"
+	}],
+	"useCaseResponsibility": {
+		"Service B": ["ViewTracking", "handleCargoEvent"],
+		"Service A": ["ViewCargos", "BookCargo", "ChangeCargoDestination", "RouteCargo", "Create Location", "Create Voyage", "AddCarrierMovement"]
+	}
+}

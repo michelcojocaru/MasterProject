@@ -8,6 +8,8 @@ import java.util.List;
 
 public class SystemModel {
 
+    @JsonProperty("name")
+    public String name;
     @JsonProperty("services")
     public List<Service> services;
     @JsonProperty("relations")

@@ -1,0 +1,59 @@
+{
+  "useCases": [{
+      "name": "extractTheatreName",
+      "nanoentitiesRead": [
+        "Platform.url",
+        "Platform.name"
+      ],
+      "nanoentitiesWritten": [
+        "Theatre.name"
+      ]
+    },
+    {
+      "name": "composeStructuredMovieInfo",
+      "nanoentitiesRead": [
+        "Movie.movieName",
+        "Time.timeOfDay",
+        "Time.date",
+        "Theatre.name"
+      ],
+      "nanoentitiesWritten": [
+        "Play.time",
+        "Play.movie",
+        "Play.theatre",
+        "Theatre.location",
+        "Theatre.phone"
+      ]
+    },
+    {
+      "name": "queryDiffPrices",
+      "nanoentitiesRead": [
+        "DbHelper.dbConfig",
+        "DbHelper.dbConnection",
+        "Play.time",
+        "Play.movie",
+        "Play.theatre"
+      ],
+      "nanoentitiesWritten": [
+        "DiffPrices.price",
+        "DiffPrices.platform",
+        "DiffPrices.play"
+      ],
+      "isLatencyCritical": "true"
+    },
+    {
+      "name": "integratePriceSummary",
+      "nanoentitiesRead": [
+        "Movie.movieDetail",
+        "DiffPrices.price",
+        "DiffPrices.platform",
+        "DiffPrices.play"
+      ],
+      "nanoentitiesWritten": [
+        "MainPage.diffPrices",
+        "MainPage.movie"
+      ],
+      "isLatencyCritical": "true"
+    }
+  ]
+}

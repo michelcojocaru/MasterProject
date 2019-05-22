@@ -1,0 +1,63 @@
+﻿{
+	"name": "ticket-price_girvan",
+	"services": [{
+		"nanoentities": ["Theatre.name", "Theatre.location", "Theatre.phone", "Time.date", "Time.timeOfDay"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["Movie.movieName"],
+		"id": "B",
+		"name": "Service B"
+	}, {
+		"nanoentities": ["Movie.movieDetail"],
+		"id": "C",
+		"name": "Service C"
+	}, {
+		"nanoentities": ["Platform.name", "Platform.url"],
+		"id": "D",
+		"name": "Service D"
+	}, {
+		"nanoentities": ["DbHelper.dbConfig", "DbHelper.dbConnection"],
+		"id": "E",
+		"name": "Service E"
+	}, {
+		"nanoentities": ["Play.time", "Play.movie", "Play.theatre"],
+		"id": "F",
+		"name": "Service F"
+	}, {
+		"nanoentities": ["DiffPrices.price", "DiffPrices.platform", "DiffPrices.play"],
+		"id": "G",
+		"name": "Service G"
+	}, {
+		"nanoentities": ["MainPage.diffPrices", "MainPage.url", "MainPage.movie"],
+		"id": "H",
+		"name": "Service H"
+	}],
+	"relations": [{
+		"serviceA": "Service A",
+		"serviceB": "Service D",
+		"sharedEntities": ["Platform.url", "Platform.name"],
+		"direction": "OUTGOING"
+	}, {
+		"serviceA": "Service A",
+		"serviceB": "Service F",
+		"sharedEntities": ["Time.date", "Theatre.phone", "Time.timeOfDay", "Theatre.name", "Theatre.location"],
+		"direction": "INCOMING"
+	}, {
+		"serviceA": "Service B",
+		"serviceB": "Service F",
+		"sharedEntities": ["Movie.movieName"],
+		"direction": "INCOMING"
+	}, {
+		"serviceA": "Service C",
+		"serviceB": "Service H",
+		"sharedEntities": ["Movie.movieDetail"],
+		"direction": "INCOMING"
+	}],
+	"useCaseResponsibility": {
+		"Service H": ["integratePriceSummary"],
+		"Service G": ["queryDiffPrices"],
+		"Service F": ["composeStructuredMovieInfo"],
+		"Service A": ["extractTheatreName"]
+	}
+}

@@ -7,6 +7,7 @@ import java.util.List;
 
 public class CrystalGlobe {
 
+    private String systemName;
     private HashMap<String, HashMap<String, TestResult>> results;
     private List<Service> services;
     private List<Relation> relations;
@@ -16,7 +17,8 @@ public class CrystalGlobe {
     private Repo repo;
 
 
-    public CrystalGlobe(List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities, Averages averageType, List<SimilarityAlgorithms> algorithms, Repo repo) {
+    public CrystalGlobe(String systemName, List<Service> services, List<Relation> relations, UseCaseResponsibility useCaseResponsibilities, Averages averageType, List<SimilarityAlgorithms> algorithms, Repo repo) {
+        this.systemName = systemName;
         this.results = new HashMap<>();
         this.services = services;
         this.relations = relations;
@@ -24,6 +26,10 @@ public class CrystalGlobe {
         this.averageType = averageType;
         this.algorithms = algorithms;
         this.repo = repo;
+    }
+
+    public String getSystemName(){
+        return systemName;
     }
 
     public List<Service> getServices() {

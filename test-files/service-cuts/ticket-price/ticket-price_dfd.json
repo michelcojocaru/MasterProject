@@ -1,0 +1,42 @@
+﻿{
+	"name": "ticket-price_dfd",
+	"services": [{
+		"nanoentities": ["Platform.name", "Platform.url", "Theatre.location", "Theatre.phone"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["Movie.movieName", "Time.date", "Time.timeOfDay", "Theatre.name"],
+		"id": "B",
+		"name": "Service B"
+	}, {
+		"nanoentities": ["DiffPrices.price", "DiffPrices.platform", "DiffPrices.play", "DbHelper.dbConfig", "DbHelper.dbConnection"],
+		"id": "C",
+		"name": "Service C"
+	}, {
+		"nanoentities": ["Movie.movieDetail", "Play.time", "Play.movie", "Play.theatre", "MainPage.diffPrices", "MainPage.url", "MainPage.movie"],
+		"id": "D",
+		"name": "Service D"
+	}],
+	"relations": [{
+		"serviceA": "Service A",
+		"serviceB": "Service B",
+		"sharedEntities": ["Theatre.name"],
+		"direction": "OUTGOING"
+	}, {
+		"serviceA": "Service B",
+		"serviceB": "Service C",
+		"sharedEntities": ["Movie.movieName", "Time.date", "Time.timeOfDay"],
+		"direction": "OUTGOING"
+	}, {
+		"serviceA": "Service C",
+		"serviceB": "Service D",
+		"sharedEntities": ["DiffPrices.price", "DiffPrices.platform", "DiffPrices.play"],
+		"direction": "OUTGOING"
+	} ],
+	"useCaseResponsibility": {
+		"Service A": ["extractTheatreName"],
+		"Service B": ["composeStructuredMovieInfo"],
+		"Service C": ["queryDiffPrices"],
+		"Service D": ["integratePriceSummary"]
+	}
+}

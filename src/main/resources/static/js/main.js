@@ -296,6 +296,7 @@ function uploadSingleFile(file) {
     };
 
     file = getCheckBoxes(file);
+    console.log(JSON.stringify(file));
 
     xhr.send(JSON.stringify(file));
 }

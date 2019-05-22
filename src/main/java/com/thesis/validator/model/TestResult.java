@@ -1,14 +1,20 @@
 package com.thesis.validator.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thesis.validator.enums.Tests;
 
 public class TestResult {
 
-    private Tests name;
-    private double score;
-    private String cause;
-    private String treatment;
-    private String details;
+    @JsonProperty("name")
+    public Tests name;
+    @JsonProperty("score")
+    public double score;
+    @JsonProperty("cause")
+    public String cause;
+    @JsonProperty("treatment")
+    public String treatment;
+    @JsonProperty("details")
+    public String details;
 
     public TestResult(Tests name){
         this.name = name;
@@ -17,6 +23,10 @@ public class TestResult {
     public TestResult(Tests name, double score){
         this.name = name;
         this.score = score;
+    }
+
+    public Tests getName() {
+        return name;
     }
 
     public Tests getTestName() {

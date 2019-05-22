@@ -1,0 +1,31 @@
+﻿{
+	"name": "ticket-price_leung",
+	"services": [{
+		"nanoentities": ["Platform.name", "Platform.url"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["Movie.movieDetail", "DiffPrices.price", "DiffPrices.platform", "DiffPrices.play", "MainPage.diffPrices", "MainPage.url", "MainPage.movie"],
+		"id": "B",
+		"name": "Service B"
+	}, {
+		"nanoentities": ["Theatre.name", "Theatre.location", "Theatre.phone", "Movie.movieName", "Time.date", "Time.timeOfDay", "DbHelper.dbConfig", "DbHelper.dbConnection", "Play.time", "Play.movie", "Play.theatre"],
+		"id": "C",
+		"name": "Service C"
+	}],
+	"relations": [{
+		"serviceA": "Service A",
+		"serviceB": "Service C",
+		"sharedEntities": ["Platform.url", "Platform.name"],
+		"direction": "INCOMING"
+	}, {
+		"serviceA": "Service B",
+		"serviceB": "Service C",
+		"sharedEntities": ["DbHelper.dbConfig", "Play.time", "Play.theatre", "DbHelper.dbConnection", "Play.movie"],
+		"direction": "OUTGOING"
+	}],
+	"useCaseResponsibility": {
+		"Service C": ["extractTheatreName", "composeStructuredMovieInfo"],
+		"Service B": ["queryDiffPrices", "integratePriceSummary"]
+	}
+}

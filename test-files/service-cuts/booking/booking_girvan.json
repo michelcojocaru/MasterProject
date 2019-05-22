@@ -1,0 +1,41 @@
+﻿{
+	"name":"booking_girvan",
+	"services": [{
+		"nanoentities": ["Customer.customerIdentifier", "Customer.creditCard"],
+		"id": "A",
+		"name": "Service A"
+	}, {
+		"nanoentities": ["Customer.firstname", "Customer.name", "Customer.street", "Customer.city", "Customer.accountNr"],
+		"id": "B",
+		"name": "Service B"
+	}, {
+		"nanoentities": ["Article.articleIdentifier", "Article.articleName", "Article.price", "Article.serial", "Booking.bookingIdentifier", "Booking.bookingDate", "Booking.totalPrice"],
+		"id": "C",
+		"name": "Service C"
+	}, {
+		"nanoentities": ["Booking.paymentDate", "Booking.bookingState"],
+		"id": "D",
+		"name": "Service D"
+	}],
+	"relations": [{
+		"serviceA": "Service A",
+		"serviceB": "Service B",
+		"sharedEntities": ["Customer.customerIdentifier", "Customer.creditCard"],
+		"direction": "INCOMING"
+	}, {
+		"serviceA": "Service A",
+		"serviceB": "Service D",
+		"sharedEntities": ["Customer.customerIdentifier", "Customer.creditCard"],
+		"direction": "INCOMING"
+	}, {
+		"serviceA": "Service C",
+		"serviceB": "Service D",
+		"sharedEntities": ["Booking.bookingState", "Article.articleIdentifier", "Booking.paymentDate"],
+		"direction": "BIDIRECTIONAL"
+	}],
+	"useCaseResponsibility": {
+		"Service D": ["payBooking"],
+		"Service C": ["createBooking", "createArticle", "searchArticles"],
+		"Service B": ["createCustomer"]
+	}
+}

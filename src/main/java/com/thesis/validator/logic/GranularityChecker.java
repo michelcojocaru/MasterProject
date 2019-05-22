@@ -6,6 +6,7 @@ import com.thesis.validator.enums.SimilarityAlgorithms;
 import com.thesis.validator.enums.Tests;
 import com.thesis.validator.file.FileSearch;
 import com.thesis.validator.file.GitRepoDownloader;
+import com.thesis.validator.helpers.CSVOperations;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.Operations;
 import com.thesis.validator.helpers.TextOperations;
@@ -26,7 +27,8 @@ public class GranularityChecker extends Checker {
 
     // calculate the coefficient of variation between the lengths
     // of nanoentity lists from each service
-    public HashMap<String,TestResult> assessAttribute(List<Service> services,
+    public HashMap<String,TestResult> assessAttribute(String systemName,
+                                                      List<Service> services,
                                                       List<Relation> relations,
                                                       UseCaseResponsibility useCaseResponsibilities,
                                                       Averages averageType,
@@ -67,7 +69,10 @@ public class GranularityChecker extends Checker {
 
         endTestTime = System.nanoTime();
         duration = (endTestTime - startTestTime);
-        System.out.println("NANOENTITIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
+        System.out.print(Tests.NANOENTITIES_COMPOSITION_TEST.toString() + "," + duration + ",");
+        CSVOperations.logRunTimes(systemName, new String[]{ Tests.NANOENTITIES_COMPOSITION_TEST.toString() , String.valueOf(duration)});
+        //System.out.println("NANOENTITIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
+
 
         startTestTime = System.nanoTime();
         testResult = new TestResult(Tests.LOC_TEST);
@@ -120,11 +125,13 @@ public class GranularityChecker extends Checker {
         }
         endTestTime = System.nanoTime();
         duration = (endTestTime - startTestTime);
-        System.out.println("LOC_TEST took: " + duration + " nanoseconds.");
+        System.out.print(Tests.LOC_TEST.toString() + "," + duration + ",");
+        CSVOperations.logRunTimes(systemName, new String[]{ Tests.LOC_TEST.toString() , String.valueOf(duration)});
+        //System.out.println("LOC_TEST took: " + duration + " nanoseconds.");
 
         endCheckerTime = System.nanoTime();
         duration = (endCheckerTime - startCheckerTime);  //divide by 1000000 to get milliseconds.
-        System.out.println("GranularityChecker took: " + duration + " nanoseconds.");
+        //System.out.println("GranularityChecker took: " + duration + " nanoseconds.");
         return resultScores;
     }
 }

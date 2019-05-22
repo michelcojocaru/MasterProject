@@ -1,0 +1,42 @@
+{
+  "useCases": [{
+      "name": "crawlWebPage",
+      "nanoentitiesRead": [
+        "Crawler.crawlConfig",
+        "Crawler.crawlUrl",
+        "WebPage.pageUrl"
+      ],
+      "nanoentitiesWritten": [
+        "WebPage.pageContent"
+      ],
+      "isLatencyCritical": "true"
+    },
+    {
+      "name": "extractContent",
+      "nanoentitiesRead": [
+        "WebPage.pageUrl",
+        "WebPage.pageContent"
+      ],
+      "nanoentitiesWritten": [
+        "Movie.comments",
+        "Movie.movieDetail",
+        "Comment.time",
+        "Comment.content"
+      ]
+    },
+    {
+      "name": "parseContent",
+      "nanoentitiesRead": [
+        "DbHelper.dbConfig",
+        "DbHelper.dbConnection"
+      ],
+      "nanoentitiesWritten": [
+        "Movie.movieName",
+        "Movie.movieDetail",
+        "Movie.comments",
+        "Comment.content",
+        "Comment.time"
+      ]
+    }
+  ]
+}

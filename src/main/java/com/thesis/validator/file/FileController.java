@@ -1,5 +1,7 @@
 package com.thesis.validator.file;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thesis.validator.helpers.CSVOperations;
 import com.thesis.validator.logic.Chain;
 import com.thesis.validator.model.CrystalGlobe;
 import com.thesis.validator.model.SystemModel;
@@ -15,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @RestController
 public class FileController {
@@ -32,12 +36,41 @@ public class FileController {
     public Response uploadFile(@RequestBody SystemModel model) {
         try {
 
-            CrystalGlobe crystalGlobe = new CrystalGlobe(model.services, model.relations, model.useCaseResponsibility, model.averageType, model.algorithms, model.repo);
-
+            CrystalGlobe crystalGlobe = new CrystalGlobe(model.name, model.services, model.relations, model.useCaseResponsibility, model.averageType, model.algorithms, model.repo);
+            CSVOperations.initRunningTimesLogFile(model.name,"running_times", "csv");
             Chain chain = new Chain();
             chain.getFirstChecker().runAssessment(crystalGlobe);
 
+            String fileName = CSVOperations.initRunningTimesLogFile(model.name,"scores", "json");
+
+            FileWriter fileWriter = null;
+            try {
+                fileWriter = new FileWriter(fileName, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.writeValue(fileWriter, crystalGlobe.getResults());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+//            if(fileWriter != null){
+//
+//                try(PrintWriter writer = new PrintWriter(fileWriter)){
+//
+//
+//                    writer.write(crystalGlobe.getResults().toString());
+//
+//                    //writer.close();
+//
+//                }
+//            }
+
             return new Response(crystalGlobe.getResults());
+            //TODO write results to files
 
         } catch (Exception e) {
             return new Response(e.toString());

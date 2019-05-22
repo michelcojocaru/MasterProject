@@ -2,6 +2,7 @@ package com.thesis.validator.logic;
 
 
 import com.thesis.validator.enums.*;
+import com.thesis.validator.helpers.CSVOperations;
 import com.thesis.validator.helpers.MathOperations;
 import com.thesis.validator.helpers.NLPOperations;
 import com.thesis.validator.helpers.Operations;
@@ -17,7 +18,8 @@ public class CohesionChecker extends Checker {
 
     // calculate the coefficient of variation between the lengths
     // of concepts sets for each service
-    public HashMap<String,TestResult> assessAttribute(List<Service> services,
+    public HashMap<String,TestResult> assessAttribute(String systemName,
+                                                      List<Service> services,
                                                               List<Relation> relations,
                                                               UseCaseResponsibility useCaseResponsibilities,
                                                               Averages averageType,
@@ -70,7 +72,9 @@ public class CohesionChecker extends Checker {
 
         endTestTime = System.nanoTime();
         duration = (endTestTime - startTestTime);
-        System.out.println("ENTITIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
+        System.out.print(Tests.ENTITIES_COMPOSITION_TEST.toString() + "," + duration + ",");
+        CSVOperations.logRunTimes(systemName, new String[]{ Tests.ENTITIES_COMPOSITION_TEST.toString() , String.valueOf(duration)});
+        //System.out.println("ENTITIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
 
         if(relations != null) {
             // Test relations property
@@ -108,7 +112,9 @@ public class CohesionChecker extends Checker {
 
             endTestTime = System.nanoTime();
             duration = (endTestTime - startTestTime);
-            System.out.println("RELATIONS_COMPOSITION_TEST took: " + duration + " nanoseconds.");
+            System.out.print(Tests.RELATIONS_COMPOSITION_TEST.toString() + "," + duration + ",");
+            CSVOperations.logRunTimes(systemName, new String[]{ Tests.RELATIONS_COMPOSITION_TEST.toString() , String.valueOf(duration)});
+            //System.out.println("RELATIONS_COMPOSITION_TEST took: " + duration + " nanoseconds.");
         }
 
         // Test useCaseResponsibility property if provided! [optional parameter]
@@ -147,7 +153,9 @@ public class CohesionChecker extends Checker {
 
         endTestTime = System.nanoTime();
         duration = (endTestTime - startTestTime);
-        System.out.println("RESPONSIBILITIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
+        System.out.print(Tests.RESPONSIBILITIES_COMPOSITION_TEST.toString() + "," + duration + ",");
+        CSVOperations.logRunTimes(systemName, new String[]{ Tests.RESPONSIBILITIES_COMPOSITION_TEST.toString() , String.valueOf(duration)});
+        //System.out.println("RESPONSIBILITIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
 
         // Test semantic similarity between entities of each service using multiple algorithms
         for(SimilarityAlgorithms algorithm:algorithms) {
@@ -165,12 +173,15 @@ public class CohesionChecker extends Checker {
             resultScores.put(algorithm.name(),testResult);
             endTestTime = System.nanoTime();
             duration = (endTestTime - startTestTime);
-            System.out.println(algorithm + " took: " + duration + " nanoseconds.");
+            System.out.print(algorithm.toString() + "," + duration + ",");
+            CSVOperations.logRunTimes(systemName, new String[]{ algorithm.toString() , String.valueOf(duration)});
+            //System.out.println(algorithm + " took: " + duration + " nanoseconds.");
         }
 
         endCheckerTime = System.nanoTime();
         duration = (endCheckerTime - startCheckerTime);
-        System.out.println("CohesionChecker took: " + duration + " nanoseconds.");
+        System.out.println();
+        //System.out.println("CohesionChecker took: " + duration + " nanoseconds.");
 
         return resultScores;
     }

@@ -17,7 +17,8 @@ public abstract class Checker {
     }
 
     final public void runAssessment(CrystalGlobe crystalGlobe) {
-        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), assessAttribute(crystalGlobe.getServices(),
+        crystalGlobe.CheckAttribute(this.getClass().getSimpleName(), assessAttribute(crystalGlobe.getSystemName(),
+                                                                            crystalGlobe.getServices(),
                                                                             crystalGlobe.getRelations(),
                                                                             crystalGlobe.getUseCaseResponsibilities(),
                                                                             crystalGlobe.getTypeOfAverage(),
@@ -29,7 +30,8 @@ public abstract class Checker {
         }
     }
 
-    abstract HashMap<String, TestResult> assessAttribute(List<Service> services,
+    abstract HashMap<String, TestResult> assessAttribute(String systemName,
+                                                         List<Service> services,
                                                        List<Relation> relations,
                                                        UseCaseResponsibility useCaseResponsibilities,
                                                        Averages averageType,

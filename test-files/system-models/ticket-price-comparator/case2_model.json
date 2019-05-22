@@ -1,5 +1,5 @@
 {
-	"name":"Movie Ticket",
+	"name":"MovieTicket",
 	"entities":[
 		{
 			"name":"Theatre",
@@ -19,8 +19,8 @@
 		{
 			"name":"Movie",
 			"nanoentities":[
-				"movie_name",
-				"movie_detail"
+				"movieName",
+				"movieDetail"
 			]
 		},
 		{
@@ -39,7 +39,7 @@
 			]
 		},
 		{
-			"name":"Diff_prices",
+			"name":"DiffPrices",
 			"nanoentities":[
 				"price",
 				"platform",
@@ -47,18 +47,18 @@
 			]
 		},
 		{
-			"name":"Main_page",
+			"name":"MainPage",
 			"nanoentities":[
-				"diff_prices",
+				"diffPrices",
 				"url",
 				"movie"
 			]
 		},
 		{
-			"name":"DB_helper",
+			"name":"DbHelper",
 			"nanoentities": [
-				"db_config",
-				"db_connection"
+				"dbConfig",
+				"dbConnection"
 			]
 		}
 	],
@@ -79,37 +79,37 @@
 			"type":"COMPOSITION"
 		},
 		{
-			"origin":"Diff_prices",
+			"origin":"DiffPrices",
 			"destination":"Play",
 			"type":"COMPOSITION"
 		},
 		{
-			"origin":"Diff_prices",
+			"origin":"DiffPrices",
 			"destination":"Platform",
 			"type":"AGGREGATION"
 		},
 		{
-			"origin":"Main_page",
+			"origin":"MainPage",
 			"destination":"Movie",
 			"type":"AGGREGATION"
 		},
 		{
-			"origin":"Main_page",
-			"destination":"Diff_prices",
+			"origin":"MainPage",
+			"destination":"DiffPrices",
 			"type":"COMPOSITION"
 		},
 		{
-			"origin":"DB_helper",
+			"origin":"DbHelper",
 			"destination":"Movie",
 			"type":"AGGREGATION"
 		},
 		{
-			"origin":"DB_helper",
+			"origin":"DbHelper",
 			"destination":"Theatre",
 			"type":"AGGREGATION"
 		},
 		{
-			"origin":"DB_helper",
+			"origin":"DbHelper",
 			"destination":"Play",
 			"type":"AGGREGATION"
 		}

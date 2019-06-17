@@ -1,0 +1,7 @@
+Granularity Checker;;;;Coupling Checker;;;;Cohesion Checker;;;;;;;;;;;;;;;;;;;;;;New Checker;
+NANOENTITIES_COMPOSITION_TEST;;LOC_TEST;;DEPENDENCIES_COMPOSITION_TEST;;SCC_TEST;;ENTITIES_COMPOSITION_TEST;;RELATIONS_COMPOSITION_TEST;;RESPONSIBILITIES_COMPOSITION_TEST;;HIRST_ST_ONGE;;LEACOCK_CHODOROW;;RESNIK;;JIANG_CONRATH;;LIN;;PATH;;LESK;;WU_PALMER;;NEWATTRIBUTE_TEST;
+mean;0,046;mean;0,086;mean;0,049;mean;0,048;mean;0,038;mean;0,029;mean;0,033;mean;612,112;mean;7,051;mean;7,325;mean;13,999;mean;13,661;mean;6,455;mean;38,356;mean;13,705;mean;0,014
+median;0,04;median;0,08;median;0,04;median;0,04;median;0,04;median;0,03;median;0,03;median;606,5;median;6,51;median;7,125;median;13,63;median;13,345;median;6,515;median;37,335;median;13,58;median;0,01
+sd;0,023190036;sd;0,018378732;sd;0,032812599;sd;0,026997942;sd;0,009189366;sd;0,007378648;sd;0,012516656;sd;44,90607056;sd;1,34050115;sd;0,881000063;sd;0,843306324;sd;1,674942453;sd;0,32032102;sd;4,726556651;sd;1,087997651;sd;0,006992059
+min;0,03;min;0,07;min;0,03;min;0,03;min;0,03;min;0,02;min;0,02;min;561,36;min;5,82;min;6,23;min;13,09;min;12,05;min;6,03;min;33,24;min;12,3;min;0,01
+max;0,11;max;0,12;max;0,14;max;0,12;max;0,06;max;0,04;max;0,06;max;685,33;max;10,13;max;8,57;max;15,58;max;18,04;max;6,99;max;50,61;max;15,76;max;0,03

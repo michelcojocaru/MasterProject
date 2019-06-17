@@ -74,8 +74,7 @@ public class GranularityChecker extends Checker {
         //System.out.println("NANOENTITIES_COMPOSITION_TEST took: " + duration + " nanoseconds.");
 
 
-        startTestTime = System.nanoTime();
-        testResult = new TestResult(Tests.LOC_TEST);
+
         //TODO prettify code
         Path pathToBeDeleted = Paths.get(System.getProperty("user.dir")).resolve("repo");
         if(GitRepoDownloader.deleteDirectory(pathToBeDeleted.toFile())){
@@ -83,6 +82,8 @@ public class GranularityChecker extends Checker {
         }
         if(repo!= null && !repo.url.equals("")) {
             if (GitRepoDownloader.download(repo.url)) {
+                startTestTime = System.nanoTime();
+                testResult = new TestResult(Tests.LOC_TEST);
                 i = 0;
                 int lineCount;
                 FileSearch fileSearch = FileSearch.getInstance();
